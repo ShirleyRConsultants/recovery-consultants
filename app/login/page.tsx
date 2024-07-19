@@ -34,18 +34,62 @@ export default function Login({
     const origin = headers().get("origin");
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
+    const firstName = formData.get("firstName") as string;
+    const lastName = formData.get("lastName") as string;
+    const phone = formData.get("phone") as string;
+
     const supabase = createClient();
 
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: `${origin}/auth/callback`,
       },
     });
+    if (
+      data.user &&
+      data.user.identities &&
+      data.user.identities.length === 0
+    ) {
+      console.log("User already exists");
+
+      return;
+    }
+    if (error) {
+      console.log(error);
+      throw error;
+    }
+
+    const user = data.user;
+    console.log(user, "THIS IS THE USER")
+    // Insert additional user information into the "users" table
+    const { data: insertData, error: insertError } = await supabase
+      .from("users")
+      .insert({
+        id: user?.id,
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        phone: phone,
+      });
+
+    if (insertError) {
+      throw insertError;
+    }
+    try {
+    } catch (error: any) {
+      console.log(error);
+      if (error.code === "23505") {
+        console.log("Email already exists");
+      } else {
+        console.log("handle error");
+      }
+      console.error("Error during user registration:");
+    }
 
     if (error) {
-      return redirect("/login?message=Could not authenticate user");
+      return redirect("/login?message=Could not signup user");
     }
 
     return redirect("/login?message=Check email to continue sign in process");
@@ -93,6 +137,33 @@ export default function Login({
           name="password"
           placeholder="••••••••"
           required
+        />
+        <label className="text-md" htmlFor="firstName">
+          First Name
+        </label>
+        <input
+          className="rounded-md px-4 py-2 bg-inherit border mb-6"
+          name="firstName"
+          placeholder="bob"
+      
+        />
+        <label className="text-md" htmlFor="lastName">
+          Last Name
+        </label>
+        <input
+          className="rounded-md px-4 py-2 bg-inherit border mb-6"
+          name="lastName"
+          placeholder="smith"
+       
+        />
+        <label className="text-md" htmlFor="lastName">
+          Phone
+        </label>
+        <input
+          className="rounded-md px-4 py-2 bg-inherit border mb-6"
+          name="phone"
+          placeholder="123-456-7890"
+       
         />
         <SubmitButton
           formAction={signIn}
