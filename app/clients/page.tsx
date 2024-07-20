@@ -3,7 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import Header from "@/components/Header";
 import { redirect } from "next/navigation";
 import NavBar from "@/components/NavBar";
-import Clients from "../client-pages/clients";
+import Clients from "../client-pages/Clients";
 
 export default async function ClientsPage() {
   const supabase = createClient();
