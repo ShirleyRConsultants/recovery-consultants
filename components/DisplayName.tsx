@@ -15,6 +15,10 @@ const DisplayName: React.FC<DisplayNameProps> = () => {
     
     return (
         <div className='flex'>
+            {profile.type_of_user == "admin" &&
+            <>
+             <Link  className='mx- hover:underline' href="/admin">Admin</Link>
+            </>}
             <Link  className='mx-4 hover:underline' href="/clients">Clients</Link>
             <p>{profile?.first_name}</p>
         </div>
