@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
@@ -59,56 +59,75 @@ export default function Signup() {
     return password;
   };
 
-  const handleSignup = async () => {
-    setError(null); // Reset error state
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(""); // Reset error state
+    setLoading(true); // Set loading state to true
     const password = handleGeneratePassword();
     console.log("Attempting to sign up with:", { email, password });
-    const { data, error } = await supabase.auth.signUp({ email, password });
-    if (error) {
-      setError(error);
-      console.log("Error signing up:", error.message);
-    } else {
-      const { data: insertData, error: insertError } = await supabase
-        .from("users")
-        .insert({
-          id: data.user?.id,
-          first_name: firstName,
-          last_name: lastName,
-          type_of_user: "case_manager",
-          email: email,
-          phone: phone,
-        });
 
-      if (insertError) {
-        throw insertError;
-      }
-      try {
-      } catch (error: any) {
-        console.log(error);
-        if (error.code === "23505") {
-          console.log("Email already exists");
-        } else {
-          console.log("handle error");
-        }
-        console.error("Error during user registration:");
-      }
-      console.log("Signup successful, user data:", data);
+    const { data, error: signupError } = await supabase.auth.signUp({ email, password });
 
-      // Send email with password
-      await handleEmail(email, password);
-
-     
+    if (signupError) {
+      setError(signupError.message);
+      console.log("Error signing up:", signupError.message);
       setLoading(false);
-      setSuccess(`Case manager ${firstName} added successfully!`);
+      return;
     }
+
+    const userId = data.user?.id;
+
+    const { error: insertError } = await supabase
+      .from("users")
+      .insert({
+        id: userId,
+        first_name: firstName,
+        last_name: lastName,
+        type_of_user: "case_manager",
+        email: email,
+        phone: phone,
+      });
+
+    if (insertError) {
+      setError(insertError.message);
+      console.log("Error inserting user:", insertError.message);
+      setLoading(false);
+      return;
+    }
+
+    const { error: caseManagerInsertError } = await supabase
+      .from("case_managers")
+      .insert({
+        auth_id: userId,
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        phone: phone,
+      });
+
+    if (caseManagerInsertError) {
+      setError(caseManagerInsertError.message);
+      console.log("Error inserting case manager:", caseManagerInsertError.message);
+      setLoading(false);
+      return;
+    }
+
+    console.log("Signup and insertion successful, user data:", data);
+
+    // Send email with password
+    await handleEmail(email, password);
+
+    setLoading(false);
+    setSuccess(`Case manager ${firstName} added successfully!`);
   };
+  
 
   return profile?.type_of_user != "admin" ? (
     <div className="w-1/3 flex-1 flex flex-col justify-center gap-2 text-foreground text-center">
       <p>Loading...</p>
     </div>
   ) : (
-    <div className="w-1/3 flex-1 flex flex-col justify-center gap-2 text-foreground">
+    <div className="w-1/3 mt-20 flex-1 flex flex-col justify-center gap-2 text-foreground">
       <Link
         href="/"
         className="absolute left-8 top-8 py-2 px-4 rounded-md no-underline  group-hover:-translate-x-1 text-foreground flex items-center group text-sm"
@@ -130,6 +149,10 @@ export default function Signup() {
         Back
       </Link>
       <p className="text-center text-2xl mb-2">Case Manager Signup</p>
+      <form
+        onSubmit={handleSignup}
+        className="flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
+      >
       <label className="text-md" htmlFor="first_name">
         First Name
       </label>
@@ -174,11 +197,14 @@ export default function Signup() {
         required
       />
 
-      <button disabled={loading} onClick={() => handleSignup()}>
+      <button
+      type="submit"
+      disabled={loading}>
         Sign Up
       </button>
+      </form>
       {success && <p className="text-center text-blue-600">{success}</p>}
-      {error && <p className="text-center text-red-600">{error.message}</p>}
+      {error && <p className="text-center text-red-600">{error}</p>}
     </div>
   );
 }
