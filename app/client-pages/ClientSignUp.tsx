@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 interface ClientsProps {}
 
-const Clients: React.FC<ClientsProps> = () => {
+const ClientSignUp: React.FC<ClientsProps> = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -15,16 +15,17 @@ const Clients: React.FC<ClientsProps> = () => {
   const [zipCode, setZipCode] = useState("");
   const [sobrietyDate, setSobrietyDate] = useState("");
   const [error, setError] = useState("");
-
+  const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
   const { profile, session } = useAuth();
 
+  console.log(loading, "loading")
+
   useEffect(() => {
     if (
-      loading &&
-      profile?.type_of_user !== "admin" &&
-      profile?.type_of_user !== "case_manager"
+      
+      !loading && profile?.type_of_user === "client"
     ) {
       router.push("/");
     }
@@ -70,7 +71,7 @@ const Clients: React.FC<ClientsProps> = () => {
     e.preventDefault();
     setError(""); // Reset error state
     setLoading(true); // Set loading state to true
-
+    setSubmitted(true);
     const password = handleGeneratePassword();
     console.log("Attempting to sign up with:", { email, password });
     const { data, error } = await supabase.auth.signUp({ email, password });
@@ -78,6 +79,7 @@ const Clients: React.FC<ClientsProps> = () => {
     if (error) {
       setError(error.message);
       console.log("Error signing up:", error.message);
+
       return;
     }
     const userId = data.user?.id;
@@ -104,7 +106,7 @@ const Clients: React.FC<ClientsProps> = () => {
       id: userId,
       first_name: firstName,
       last_name: lastName,
-      type_of_user: "case_manager",
+      type_of_user: "client",
       email: email,
       phone: phone,
     });
@@ -125,7 +127,24 @@ const Clients: React.FC<ClientsProps> = () => {
     setSuccess(`Case manager ${firstName} added successfully!`);
   };
 
+  const resetForm = () => {
+    setEmail("");
+    setFirstName("");
+    setLastName("");
+    setPhone("");
+    setZipCode("");
+    setSobrietyDate("");
+    setError("");
+    setSuccess("");
+  };
+
+  if (!loading) {
+    return <div>Loading...</div>;
+  }
+
+
   return (
+
     <div className="">
       <form
         onSubmit={handleSignup}
@@ -199,13 +218,32 @@ const Clients: React.FC<ClientsProps> = () => {
           value={sobrietyDate}
           onChange={(e) => setSobrietyDate(e.target.value)}
         />
+        {!success && (
+          <button
+            disabled={submitted}
+            type="submit"
+            className="mt-2 text-sm border border-1 rounded-lg p-2"
+          >
+            Upload
+          </button>
+        )}
 
-        <button type="submit" className="mt-2 text-sm text-blue-600">
-          Add Client
-        </button>
+        {success && (
+          <div className="">
+            <p className="text-blue-500 mt-4">Client added successfully!</p>
+            <button
+              onClick={resetForm}
+              className="w-[100%] border border-1 p-2 rounded-lg mt-4"
+            >
+              Reset
+            </button>
+          </div>
+        )}
+
+        {error && <p className="text-red-600">{error}</p>}
       </form>
     </div>
   );
 };
 
-export default Clients;
+export default ClientSignUp;

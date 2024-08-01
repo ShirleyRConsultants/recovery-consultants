@@ -38,7 +38,7 @@ export default function Login({
       router.push("/login?message=Could not authenticate user");
     }
 
-    router.push("/protected");
+    router.push("/");
   };
 
   const signUp = async (formData: FormData) => {

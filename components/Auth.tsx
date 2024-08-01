@@ -69,8 +69,6 @@ export const AuthProvider = ({ children }: any) => {
   };
 
   useEffect(() => {
-    console.log("SETTING DATA");
-
     const setData = async () => {
       const {
         data: { session },
@@ -79,6 +77,7 @@ export const AuthProvider = ({ children }: any) => {
       if (error) throw error;
       setSession(session);
       setUser(session?.user);
+     
     };
 
     const { data: listener } = supabaseClient.auth.onAuthStateChange(
@@ -91,10 +90,8 @@ export const AuthProvider = ({ children }: any) => {
         }
         if (event === "SIGNED_OUT") {
           console.log("in the signed out event if statement");
-
           clearSession();
         }
-     
       }
     );
 
@@ -106,10 +103,10 @@ export const AuthProvider = ({ children }: any) => {
   }, []);
 
   useEffect(() => {
+
     const fetchData = async () => {
       console.log("getting new user data");
       console.log(user?.id);
-
       if (user?.id) {
         try {
           const userId = user.id;
@@ -117,7 +114,6 @@ export const AuthProvider = ({ children }: any) => {
             .from("users")
             .select()
             .match({ id: userId });
-
           if (error) {
             console.error("Error fetching user profile:", error);
           } else {
@@ -130,7 +126,7 @@ export const AuthProvider = ({ children }: any) => {
         }
       }
     };
-    console.log(profile, "NEW PROFILE DATA");
+    
     fetchData();
     setLoading(false);
   }, [user]);
