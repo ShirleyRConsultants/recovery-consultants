@@ -18,24 +18,24 @@ const ClientSignUp: React.FC<ClientsProps> = () => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
-  const { profile, loadingProfile } = useAuth();
-
-  console.log(loadingProfile, "loading")
-
-
-
+  const { profile } = useAuth();
+  const [loadingProfile, setLoadingProfile] = useState(true);
 
   useEffect(() => {
-    if (
-    profile?.type_of_user === "client"
-    ) {
-      router.push("/");
+    if (profile) {
+      if (profile.type_of_user !== "admin" && profile?.type_of_user !== 
+      "case_manager") {
+        router.push("/");
+      } else {
+        setLoadingProfile(false);
+      }
     }
-  }, [profile]);
+  }, [profile, router]);
 
-  if (profile?.type_of_user !== "admin" && profile?.type_of_user !== "case_manager") {
-    return <>Loading.......</>
+  if (!profile || loadingProfile) {
+    return <div>Loading......</div>;
   }
+
 
   const supabase = createClient();
 
