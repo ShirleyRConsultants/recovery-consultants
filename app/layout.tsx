@@ -22,13 +22,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={montserrat.className}>
-      <AuthProvider>
+
       <body className="bg-background text-foreground">
+      <AuthProvider>
         <main className="min-h-screen flex flex-col items-center">
           {children}
         </main>
+        </AuthProvider>
       </body>
-      </AuthProvider>
+    
     </html>
   );
 }

@@ -10,23 +10,15 @@ const AuthContext = createContext<{
   signIn: (email: string, password: string) => void;
   clearSession: () => void;
   loading: boolean;
-  subscriptionActive: boolean;
-  setJustSubscribed: (value: boolean) => void;
 
   profile: {
     email: string;
     first_name: string;
     gender: string;
     id: string;
-    is_companion: boolean;
-    city: string;
     type_of_user: string;
     last_name: string;
     phone: string;
-    terms_agree: boolean;
-    applied: boolean;
-    credits: number;
-    subscription_id: string;
   } | null;
 }>({
   loading: true,
@@ -36,8 +28,6 @@ const AuthContext = createContext<{
   profile: null,
   signIn: (email: string, password: string) => {},
   clearSession: () => {},
-  subscriptionActive: false,
-  setJustSubscribed: (value: boolean) => {},
 });
 
 interface UserProfile {
@@ -46,20 +36,8 @@ interface UserProfile {
   gender: string;
   id: string;
   type_of_user: string;
-  city: string;
-  is_companion: boolean;
   last_name: string;
   phone: string;
-  terms_agree: boolean;
-  applied: boolean;
-  credits: number;
-  subscription_id: string;
-}
-
-interface SubscriptionType {
-  start_date: Date;
-  end_date: Date;
-  email: string;
 }
 
 export const AuthProvider = ({ children }: any) => {
@@ -68,8 +46,6 @@ export const AuthProvider = ({ children }: any) => {
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>();
-  const [subscriptionActive, setSubscriptionActive] = useState(false);
-  const [justSubscribed, setJustSubscribed] = useState(false);
 
   const supabaseClient = createClient();
 
@@ -93,7 +69,6 @@ export const AuthProvider = ({ children }: any) => {
   };
 
   useEffect(() => {
-    console.log("SETTING DATA");
     const setData = async () => {
       const {
         data: { session },
@@ -102,7 +77,7 @@ export const AuthProvider = ({ children }: any) => {
       if (error) throw error;
       setSession(session);
       setUser(session?.user);
-      setLoading(false);
+     
     };
 
     const { data: listener } = supabaseClient.auth.onAuthStateChange(
@@ -112,11 +87,9 @@ export const AuthProvider = ({ children }: any) => {
           console.log("in the sign in event if statement");
           setSession(session);
           setUser(session?.user);
-          setLoading(false);
         }
         if (event === "SIGNED_OUT") {
           console.log("in the signed out event if statement");
-
           clearSession();
         }
       }
@@ -130,8 +103,10 @@ export const AuthProvider = ({ children }: any) => {
   }, []);
 
   useEffect(() => {
+
     const fetchData = async () => {
       console.log("getting new user data");
+      console.log(user?.id);
       if (user?.id) {
         try {
           const userId = user.id;
@@ -139,7 +114,6 @@ export const AuthProvider = ({ children }: any) => {
             .from("users")
             .select()
             .match({ id: userId });
-
           if (error) {
             console.error("Error fetching user profile:", error);
           } else {
@@ -152,11 +126,10 @@ export const AuthProvider = ({ children }: any) => {
         }
       }
     };
-    console.log(profile, "NEW PROFILE DATA");
+    
     fetchData();
-  }, [user, justSubscribed]);
-
-
+    setLoading(false);
+  }, [user]);
 
   const clearSession = () => {
     setSession(null);
@@ -172,8 +145,6 @@ export const AuthProvider = ({ children }: any) => {
     clearSession,
     loading,
     profile: profile || null,
-    subscriptionActive,
-    setJustSubscribed: (value: boolean) => setJustSubscribed(value),
   };
 
   return (

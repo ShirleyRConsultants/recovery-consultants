@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import DisplayName from "./DisplayName";
+import DisplayNameLinks from "./DisplayNameLinks";
 
 export default async function AuthButton() {
   const supabase = createClient();
@@ -9,6 +9,7 @@ export default async function AuthButton() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  
 
   const signOut = async () => {
     "use server";
@@ -20,7 +21,7 @@ export default async function AuthButton() {
 
   return user ? (
     <div className="flex items-center gap-4">
-      <DisplayName/>
+      <DisplayNameLinks/>
       <form action={signOut}>
         <button className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover">
           Logout
