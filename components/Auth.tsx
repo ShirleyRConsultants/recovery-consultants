@@ -125,6 +125,7 @@ export const AuthProvider = ({ children }: any) => {
           console.error("Error in fetchData:", error);
         }
       }
+   
     };
     
     fetchData();
