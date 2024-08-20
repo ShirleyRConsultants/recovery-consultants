@@ -24,6 +24,8 @@ const Questions: React.FC = () => {
   const currentQuestionKey = questionKeys[currentQuestionIndex];
   const currentQuestion = clientQuestions[currentQuestionKey];
 
+
+  
   const handleOptionClick = (option: number) => {
     setCurrentQuestionIndex(currentQuestionIndex + 1);
     setValues([...values, option]);
