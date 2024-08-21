@@ -42,7 +42,7 @@ const Questions: React.FC = () => {
       const { data, error: fetchError } = await supabase
         .from("clients")
         .select(
-          "sobriety, nutrition, purpose, sleep, anxiety, depression, family, routine, support, future, emotional_response, finance, last_entry"
+          "sobriety, nutrition, purpose, sleep, anxiety, depression, family, routine, support, future, emotional_response, finance, entries"
         )
         .eq("auth_id", profile?.id)
         .single(); // Assuming you're fetching a single row
@@ -65,7 +65,7 @@ const Questions: React.FC = () => {
         future: [...(data.future || []), values[9]],
         emotional_response: [...(data.emotional_response || []), values[10]],
         finance: [...(data.finance || []), values[11]],
-        last_entry: [...(data.last_entry || []), currentDate],
+        entries: [...(data.entries || []), currentDate],
       };
 
       // Step 3: Update the database with the combined arrays

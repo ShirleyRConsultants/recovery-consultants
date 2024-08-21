@@ -3,39 +3,58 @@ import React, { useState, useEffect } from "react";
 import { AgCharts } from "ag-charts-react";
 import { useAuth } from "@/components/Auth";
 import { createClient } from "@/utils/supabase/client";
+import LineGraph from "@/components/LineGraph";
 // Initialize Supabase client
 
+type Client = {
+  sobriety: string[];
+  nutrition: string[];
+  purpose: string[];
+  sleep: string[];
+  anxiety: string[];
+  depression: string[];
+  family: string[];
+  routine: string[];
+  support: string[];
+  future: string[];
+  emotional_response: string[];
+  finance: string[];
+  entries: Date[];
+};
+
 const DataVisualization: React.FC = () => {
-    const [chartOptions, setChartOptions] = useState({
-        // Data: Data to be displayed in the chart
-        data: [
-            { week: 'week1',  Anxiety: 8 },
-            { week: 'week2',  Anxiety: 2 },
-            { week: 'week3',  Anxiety: 3 },
-            { week: 'week4',  Anxiety: 4 },
-            { week: 'week5',  Anxiety: 1 },
-     
-        ],
-        background: {
-            fill: '',
-        },
-        minWidth: 0,
-        minHeight:0,
-        // Series: Defines which chart type and data to use
-        series: [{ type: 'bar', xKey: 'week', yKey: 'Anxiety' }],
-    });
+  const [chartOptions, setChartOptions] = useState({
+    // Data: Data to be displayed in the chart
+    data: [
+      { week: "week1", Anxiety: 8 },
+      { week: "week2", Anxiety: 2 },
+      { week: "week3", Anxiety: 3 },
+      { week: "week4", Anxiety: 4 },
+      { week: "week5", Anxiety: 1 },
+    ],
+    background: {
+      fill: "",
+    },
+    minWidth: 0,
+    minHeight: 0,
+    // Series: Defines which chart type and data to use
+    series: [{ type: "line", xKey: "week", yKey: "Anxiety" }],
+  });
   const [displayData, setDisplayData] = useState([]);
   const [error, setError] = useState<string | null>(null);
   const { profile, loading } = useAuth();
+  const [clientData, setClientData] = useState<Client | null>(null);
   const supabase = createClient();
+
   useEffect(() => {
     const fetchData = async () => {
       const { data, error } = await supabase
         .from("clients")
         .select(
-          "created_at, sobriety, nutrition, purpose, sleep, anxiety, depression, family, routine, support, future, emotional_response, finance"
+          "sobriety, nutrition, purpose, sleep, anxiety, depression, family, routine, support, future, emotional_response, finance, entries"
         )
-        .eq("id", 11);
+        .eq("id", 11)
+        .single();
 
       if (error) {
         console.error("Error fetching data:", error);
@@ -43,51 +62,27 @@ const DataVisualization: React.FC = () => {
         return;
       }
 
-      if (!data || data.length === 0) {
+      if (!data ) {
         setError("No data available");
         return;
       }
-
-      // Process the data
-    //   const reversedData = data.reverse(); // If needed to reverse
-    //   const formattedData = reversedData.map((entry) => ({
-
-    //     sobriety: entry.sobriety || 0,
-    //     nutrition: entry.nutrition || 0,
-    //     purpose: entry.purpose || 0,
-    //     sleep: entry.sleep || 0,
-    //     anxiety: entry.anxiety || 0,
-    //     depression: entry.depression || 0,
-    //     family: entry.family || 0,
-    //     routine: entry.routine || 0,
-    //     support: entry.support || 0,
-    //     future: entry.future || 0,
-    //     emotional_response: entry.emotional_response || 0,
-    //     finance: entry.finance || 0,
-    //   }));
-    //   console.log(formattedData);
-
+      setClientData(data as Client);
     };
 
     fetchData();
   }, []);
 
+  console.log(clientData, "Client data <-----");
 
-
-  return (
+  return clientData?(
     <div className="h-screen text-center mt-12">
-      <h1 >Monthly Data Visualization</h1>
-      {error && <p>{error}</p>}
-      {chartOptions.data.length > 0 ? (
-        <AgCharts  options={chartOptions}
-        className="chart mt-20"
-        style={{ width: "400px", height: "400px" }}
-        />
-      ) : (
-        <p>Loading...</p>
-      )}
+      <h1>Monthly Data Visualization</h1>
+
+      <LineGraph category={clientData.anxiety} entries={clientData.entries} />
     </div>
-  );
+  ):(
+    <>Sorry nothing to display here!</>
+  )
 };
 
 export default DataVisualization;
