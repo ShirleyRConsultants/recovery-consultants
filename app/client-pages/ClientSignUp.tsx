@@ -18,7 +18,7 @@ const ClientSignUp: React.FC<ClientsProps> = () => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
-  const { profile } = useAuth();
+  const { profile, caseManagerID } = useAuth();
   const [loadingProfile, setLoadingProfile] = useState(true);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const ClientSignUp: React.FC<ClientsProps> = () => {
   if (!profile || loadingProfile) {
     return <div>Loading......</div>;
   }
-
+  console.log("case manager ID --->", caseManagerID)
 
   const supabase = createClient();
 
@@ -99,6 +99,7 @@ const ClientSignUp: React.FC<ClientsProps> = () => {
         email: email,
         phone: phone,
         zip_code: zipCode,
+        case_manager: caseManagerID
       });
 
     if (insertError) {

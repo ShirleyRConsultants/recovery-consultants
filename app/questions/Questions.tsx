@@ -10,6 +10,10 @@ interface Question {
   options: string[];
 }
 
+type QuestionsProps = {
+  id: string 
+}
+
 const Questions: React.FC = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [values, setValues] = useState<number[]>([]);

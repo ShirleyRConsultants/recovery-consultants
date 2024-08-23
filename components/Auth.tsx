@@ -1,6 +1,6 @@
 "use client";
 import { Session, User } from "@supabase/supabase-js";
-import { useContext, useState, useEffect, createContext } from "react";
+import { useContext, useState, useEffect, createContext, use } from "react";
 import { createClient } from "@/utils/supabase/client";
 
 const AuthContext = createContext<{
@@ -10,6 +10,7 @@ const AuthContext = createContext<{
   signIn: (email: string, password: string) => void;
   clearSession: () => void;
   loading: boolean;
+  caseManagerID: any;
 
   profile: {
     email: string;
@@ -28,6 +29,7 @@ const AuthContext = createContext<{
   profile: null,
   signIn: (email: string, password: string) => {},
   clearSession: () => {},
+  caseManagerID: null
 });
 
 interface UserProfile {
@@ -46,6 +48,7 @@ export const AuthProvider = ({ children }: any) => {
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>();
+  const [caseManagerID, setCaseManagerID] = useState<any>(null);
 
   const supabaseClient = createClient();
 
@@ -77,7 +80,6 @@ export const AuthProvider = ({ children }: any) => {
       if (error) throw error;
       setSession(session);
       setUser(session?.user);
-     
     };
 
     const { data: listener } = supabaseClient.auth.onAuthStateChange(
@@ -102,8 +104,40 @@ export const AuthProvider = ({ children }: any) => {
     };
   }, []);
 
-  useEffect(() => {
+  useEffect(() =>{
+    const fetchCaseManagerId = async () => {
+      console.log("before fetch")
+      try {
+        if (profile?.type_of_user === "case_manager") {
+          console.log("in fetch")
+          const { data: caseManagerIDdata, error } = await supabaseClient
+            .from("case_managers")
+            .select("id")
+            .eq("auth_id", profile.id)
+            .single();
+    
+          if (error) {
+            console.log("Error in case manager ID fetch", error);
+            return; // Exit the function if there's an error
+          }
+    
+          if (caseManagerIDdata) {
+            console.log("setting casemanager id")
+            setCaseManagerID(caseManagerIDdata.id); // Set the ID directly
+          }
+        }
+      } catch (error) {
+        console.log("Unexpected error", error);
+      }
+      
+    };
+fetchCaseManagerId()
 
+
+  },[profile?.type_of_user])
+  
+
+  useEffect(() => {
     const fetchData = async () => {
       console.log("getting new user data");
       console.log(user?.id);
@@ -120,15 +154,17 @@ export const AuthProvider = ({ children }: any) => {
             const userProfile = profileData ? profileData[0] : null;
             console.log("NEW USER TYPE", userProfile.type_of_user);
             setProfile(userProfile);
+           
           }
+        
         } catch (error) {
           console.error("Error in fetchData:", error);
         }
       }
-   
+      
     };
-    
-    fetchData();
+    fetchData()
+  
     setLoading(false);
   }, [user]);
 
@@ -139,6 +175,7 @@ export const AuthProvider = ({ children }: any) => {
   };
 
   const value = {
+    caseManagerID,
     session,
     user,
     signOut: () => supabaseClient.auth.signOut(),

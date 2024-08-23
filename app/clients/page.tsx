@@ -27,10 +27,10 @@ export default async function ClientsPage() {
             <h2 className="font- text-4xl mb-4">Clients</h2>
             <div className="flex flex-1">
               <div>
-                <Link href="">My Clients</Link>
+                <Link className="m-4" href="/clients/list">My Clients</Link>
               </div>
               <div>
-                <Link href="">Add New</Link>
+                <Link className="m-4" href="/clients/upload">Add New</Link>
               </div>
             </div>
           </main>
