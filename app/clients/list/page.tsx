@@ -51,8 +51,9 @@ const ClientList: React.FC<ClientListProps> = () => {
       )}
 
       {clients.map((client) => (
-        <Link href={"assess"}>
+        <Link key={client.id} href={`/questions/${client.id}`}>
         <Card
+       
           first_name={client.first_name}
           last_name={client.last_name}
           last_update={client.entries?.[client.entries.length - 1] ?? null}

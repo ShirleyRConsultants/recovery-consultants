@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import clientQuestions from "../questions/clientQuestions";
+import clientQuestions from "../clientQuestions";
 import { createClient } from "@/utils/supabase/client";
 import { useAuth } from "@/components/Auth";
+import { useParams } from 'next/navigation';
 
 interface Question {
   question: string;
@@ -14,7 +15,7 @@ type QuestionsProps = {
   id: string 
 }
 
-const Questions: React.FC = () => {
+const QuestionsComponent: React.FC = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [values, setValues] = useState<number[]>([]);
   const [questionsAnswered, setQuestionsAnswered] = useState(false);
@@ -28,8 +29,11 @@ const Questions: React.FC = () => {
   const currentQuestionKey = questionKeys[currentQuestionIndex];
   const currentQuestion = clientQuestions[currentQuestionKey];
 
-
+  const params = useParams();
+  const { id } = params;
   
+  console.log(id, "ID PARAMS")
+
   const handleOptionClick = (option: number) => {
     setCurrentQuestionIndex(currentQuestionIndex + 1);
     setValues([...values, option]);
@@ -48,7 +52,7 @@ const Questions: React.FC = () => {
         .select(
           "sobriety, nutrition, purpose, sleep, anxiety, depression, family, routine, support, future, emotional_response, finance, entries"
         )
-        .eq("auth_id", profile?.id)
+        .eq("id", id)
         .single(); // Assuming you're fetching a single row
 
       if (fetchError) {
@@ -92,7 +96,7 @@ const Questions: React.FC = () => {
   console.log(values);
   console.log(currentQuestionIndex, "Q index");
   return !questionsAnswered ? (
-    <div className="border border-1 rounded-lg p-10 w-96">
+    <div className="border border-1 rounded-lg p-10 w-96 mb-24">
       {currentQuestionIndex < questionKeys.length ? (
         <div className="text-center">
           <h2>{currentQuestion.Q}</h2>
@@ -125,4 +129,4 @@ const Questions: React.FC = () => {
   );
 };
 
-export default Questions;
+export default QuestionsComponent;
