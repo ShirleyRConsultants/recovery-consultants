@@ -80,7 +80,7 @@ const QuestionsComponent: React.FC = () => {
       const { error: updateError } = await supabase
         .from("clients")
         .update(updatedValues)
-        .eq("auth_id", profile?.id);
+        .eq("id", id);
 
       if (updateError) {
         throw updateError;

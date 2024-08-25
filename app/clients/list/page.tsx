@@ -10,7 +10,7 @@ interface ClientListProps {}
 type Client = {
   first_name: string;
   last_name: string;
-  cast_manager: number;
+  case_manager: number;
   entries: Date[];
   id: number;
 };
@@ -25,8 +25,8 @@ const ClientList: React.FC<ClientListProps> = () => {
       try {
         if (caseManagerID) {
           const { data: clientsData, error } = await supabase
-            .from("clients") // Replace 'clients' with the actual table name
-            .select("*") // Select all fields or specify the fields you need
+            .from("clients")
+            .select("id, first_name, last_name, case_manager, entries")
             .eq("case_manager", caseManagerID);
 
           if (error) {
@@ -51,14 +51,15 @@ const ClientList: React.FC<ClientListProps> = () => {
       )}
 
       {clients.map((client) => (
-        <Link key={client.id} href={`/questions/${client.id}`}>
-        <Card
-       
-          first_name={client.first_name}
-          last_name={client.last_name}
-          last_update={client.entries?.[client.entries.length - 1] ?? null}
-        />
-        </Link>
+        <div key={client.id}>
+          <Link href={`/clients/${client.id}`}>
+            <Card
+              first_name={client.first_name}
+              last_name={client.last_name}
+              last_update={client.entries?.[client.entries.length - 1] ?? null}
+            />
+          </Link>
+        </div>
       ))}
     </div>
   );

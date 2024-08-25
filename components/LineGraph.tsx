@@ -26,7 +26,7 @@ const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
   const [chartOptions, setChartOptions] = useState({
     data: [] as any[],
     background: {
-      fill: '',
+      fill: 'black',
     },
     minWidth: 0,
     minHeight: 0,
@@ -45,7 +45,7 @@ const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
     setChartOptions({
       data: chartData,
       background: {
-        fill: '',
+        fill: 'black',
       },
       minWidth: 0,
       minHeight: 0,

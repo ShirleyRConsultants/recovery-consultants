@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import LineGraph from '@/components/LineGraph';
 import { useAuth } from '@/components/Auth';
 import { createClient } from '@/utils/supabase/client';
+import { useParams } from 'next/navigation';
 
 type Client = {
   sobriety: string[];
@@ -25,6 +26,8 @@ const DataVisualization: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const { profile, loading } = useAuth();
   const supabase = createClient();
+  const params = useParams();
+  const { id } = params;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +36,7 @@ const DataVisualization: React.FC = () => {
         .select(
           'sobriety, nutrition, purpose, sleep, anxiety, depression, family, routine, support, future, emotional_response, finance, entries'
         )
-        .eq('id', 11)
+        .eq('id', id)
         .single(); // Use .single() to get a single object
 
       if (error) {

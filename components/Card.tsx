@@ -16,6 +16,7 @@ const Card: React.FC<CardProps> = ({ first_name, last_name, last_update }) => {
         <p className="text-gray-700 text-base">
           {last_update ? <>{last_update}</> : <>No Assessment Completed</>}
         </p>
+        
       </div>
     </div>
   );
