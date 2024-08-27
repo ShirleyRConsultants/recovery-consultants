@@ -33,14 +33,14 @@ const Card: React.FC<CardProps> = ({ first_name, last_name, last_update }) => {
   }, [last_update]);
 
   return (
-    <div className="mt-2 max-w-sm rounded-lg transition-transform duration-300 hover:scale-105 overflow-hidden shadow-lg border border-white">
+    <div className="mx-auto mt-2 max-w-sm rounded-lg transition-transform duration-300 hover:scale-105 overflow-hidden shadow-lg border border-white">
       <div className="px-6 py-4">
         <div className="font-bold text-xl mb-2">{`${first_name} ${last_name}`}</div>
         <p className="text-gray-700 text-base">
           {last_update ? (
             <>
        
-              {isAssessmentDue && <span className="text-red-500">Assessment Due</span>}
+              {isAssessmentDue ? <p className="text-red-500">Assessment Due</p>:<p className='text-blue-500'>Assessment Completed</p>}
             </>
           ) : (
             <span className="text-red-500">Assessment Due</span>

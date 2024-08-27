@@ -4,6 +4,8 @@ import { useAuth } from "@/components/Auth";
 import { createClient } from "@/utils/supabase/client";
 import Card from "@/components/Card";
 import Link from "next/link";
+import NavBar from "@/components/NavBar";
+import BackButton from "@/components/BackButton";
 
 interface ClientListProps {}
 
@@ -45,7 +47,9 @@ const ClientList: React.FC<ClientListProps> = () => {
 
   console.log(clients);
   return (
-    <div className="text-center mt-10">
+    <div className="mt-10 w-full text-center">
+    
+      <div >
       {profile && (
         <p className="text-3xl">{profile.first_name + "'s" + " Clients"} </p>
       )}
@@ -53,7 +57,7 @@ const ClientList: React.FC<ClientListProps> = () => {
       {clients.map((client) => (
         <div key={client.id}>
           <Link href={`/clients/${client.id}`}>
-            <Card
+            <Card 
               first_name={client.first_name}
               last_name={client.last_name}
               last_update={client.entries?.[client.entries.length - 1] ?? null}
@@ -61,6 +65,7 @@ const ClientList: React.FC<ClientListProps> = () => {
           </Link>
         </div>
       ))}
+    </div>
     </div>
   );
 };

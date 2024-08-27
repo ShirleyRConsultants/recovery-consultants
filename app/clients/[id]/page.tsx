@@ -49,16 +49,17 @@ const ClientPage: React.FC<ClientPageProps> = () => {
   }, [id]);
 
   useEffect(() => {
-    if (client?.entries[client.entries.length - 1]) {
+    if (client?.entries === null){
+      setIsAssessmentDue(true)
+    }
+    else if (client?.entries && client?.entries[client.entries.length - 1]) {
       const lastEntryDate = new Date(client.entries[client.entries.length - 1]);
       const currentDate = new Date();
-
       // Calculate the difference in milliseconds
       const differenceInTime = currentDate.getTime() - lastEntryDate.getTime();
 
       // Convert to days
       const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-
       // Check if the difference is 7 days or more
       if (differenceInDays >= 7) {
         setIsAssessmentDue(true);
@@ -77,14 +78,17 @@ const ClientPage: React.FC<ClientPageProps> = () => {
           </h1>
           <p>Email: {client.email}</p>
           <p>Phone: {client.phone}</p>
-          <p>
-            Last Entry: {client.entries[client.entries.length - 1].toString()}
-          </p>
+          {client.entries && client.entries.length > 0  ? 
+             <p>
+             Last Entry: {client.entries[client.entries.length - 1].toString()}
+           </p>
+          :<p>No assessment recorded</p>}
+       
           <p>Sobriety Date: {client.sobriety_date.toString()}</p>
           <p>Zip Code: {client.zip_code}</p>
           {isAssessmentDue ? (
             <Link
-              className="underline mx-2 text-red-500"
+              className="underline  text-red-500"
               href={`/questions/${id}`}
             >
               {" "}
