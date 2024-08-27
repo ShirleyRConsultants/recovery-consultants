@@ -49,10 +49,9 @@ const ClientPage: React.FC<ClientPageProps> = () => {
   }, [id]);
 
   useEffect(() => {
-    if (client?.entries === null){
-      setIsAssessmentDue(true)
-    }
-    else if (client?.entries && client?.entries[client.entries.length - 1]) {
+    if (client?.entries === null) {
+      setIsAssessmentDue(true);
+    } else if (client?.entries && client?.entries[client.entries.length - 1]) {
       const lastEntryDate = new Date(client.entries[client.entries.length - 1]);
       const currentDate = new Date();
       // Calculate the difference in milliseconds
@@ -69,37 +68,83 @@ const ClientPage: React.FC<ClientPageProps> = () => {
     }
   }, [client?.entries]);
 
+  const formatPhoneNumber = (phoneNumber: string) => {
+    // Remove any non-digit characters
+    const cleaned = ("" + phoneNumber).replace(/\D/g, "");
+
+    // Match and format the cleaned string
+    const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+
+    if (match) {
+      return `${match[1]}-${match[2]}-${match[3]}`;
+    }
+
+    // Return the original if formatting is not possible
+    return phoneNumber;
+  };
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+    const day = ("0" + date.getDate()).slice(-2);
+    const year = date.getFullYear();
+
+    return `${month}-${day}-${year}`;
+  };
+
   return (
     <div>
       {client ? (
         <div className="mt-24">
-          <h1>
+          <p className="text-4xl">
             {client.first_name} {client.last_name}
-          </h1>
-          <p>Email: {client.email}</p>
-          <p>Phone: {client.phone}</p>
-          {client.entries && client.entries.length > 0  ? 
-             <p>
-             Last Entry: {client.entries[client.entries.length - 1].toString()}
-           </p>
-          :<p>No assessment recorded</p>}
-       
-          <p>Sobriety Date: {client.sobriety_date.toString()}</p>
-          <p>Zip Code: {client.zip_code}</p>
-          {isAssessmentDue ? (
-            <Link
-              className="underline  text-red-500"
-              href={`/questions/${id}`}
-            >
-              {" "}
-              Assessment Due!{" "}
-            </Link>
+          </p>
+          <div className="flex flex-1">
+            <p className="font-bold mr-1">Email:</p>
+            <a className="underline" href={`mailto:${client.email}`}>
+              {client.email}
+            </a>
+          </div>
+          <div className="flex flex-1">
+            <p className="font-bold mr-1">Phone:</p>
+            <p>{formatPhoneNumber(client.phone)}</p>
+          </div>
+
+          <div className="flex flex-1">
+            <p className="font-bold mr-1">Sobriety Date:</p>
+            <p>{formatDate(client.sobriety_date.toString())}</p>
+          </div>
+
+          <div className="flex flex-1">
+            <p className="font-bold mr-1">Zip Code:</p>
+            <p> {client.zip_code}</p>
+          </div>
+          {client.entries && client.entries.length > 0 ? (
+            <div className="flex flex-1">
+              <p className="font-bold mr-1">Last Assessment: </p>
+              <p>{formatDate(client.entries[client.entries.length - 1].toString())}</p>{" "}
+            </div>
           ) : (
-            <p>No Assessment due!</p>
+            <p>No assessment recorded</p>
           )}
-          <Link className="underline text-center" href={`/clients/progress/${id}`}>
-            Progress
-          </Link>
+          <div className="flex justify-between items-center">
+            <Link
+              className=" border border-white border-1 rounded text-2xl text-center"
+              href={`/clients/progress/${id}`}
+            >
+              Progress
+            </Link>
+            {isAssessmentDue ? (
+              <Link
+                className="border border-white border-1 rounded text-2xl text-red-500 "
+                href={`/questions/${id}`}
+              >
+                {" "}
+                Assessment Due!{" "}
+              </Link>
+            ) : (
+              <p className="text-blue-500">No Assessment due!</p>
+            )}
+          </div>
         </div>
       ) : (
         <p>Loading...</p>
