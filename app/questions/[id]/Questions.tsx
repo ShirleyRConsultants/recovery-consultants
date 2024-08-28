@@ -1,16 +1,21 @@
 "use client";
 
 import React, { useState } from "react";
-import clientQuestions from "../questions/clientQuestions";
+import clientQuestions from "../clientQuestions";
 import { createClient } from "@/utils/supabase/client";
 import { useAuth } from "@/components/Auth";
+import { useParams } from 'next/navigation';
 
 interface Question {
   question: string;
   options: string[];
 }
 
-const Questions: React.FC = () => {
+type QuestionsProps = {
+  id: string 
+}
+
+const QuestionsComponent: React.FC = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [values, setValues] = useState<number[]>([]);
   const [questionsAnswered, setQuestionsAnswered] = useState(false);
@@ -23,6 +28,11 @@ const Questions: React.FC = () => {
   // Get the current question object using the index
   const currentQuestionKey = questionKeys[currentQuestionIndex];
   const currentQuestion = clientQuestions[currentQuestionKey];
+
+  const params = useParams();
+  const { id } = params;
+  
+  console.log(id, "ID PARAMS")
 
   const handleOptionClick = (option: number) => {
     setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -40,9 +50,9 @@ const Questions: React.FC = () => {
       const { data, error: fetchError } = await supabase
         .from("clients")
         .select(
-          "sobriety, nutrition, purpose, sleep, anxiety, depression, family, routine, support, future, emotional_response, finance, last_entry"
+          "sobriety, nutrition, purpose, sleep, anxiety, depression, family, routine, support, future, emotional_response, finance, entries"
         )
-        .eq("auth_id", profile?.id)
+        .eq("id", id)
         .single(); // Assuming you're fetching a single row
 
       if (fetchError) {
@@ -63,14 +73,14 @@ const Questions: React.FC = () => {
         future: [...(data.future || []), values[9]],
         emotional_response: [...(data.emotional_response || []), values[10]],
         finance: [...(data.finance || []), values[11]],
-        last_entry: [...(data.last_entry || []), currentDate],
+        entries: [...(data.entries || []), currentDate],
       };
 
       // Step 3: Update the database with the combined arrays
       const { error: updateError } = await supabase
         .from("clients")
         .update(updatedValues)
-        .eq("auth_id", profile?.id);
+        .eq("id", id);
 
       if (updateError) {
         throw updateError;
@@ -86,7 +96,7 @@ const Questions: React.FC = () => {
   console.log(values);
   console.log(currentQuestionIndex, "Q index");
   return !questionsAnswered ? (
-    <div className="border border-1 rounded-lg p-10 w-96">
+    <div className="border border-1 rounded-lg p-10 w-96 mb-24">
       {currentQuestionIndex < questionKeys.length ? (
         <div className="text-center">
           <h2>{currentQuestion.Q}</h2>
@@ -119,4 +129,4 @@ const Questions: React.FC = () => {
   );
 };
 
-export default Questions;
+export default QuestionsComponent;

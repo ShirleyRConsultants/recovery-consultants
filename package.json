@@ -8,6 +8,7 @@
   "dependencies": {
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
+    "ag-charts-react": "^10.1.0",
     "autoprefixer": "10.4.17",
     "geist": "^1.2.1",
     "next": "latest",
