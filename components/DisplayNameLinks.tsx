@@ -4,11 +4,15 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "./Auth";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
-
+import { useRouter } from "next/navigation";
 const DisplayNameLinks: React.FC = () => {
-  const { profile } = useAuth();
+  const { profile, session, loading } = useAuth();
   const [clientId, setClientId] = useState<string | null>(null);
   const supabase = createClient();
+  const router = useRouter()
+
+ 
+
 
   useEffect(() => {
     const fetchClientId = async () => {

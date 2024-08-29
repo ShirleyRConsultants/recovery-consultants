@@ -36,7 +36,7 @@ const Card: React.FC<CardProps> = ({ first_name, last_name, last_update }) => {
     <div className="mx-auto mt-2 max-w-sm rounded-lg transition-transform duration-300 hover:scale-105 overflow-hidden shadow-lg border border-white">
       <div className="px-6 py-4">
         <div className="font-bold text-xl mb-2">{`${first_name} ${last_name}`}</div>
-        <p className="text-gray-700 text-base">
+        <div className="text-gray-700 text-base">
           {last_update ? (
             <>
        
@@ -45,7 +45,7 @@ const Card: React.FC<CardProps> = ({ first_name, last_name, last_update }) => {
           ) : (
             <span className="text-red-500">Assessment Due</span>
           )}
-        </p>
+        </div>
       </div>
     </div>
   );

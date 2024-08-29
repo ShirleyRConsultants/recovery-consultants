@@ -3,6 +3,7 @@ import { Session, User } from "@supabase/supabase-js";
 import { useContext, useState, useEffect, createContext, use } from "react";
 import { createClient } from "@/utils/supabase/client";
 
+
 const AuthContext = createContext<{
   session: Session | null | undefined;
   user: User | null | undefined;
@@ -49,7 +50,6 @@ export const AuthProvider = ({ children }: any) => {
   const [success, setSuccess] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>();
   const [caseManagerID, setCaseManagerID] = useState<any>(null);
-
   const supabaseClient = createClient();
 
   const signIn = async (email: string, password: string) => {

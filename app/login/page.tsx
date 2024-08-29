@@ -1,9 +1,11 @@
 "use client";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { SubmitButton } from "./submit-button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuth } from "@/components/Auth";
+import { profile } from "console";
 
 export default function Login({
   searchParams,
@@ -11,22 +13,16 @@ export default function Login({
   searchParams: { message: string };
 }) {
   const [isSignUp, setIsSignUp] = useState(false);
-  const [errors, setErrors] = useState("")
+  const [errors, setErrors] = useState("");
   const router = useRouter();
 
-  const resetForm = (form: HTMLFormElement) => {
-    // Reset form fields
-    form.reset();
-    // Clear any errors
-    setErrors("");
-    // Toggle sign-in/sign-up mode
-    setIsSignUp(!isSignUp);
-  };
-
+  
+ 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
 
+  
     if (isSignUp) {
       await signUp(formData);
     } else {
@@ -34,12 +30,10 @@ export default function Login({
     }
   };
 
-
   const toggleOptions = () => {
     setIsSignUp((prev) => !prev);
-    router.push("/login")
+    router.push("/login");
   };
-  
 
   const signIn = async (formData: FormData) => {
     const email = formData.get("email") as string;
@@ -52,14 +46,10 @@ export default function Login({
     });
 
     if (error) {
-     
       router.push(`/login?message=${error.message}`);
-    }
-    else{
+    } else {
       router.push("/");
     }
-    
-  
   };
 
   const signUp = async (formData: FormData) => {
@@ -127,8 +117,6 @@ export default function Login({
 
   return (
     <div className="flex-1 flex-col w-full px-8 sm:max-w-md justify-center gap-2">
-   
-
       <form
         onSubmit={handleSubmit}
         className="flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
@@ -195,9 +183,8 @@ export default function Login({
             ? "Already have an account? Sign In"
             : "Don't have an account? Sign Up"}
         </button>
-      
       </form>
-  
+
       {searchParams?.message && (
         <p className=" p-4 bg-foreground/10 text-foreground text-center">
           {searchParams.message}
