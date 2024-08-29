@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={montserrat.className}>
 
-      <body className="bg-background text-foreground">
+      <body className="bg-white text-black">
       <AuthProvider>
           <BackButton/>
         <main className="min-h-screen flex flex-col items-center">

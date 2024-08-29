@@ -26,7 +26,7 @@ const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
   const [chartOptions, setChartOptions] = useState({
     data: [] as any[],
     background: {
-      fill: 'black',
+      fill: 'white',
     },
     minWidth: 0,
     minHeight: 0,
@@ -39,13 +39,13 @@ const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
 
     const chartData = entries.map((entry, index) => ({
       entries: entry,
-      vals: categoryData[index],
+      vals: parseInt(categoryData[index]) *2,
     }));
 
     setChartOptions({
       data: chartData,
       background: {
-        fill: 'black',
+        fill: 'white',
       },
       minWidth: 0,
       minHeight: 0,
@@ -65,7 +65,7 @@ const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
   return (
     <div className="h-screen text-center mt-12">
       <h1>Data Visualization</h1>
-      <select className='bg-black' onChange={handleCategoryChange} value={selectedCategory}>
+      <select className='' onChange={handleCategoryChange} value={selectedCategory}>
         {categories.map((category) => (
           <option key={category} value={category}>
             {category.charAt(0).toUpperCase() + category.slice(1)}

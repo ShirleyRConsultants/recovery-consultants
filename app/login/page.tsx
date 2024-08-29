@@ -52,6 +52,7 @@ export default function Login({
     }
   };
 
+
   const signUp = async (formData: FormData) => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
@@ -119,13 +120,13 @@ export default function Login({
     <div className="flex-1 flex-col w-full px-8 sm:max-w-md justify-center gap-2">
       <form
         onSubmit={handleSubmit}
-        className="flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
+        className="flex-1 flex flex-col mt-20 w-full justify-center gap-2 text-black"
       >
         <label className="text-md" htmlFor="email">
           Email
         </label>
         <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6"
+          className="rounded-md px-4 py-2 bg- border mb-6"
           name="email"
           placeholder="you@example.com"
           required
@@ -135,7 +136,7 @@ export default function Login({
           Password
         </label>
         <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6"
+          className="rounded-md px-4 py-2  border mb-6"
           type="password"
           name="password"
           placeholder="••••••••"
@@ -170,7 +171,7 @@ export default function Login({
             />
           </>
         )}
-        <SubmitButton className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2">
+        <SubmitButton className="rounded-md px-4 py-2 text-black mb-2">
           {isSignUp ? "Sign Up" : "Sign In"}
         </SubmitButton>
         {errors && <p className="text-red-500 text-center">{errors}</p>}
@@ -186,7 +187,7 @@ export default function Login({
       </form>
 
       {searchParams?.message && (
-        <p className=" p-4 bg-foreground/10 text-foreground text-center">
+        <p className=" p-4 text-red-500 text-center">
           {searchParams.message}
         </p>
       )}

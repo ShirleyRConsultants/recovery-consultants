@@ -58,7 +58,7 @@ const DataVisualization: React.FC = () => {
 
   return (
     <div className="h-screen text-center mt-12">
-      <h1>Monthly Data Visualization</h1>
+      <h1>Progress</h1>
       {clientData ? (
         <LineGraph data={clientData} />
       ) : (

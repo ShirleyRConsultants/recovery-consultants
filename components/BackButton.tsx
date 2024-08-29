@@ -17,7 +17,7 @@ const BackButton: React.FC = () => {
   return (
     <button
       onClick={handleBackClick}
-      className=" text-white  text-xs py-1 px-1 ml-2 mt-2 rounded hover:bg-white hover:text-black transition-colors duration-300"
+      className=" text-black  text-xs py-1 px-1 ml-2 mt-4 absolute rounded hover:bg-black hover:text-white transition-colors duration-300"
     >
       Back
     </button>
