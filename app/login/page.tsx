@@ -1,11 +1,10 @@
 "use client";
-import Link from "next/link";
+
 import { createClient } from "@/utils/supabase/client";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { SubmitButton } from "./submit-button";
-import { useEffect, useState } from "react";
-import { useAuth } from "@/components/Auth";
-import { profile } from "console";
+import { useState } from "react";
+
 
 export default function Login({
   searchParams,
@@ -16,12 +15,9 @@ export default function Login({
   const [errors, setErrors] = useState("");
   const router = useRouter();
 
-  
- 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-
   
     if (isSignUp) {
       await signUp(formData);
@@ -52,14 +48,12 @@ export default function Login({
     }
   };
 
-
   const signUp = async (formData: FormData) => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     const firstName = formData.get("firstName") as string;
     const lastName = formData.get("lastName") as string;
     const phone = formData.get("phone") as string;
-
     const supabase = createClient();
 
     const { data, error } = await supabase.auth.signUp({
@@ -67,6 +61,12 @@ export default function Login({
       password,
       options: {
         emailRedirectTo: `${window.location.origin}/auth/callback`,
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          phone: phone,
+        },
       },
     });
     if (
@@ -83,22 +83,7 @@ export default function Login({
       throw error;
     }
 
-    const user = data.user;
-    console.log(user, "THIS IS THE USER");
-    // Insert additional user information into the "users" table
-    const { data: insertData, error: insertError } = await supabase
-      .from("users")
-      .insert({
-        id: user?.id,
-        first_name: firstName,
-        last_name: lastName,
-        email: email,
-        phone: phone,
-      });
 
-    if (insertError) {
-      throw insertError;
-    }
     try {
     } catch (error: any) {
       if (error.code === "23505") {
@@ -112,7 +97,7 @@ export default function Login({
     if (error) {
       router.push("/login?message=Could not signup user");
     }
-
+    // setErrors("SIGN UP SUCCESS")
     router.push("/login?message=Check email to continue sign in process");
   };
 

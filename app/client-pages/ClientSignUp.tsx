@@ -23,8 +23,10 @@ const ClientSignUp: React.FC<ClientsProps> = () => {
 
   useEffect(() => {
     if (profile) {
-      if (profile.type_of_user !== "admin" && profile?.type_of_user !== 
-      "case_manager") {
+      if (
+        profile.type_of_user !== "admin" &&
+        profile?.type_of_user !== "case_manager"
+      ) {
         router.push("/");
       } else {
         setLoadingProfile(false);
@@ -35,7 +37,7 @@ const ClientSignUp: React.FC<ClientsProps> = () => {
   if (!profile || loadingProfile) {
     return <div>Loading......</div>;
   }
-  console.log("case manager ID --->", caseManagerID)
+  console.log("case manager ID --->", caseManagerID);
 
   const supabase = createClient();
 
@@ -80,7 +82,20 @@ const ClientSignUp: React.FC<ClientsProps> = () => {
     setSubmitted(true);
     const password = handleGeneratePassword();
     console.log("Attempting to sign up with:", { email, password });
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          phone: phone,
+          type_of_user: "client",
+        },
+      },
+    });
 
     if (error) {
       setError(error.message);
@@ -99,28 +114,12 @@ const ClientSignUp: React.FC<ClientsProps> = () => {
         email: email,
         phone: phone,
         zip_code: zipCode,
-        case_manager: caseManagerID
+        case_manager: caseManagerID,
       });
 
     if (insertError) {
       setError(insertError.message);
       console.log("Error inserting client:", insertError.message);
-      setLoading(false);
-      return;
-    }
-
-    const { error: userInsertError } = await supabase.from("users").insert({
-      id: userId,
-      first_name: firstName,
-      last_name: lastName,
-      type_of_user: "client",
-      email: email,
-      phone: phone,
-    });
-
-    if (userInsertError) {
-      setError(userInsertError.message);
-      console.log("Error inserting user:", userInsertError.message);
       setLoading(false);
       return;
     }
@@ -145,14 +144,11 @@ const ClientSignUp: React.FC<ClientsProps> = () => {
     setSuccess("");
   };
 
-
-
-  return  (
-
+  return (
     <div className="">
       <form
         onSubmit={handleSignup}
-        className="flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
+        className="flex-1 flex flex-col w-full justify-center gap-2 "
       >
         <label className="text-md" htmlFor="email">
           Email

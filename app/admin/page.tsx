@@ -66,7 +66,20 @@ export default function Signup() {
     const password = handleGeneratePassword();
     console.log("Attempting to sign up with:", { email, password });
 
-    const { data, error: signupError } = await supabase.auth.signUp({ email, password });
+    const { data, error: signupError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          phone: phone,
+          type_of_user: "case_manager"
+        },
+      },
+    });
 
     if (signupError) {
       setError(signupError.message);
@@ -77,23 +90,6 @@ export default function Signup() {
 
     const userId = data.user?.id;
 
-    const { error: insertError } = await supabase
-      .from("users")
-      .insert({
-        id: userId,
-        first_name: firstName,
-        last_name: lastName,
-        type_of_user: "case_manager",
-        email: email,
-        phone: phone,
-      });
-
-    if (insertError) {
-      setError(insertError.message);
-      console.log("Error inserting user:", insertError.message);
-      setLoading(false);
-      return;
-    }
 
     const { error: caseManagerInsertError } = await supabase
       .from("case_managers")
@@ -123,14 +119,14 @@ export default function Signup() {
   
 
   return profile?.type_of_user != "admin" ? (
-    <div className="w-1/3 flex-1 flex flex-col justify-center gap-2 text-foreground text-center">
+    <div className="w-1/3 flex-1 flex flex-col justify-center gap-2 text-black text-center">
       <p>Loading...</p>
     </div>
   ) : (
-    <div className="w-1/3 mt-20 flex-1 flex flex-col justify-center gap-2 text-foreground">
+    <div className="w-1/3 mt-20 flex-1 flex flex-col justify-center gap-2 text-black">
       <Link
         href="/"
-        className="absolute left-8 top-8 py-2 px-4 rounded-md no-underline  group-hover:-translate-x-1 text-foreground flex items-center group text-sm"
+        className="absolute left-8 top-8 py-2 px-4 rounded-md no-underline  group-hover:-translate-x-1 text-black flex items-center group text-sm"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -151,7 +147,7 @@ export default function Signup() {
       <p className="text-center text-2xl mb-2">Case Manager Signup</p>
       <form
         onSubmit={handleSignup}
-        className="flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
+        className="flex-1 flex flex-col w-full justify-center gap-2 text-black"
       >
       <label className="text-md" htmlFor="first_name">
         First Name
