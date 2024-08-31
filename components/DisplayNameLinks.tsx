@@ -9,10 +9,7 @@ const DisplayNameLinks: React.FC = () => {
   const { profile, session, loading } = useAuth();
   const [clientId, setClientId] = useState<string | null>(null);
   const supabase = createClient();
-  const router = useRouter()
-
- 
-
+  const router = useRouter();
 
   useEffect(() => {
     const fetchClientId = async () => {
@@ -51,13 +48,13 @@ const DisplayNameLinks: React.FC = () => {
         </Link>
       )}
       {profile.type_of_user === "client" && clientId && (
-        <Link
-          className="mx-4 hover:underline"
-          href={`/questions/${clientId}`}
-        >
+        <Link className="mx-4 hover:underline" href={`/questions/${clientId}`}>
           Assessment
         </Link>
       )}
+      <Link className="mx-4 hover:underline" href="/settings">
+        Settings
+      </Link>
       <p>{profile.first_name}</p>
     </div>
   );
