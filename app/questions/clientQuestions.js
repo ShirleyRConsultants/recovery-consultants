@@ -59,7 +59,7 @@
 ,
 "family" : {
     "Q":"Which statement best describes your relationship with your FAMILY?",
-    1:"I can barely get out of bed",
+    1:"I don’t talk or communicate with them at all",
     2:"I only talk with them when absolutely necessary",
     3:"The interactions are always tense and stressful, so I generally avoid them",
     4:"I love them, but I don’t feel like they really understand me",

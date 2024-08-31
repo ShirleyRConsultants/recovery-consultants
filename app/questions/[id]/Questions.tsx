@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import clientQuestions from "../clientQuestions";
 import { createClient } from "@/utils/supabase/client";
 import { useAuth } from "@/components/Auth";
@@ -19,6 +19,8 @@ const QuestionsComponent: React.FC = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [values, setValues] = useState<number[]>([]);
   const [questionsAnswered, setQuestionsAnswered] = useState(false);
+  const [assessmentDue, setAssessmentDue] = useState(false)
+  const [lastEntryDate, setLastEntryDate] = useState<Date | null>(null)
   const { profile } = useAuth();
   const supabase = createClient();
   // Get all the keys of the clientQuestions object
@@ -33,6 +35,50 @@ const QuestionsComponent: React.FC = () => {
   const { id } = params;
   
   console.log(id, "ID PARAMS")
+
+  useEffect(() => {
+    const checkLastEntry = async () => {
+      try {
+        // Step 1: Fetch the existing values from the database
+        const { data, error: fetchError } = await supabase
+          .from("clients")
+          .select("entries")
+          .eq("id", id)
+          .single(); // Assuming you're fetching a single row
+
+        if (fetchError) {
+          throw fetchError;
+        }
+
+        if (data?.entries && data.entries.length > 0) {
+          // Step 2: Convert the last entry's date to a Date object
+          const lastEntryDate = new Date(data.entries[data.entries.length - 1]);
+          setLastEntryDate(lastEntryDate)
+          // Step 3: Get the current date
+          const currentDate = new Date();
+          // Step 4: Calculate the difference in milliseconds
+          const timeDifference = currentDate.getTime() - lastEntryDate.getTime();
+          const oneWeekInMilliseconds = 7 * 24 * 60 * 60 * 1000; // One week in milliseconds
+          // Step 5: Check if the last entry is older than a week
+          if (timeDifference > oneWeekInMilliseconds) {
+            setAssessmentDue(true);
+          } else {
+            setAssessmentDue(false);
+          }
+        } else {
+          // Handle case where there are no entries
+          setAssessmentDue(true); // Or whatever logic you need for no entries
+        }
+      } catch (error) {
+        console.error("Error fetching or processing entries:", error);
+        setAssessmentDue(false); // Set to false if there's an error
+      }
+    };
+
+    checkLastEntry();
+  }, [id, setAssessmentDue]);
+
+
 
   const handleOptionClick = (option: number) => {
     setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -92,6 +138,16 @@ const QuestionsComponent: React.FC = () => {
       alert("There was an error updating the client data. Please try again.");
     }
   };
+console.log(lastEntryDate, "LAST DATE")
+  if (!assessmentDue){
+    return (
+      <div>
+      {lastEntryDate && (
+        <p>Assessment not due until {lastEntryDate.toString()}</p>
+      )}
+    </div>
+    )
+  }
 
   console.log(values);
   console.log(currentQuestionIndex, "Q index");
