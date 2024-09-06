@@ -21,7 +21,7 @@ const QuestionsComponent: React.FC = () => {
   const [questionsAnswered, setQuestionsAnswered] = useState(false);
   const [assessmentDue, setAssessmentDue] = useState(false)
   const [lastEntryDate, setLastEntryDate] = useState<Date | null>(null)
-  const { profile } = useAuth();
+  const { profile, loading } = useAuth();
   const supabase = createClient();
   // Get all the keys of the clientQuestions object
   const questionKeys = Object.keys(clientQuestions) as Array<
@@ -139,19 +139,24 @@ const QuestionsComponent: React.FC = () => {
     }
   };
 console.log(lastEntryDate, "LAST DATE")
-  if (!assessmentDue){
-    return (
-      <div>
+if (!assessmentDue && lastEntryDate) {
+  // Assuming lastEntryDate is a valid date object
+  const nextAssessment = new Date(lastEntryDate);
+  nextAssessment.setDate(nextAssessment.getDate() + 7); // Add 7 days
+
+  return (
+    <div>
       {lastEntryDate && (
-        <p>Assessment not due until {lastEntryDate.toString()}</p>
+        <p>Assessment not due until {nextAssessment.toDateString()}</p>
       )}
     </div>
-    )
-  }
+  );
+}
+
 
   console.log(values);
   console.log(currentQuestionIndex, "Q index");
-  return !questionsAnswered ? (
+  return !questionsAnswered && !loading ? (
     <div className="border border-1 rounded-lg p-10 w-96 mb-24">
       {currentQuestionIndex < questionKeys.length ? (
         <div className="text-center">

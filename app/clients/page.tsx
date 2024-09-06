@@ -17,7 +17,9 @@ export default async function ClientsPage() {
 
   return (
     <>
+    <NavBar/>
       <div className="flex-1 w-full flex flex-col gap-20 items-center mt-20">
+
         <div className="flex-1 flex flex-col gap-20 max-w-4xl px-3">
           <main className="flex-1 flex flex-col gap-6 text-center">
             <h2 className="font- text-4xl mb-4">Clients</h2>

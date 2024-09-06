@@ -1,11 +1,10 @@
 "use client";
-import React, { use, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { useAuth } from "@/components/Auth";
 import { createClient } from "@/utils/supabase/client";
 import Card from "@/components/Card";
 import Link from "next/link";
-import NavBar from "@/components/NavBar";
-import BackButton from "@/components/BackButton";
+
 
 interface ClientListProps {}
 
@@ -47,6 +46,8 @@ const ClientList: React.FC<ClientListProps> = () => {
 
   console.log(clients);
   return (
+    <>
+  
     <div className="mt-10 w-full text-center">
     
       <div >
@@ -67,6 +68,7 @@ const ClientList: React.FC<ClientListProps> = () => {
       ))}
     </div>
     </div>
+    </>
   );
 };
 

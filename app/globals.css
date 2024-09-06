@@ -1,6 +1,9 @@
+@import 'ag-grid-community/styles/ag-grid.css'; /* AG Grid Structural Styles */
+@import 'ag-grid-community/styles/ag-theme-quartz.css'; /* AG Grid Theme */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 @layer base {
   :root {

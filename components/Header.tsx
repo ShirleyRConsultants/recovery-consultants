@@ -1,17 +1,23 @@
+'use client'
+import React from 'react';
 
 
 export default function Header() {
+ 
+
   return (
-    <div className="flex flex-col gap-16 items-center">
-      <div className="flex gap-8 justify-center items-center">
-     
-      </div>
-      <p className="text-5xl lg:text-6xl !leading-tight mx-auto max-w-xl text-center">Recovery Consultants</p>
-      <p className="text-3xl lg:text-4xl !leading-tight mx-auto max-w-xl text-center">
-        Client management system
-      
+    <div className="w-full flex flex-col gap-16 items-center bg-green-200">
+      <p className="mt-10 text-5xl lg:text-6xl !leading-tight mx-auto  text-center">
+        Recovery Consultants
       </p>
-      <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent my-8" />
+      <p className="text-3xl lg:text-4xl !leading-tight mx-auto  text-center">
+        Client management system
+      </p>
+      
+
+
+      {/* <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent my-8" /> */}
+   {/* <Footer/> */}
     </div>
   );
 }

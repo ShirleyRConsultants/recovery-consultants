@@ -1,7 +1,8 @@
 import { Montserrat } from "next/font/google";
 import "./globals.css";
+import 'ag-grid-community/styles/ag-grid.css'; // AG Grid Structural Styles
+import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { AuthProvider } from "@/components/Auth";
-import NavBar from "@/components/NavBar";
 import BackButton from "@/components/BackButton";
 
 const defaultUrl = process.env.VERCEL_URL
