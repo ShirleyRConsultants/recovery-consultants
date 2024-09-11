@@ -3,8 +3,9 @@ import { redirect } from "next/navigation";
 import NavBar from "@/components/NavBar";
 import Link from "next/link";
 import BackButton from "@/components/BackButton";
+import ClientsPage from "../client-pages/ClientPage";
 
-export default async function ClientsPage() {
+export default async function Clients() {
   const supabase = createClient();
 
   const {
@@ -18,21 +19,7 @@ export default async function ClientsPage() {
   return (
     <>
     <NavBar/>
-      <div className="flex-1 w-full flex flex-col gap-20 items-center mt-20">
-
-        <div className="flex-1 flex flex-col gap-20 max-w-4xl px-3">
-          <main className="flex-1 flex flex-col gap-6 text-center">
-            <h2 className="font- text-4xl mb-4">Clients</h2>
-            <div className="flex flex-1">
-              <div>
-                <Link className="m-4" href="/clients/myclients">My Clients</Link>
-              </div>
-              <div>
-                <Link className="m-4" href="/clients/upload">Add New</Link>
-              </div>
-            </div>
-          </main>
-        </div>
+     <ClientsPage/>
 
         <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
           <p>
@@ -47,7 +34,7 @@ export default async function ClientsPage() {
             </a>
           </p>
         </footer>
-      </div>
+     
     </>
   );
 }

@@ -1,11 +1,11 @@
 "use client";
-import React, { use, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { useAuth } from "@/components/Auth";
 import { createClient } from "@/utils/supabase/client";
 import Card from "@/components/Card";
 import Link from "next/link";
-import NavBar from "@/components/NavBar";
-import BackButton from "@/components/BackButton";
+
+
 
 interface ClientListProps {}
 
@@ -17,7 +17,7 @@ type Client = {
   id: number;
 };
 
-const ClientList: React.FC<ClientListProps> = () => {
+const MyClients: React.FC<ClientListProps> = () => {
   const { profile, caseManagerID } = useAuth();
   const [clients, setClients] = useState<Client[]>([]);
   const supabase = createClient();
@@ -47,15 +47,17 @@ const ClientList: React.FC<ClientListProps> = () => {
 
   console.log(clients);
   return (
-    <div className="mt-10 w-full text-center">
+    <>
+ 
+    <div className=" w-full text-center ">
     
-      <div >
+      <div className="py-10 ">
       {profile && (
         <p className="text-3xl">{profile.first_name + "'s" + " Clients"} </p>
       )}
 
       {clients.map((client) => (
-        <div key={client.id}>
+        <div key={client.id} className="relative z-10">
           <Link href={`/clients/${client.id}`}>
             <Card 
               first_name={client.first_name}
@@ -67,7 +69,8 @@ const ClientList: React.FC<ClientListProps> = () => {
       ))}
     </div>
     </div>
+    </>
   );
 };
 
-export default ClientList;
+export default MyClients;
