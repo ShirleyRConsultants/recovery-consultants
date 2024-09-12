@@ -62,8 +62,8 @@ export default function Login({
       options: {
         emailRedirectTo: `${window.location.origin}/auth/callback`,
         data: {
-          first_name: firstName,
-          last_name: lastName,
+          first_name: firstName.toLowerCase(),
+          last_name: lastName.toLowerCase(),
           email: email,
           phone: phone,
         },

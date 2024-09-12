@@ -29,40 +29,39 @@ const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
   const [chartOptions, setChartOptions] = useState({
     data: [] as any[],
     background: {
-      fill: "white",
+      fill: "#98d7c2", // Mint background color
     },
-    minWidth: 0,
-    minHeight: 0,
-    series: [{ type: "line", xKey: "entries", yKey: "vals" }],
+    series: [
+      {
+        type: "bar", // You can also switch this to "line"
+        xKey: "entries",
+        yKey: "vals",
+        fillOpacity: 0.7, // Transparency of bar fill
+        stroke: "#B19CD9", // Light purple outline of bars
+        strokeWidth: 2,
+        fill: "#B19CD9", // Bar fill color (light purple)
+      },
+    ],
   });
 
   useEffect(() => {
     const categoryData = data[selectedCategory] || [];
     const entries = data.entries || [];
-  
+
     const chartData = entries.map((entry, index) => ({
       entries: new Date(entry).toLocaleDateString("en-US", {
         month: "numeric",
         day: "numeric",
         year: "numeric",
       }),
-      vals:
-        parseInt(categoryData[index]) === 1
-          ? parseInt(categoryData[index])
-          : parseInt(categoryData[index]) * 2,
+      vals: parseInt(categoryData[index]) || 0, // Ensure valid integer value
     }));
-  
-    setChartOptions({
+
+    setChartOptions((prevOptions) => ({
+      ...prevOptions,
       data: chartData,
-      background: {
-        fill: "white",
-      },
-      minWidth: 0,
-      minHeight: 0,
-      series: [{ type: "bar", xKey: "entries", yKey: "vals" }],
-    });
+    }));
   }, [selectedCategory, data]);
-  
 
   const handleCategoryChange = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -86,26 +85,28 @@ const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
   ];
 
   return (
-    <div className=" h-screen text-center mt-12">
+    <div className="absolute top-20 left-0 right-0 text-center mx-auto">
       <h1>Data Visualization</h1>
       <select
-        className=""
+        className="rounded-xl bg-mint"
         onChange={handleCategoryChange}
         value={selectedCategory}
       >
         {categories.map((category) => (
           <option key={category} value={category}>
-            {category.charAt(0).toUpperCase() + category.slice(1)}
+            {category === "emotional_response"
+              ? "Emotional Response"
+              : category.charAt(0).toUpperCase() + category.slice(1)}
           </option>
         ))}
       </select>
-      <div
-        className="ag-theme-quartz" // applying the Data Grid theme
-        style={{ height: 500 }} // the Data Grid will fill the size of the parent container
+      <div id="myGrid"
+        className="ag-theme-quartz" // Applying Quartz theme and adding border radius
+  
       >
         <AgCharts
           options={chartOptions as any}
-          className="chart mt-20"
+          className="chart mx-auto"
           style={{ width: "450px", height: "450px" }}
         />
       </div>

@@ -4,6 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
+.ag-theme-quartz {
+  --ag-border-radius: 20px; /* Customize this as needed */
+  --ag-wrapper-border-radius: 10px;
+  --ag-card-radius: 10px;
+}
+
 
 @layer base {
   :root {
@@ -22,6 +28,7 @@
     }
   }
 }
+
 
 @layer base {
   * {

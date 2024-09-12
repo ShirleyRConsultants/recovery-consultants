@@ -21,7 +21,7 @@ export default async function ClientsPage() {
     {/* <NavBar/> */}
       <div className="">
     <div className=" ">
-        <div className=" py-20 bg-mint">
+        <div className=" py-12 bg-mint">
           <main className="text-center">
             <h2 className="font- text-4xl mb-4 mt-">Clients</h2>
             <div className="">
@@ -35,7 +35,7 @@ export default async function ClientsPage() {
           </main>
           </div>
         </div>
-        <Wave/>
+        <Wave className="relative"/>
 
 
       </div>

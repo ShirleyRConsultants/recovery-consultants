@@ -1,12 +1,13 @@
 import React from 'react';
 
 interface WaveProps {
-    
-}
-
-const Wave: React.FC<WaveProps> = () => {
+    className?: string; // className is optional
+  }
+  
+  const Wave: React.FC<WaveProps> = ({ className = "" }) => {
     return (
-        <div className="relative w-full leading-none">
+      <div className={`relative w-full leading-none ${className}`}>
+  
         <svg
           className="block w-full"
           viewBox="0 0 1440 320"

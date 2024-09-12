@@ -1,7 +1,7 @@
 import { Montserrat } from "next/font/google";
 import "./globals.css";
-import 'ag-grid-community/styles/ag-grid.css'; // AG Grid Structural Styles
-import 'ag-grid-community/styles/ag-theme-quartz.css';
+import "ag-grid-community/styles/ag-grid.css"; // AG Grid Structural Styles
+import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AuthProvider } from "@/components/Auth";
 import BackButton from "@/components/BackButton";
 
@@ -26,17 +26,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={montserrat.className}>
-
       <body className="bg-white text-black">
-      <AuthProvider>
-          <BackButton/>
-        <main className="min-h-screen items-center">
-        
-          {children}
-        </main>
+        <AuthProvider>
+          <main className="min-h-screen items-center">
+            <BackButton />
+            {children}
+          </main>
         </AuthProvider>
       </body>
-    
     </html>
   );
 }

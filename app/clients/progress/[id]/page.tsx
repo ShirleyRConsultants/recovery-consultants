@@ -1,72 +1,30 @@
-"use client"
-import React, { useState, useEffect } from 'react';
-import LineGraph from '@/components/LineGraph';
-import { useAuth } from '@/components/Auth';
-import { createClient } from '@/utils/supabase/client';
-import { useParams } from 'next/navigation';
+import DataVisualization from '@/app/client-pages/DataVisualization';
+import NavBar from '@/components/NavBar';
+import Wave from '@/components/Wave';
+import React from 'react';
 
-type Client = {
-  sobriety: string[];
-  nutrition: string[];
-  purpose: string[];
-  sleep: string[];
-  anxiety: string[];
-  depression: string[];
-  family: string[];
-  routine: string[];
-  support: string[];
-  future: string[];
-  emotional_response: string[];
-  finance: string[];
-  entries: Date[];
-};
+interface ProgressPageProps {}
 
-const DataVisualization: React.FC = () => {
-  const [clientData, setClientData] = useState<Client | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const { profile, loading } = useAuth();
-  const supabase = createClient();
-  const params = useParams();
-  const { id } = params;
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data, error } = await supabase
-        .from('clients')
-        .select(
-          'sobriety, nutrition, purpose, sleep, anxiety, depression, family, routine, support, future, emotional_response, finance, entries'
-        )
-        .eq('id', id)
-        .single(); // Use .single() to get a single object
-
-      if (error) {
-        console.error('Error fetching data:', error);
-        setError('Failed to load data');
-        return;
-      }
-
-      if (!data) {
-        setError('No data available');
-        return;
-      }
-
-      setClientData(data as Client);
-    };
-
-    fetchData();
-  }, []);
-
+const ProgressPage: React.FC<ProgressPageProps> = () => {
   return (
-    <div className="h-screen text-center mt-12">
-      <h1>Progress</h1>
-      {clientData ? (
-        <LineGraph data={clientData} />
-      ) : (
-        <p>Loading data...</p>
-      )}
-      {error && <p>{error}</p>}
+    <div className="relative">
+      {/* Ensure NavBar stays on top with a higher z-index */}
+      <div className="relative z-20">
+        <NavBar />
+      </div>
+
+      {/* Wave placed behind the graph */}
+      <div className=" inset-0 z-0">
+        <div className='bg-mint p-10 '></div>
+        <Wave className="absolute" />
+      </div>
+
+      {/* Line graph content with a higher z-index than Wave but lower than NavBar */}
+      <div className=" z-10">
+        <DataVisualization />
+      </div>
     </div>
   );
 };
 
-export default DataVisualization;
+export default ProgressPage;

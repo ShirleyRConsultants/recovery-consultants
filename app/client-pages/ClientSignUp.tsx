@@ -88,9 +88,9 @@ const ClientSignUp: React.FC<ClientsProps> = () => {
       options: {
         emailRedirectTo: `${window.location.origin}/auth/callback`,
         data: {
-          first_name: firstName,
-          last_name: lastName,
-          email: email,
+          first_name: firstName.toLowerCase(),
+          last_name: lastName.toLowerCase(),
+          email: email.toLowerCase(),
           phone: phone,
           type_of_user: "client",
         },
@@ -108,8 +108,8 @@ const ClientSignUp: React.FC<ClientsProps> = () => {
       .from("clients")
       .insert({
         auth_id: userId,
-        first_name: firstName,
-        last_name: lastName,
+        first_name: firstName.toLowerCase(),
+        last_name: lastName.toLowerCase(),
         sobriety_date: sobrietyDate,
         email: email,
         phone: phone,
