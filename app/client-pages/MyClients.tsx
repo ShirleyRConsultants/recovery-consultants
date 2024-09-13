@@ -53,7 +53,7 @@ const MyClients: React.FC<ClientListProps> = () => {
     
       <div className="py-10 ">
       {profile && (
-        <p className="text-3xl">{profile.first_name + "'s" + " Clients"} </p>
+        <p className="text-3xl text-white">{profile.first_name + "'s" + " Clients"} </p>
       )}
 
       {clients.map((client) => (

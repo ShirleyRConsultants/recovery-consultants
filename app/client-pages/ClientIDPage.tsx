@@ -100,7 +100,7 @@ const ClientIDPage: React.FC<ClientPageProps> = () => {
   
     {client ? (
       <div className="absolute top-0 left-0 w-full text-center mt-8 z-10">
-        <p className="text-4xl">
+        <p className="text-4xl text-white">
           {client.first_name} {client.last_name}
         </p>
         <div className="flex flex-1 justify-center">

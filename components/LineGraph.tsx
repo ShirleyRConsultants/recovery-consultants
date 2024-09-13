@@ -4,6 +4,8 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 
 type Client = {
+  first_name: string,
+  last_name: string,
   sobriety: string[];
   nutrition: string[];
   purpose: string[];
@@ -26,6 +28,7 @@ interface LineGraphProps {
 const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
   const [selectedCategory, setSelectedCategory] =
     useState<keyof Omit<Client, "entries">>("anxiety"); // Default category
+    const [displayName, setDisplayName] = useState("")
   const [chartOptions, setChartOptions] = useState({
     data: [] as any[],
     background: {
@@ -47,7 +50,8 @@ const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
   useEffect(() => {
     const categoryData = data[selectedCategory] || [];
     const entries = data.entries || [];
-
+    const name = data.first_name + " " + data.last_name
+    setDisplayName(name)
     const chartData = entries.map((entry, index) => ({
       entries: new Date(entry).toLocaleDateString("en-US", {
         month: "numeric",
@@ -86,9 +90,9 @@ const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
 
   return (
     <div className="absolute top-20 left-0 right-0 text-center mx-auto">
-      <h1>Data Visualization</h1>
+      <h1 className="text-white">{displayName}'s Progress</h1>
       <select
-        className="rounded-xl bg-mint"
+        className="rounded-xl text-center hover:text-lg bg-mint text-white"
         onChange={handleCategoryChange}
         value={selectedCategory}
       >
@@ -109,6 +113,8 @@ const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
           className="chart mx-auto"
           style={{ width: "450px", height: "450px" }}
         />
+        <p className="">the lower the value the worse the symptoms</p>
+        <p className="">1.0 is the lowest value (worst possible)</p>
       </div>
     </div>
   );

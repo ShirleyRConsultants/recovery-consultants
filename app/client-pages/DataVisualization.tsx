@@ -6,6 +6,8 @@ import { createClient } from '@/utils/supabase/client';
 import { useParams } from 'next/navigation';
 
 type Client = {
+  first_name: string,
+  last_name: string,
   sobriety: string[];
   nutrition: string[];
   purpose: string[];
@@ -34,7 +36,7 @@ const DataVisualization: React.FC = () => {
       const { data, error } = await supabase
         .from('clients')
         .select(
-          'sobriety, nutrition, purpose, sleep, anxiety, depression, family, routine, support, future, emotional_response, finance, entries'
+          'sobriety, nutrition, purpose, sleep, anxiety, depression, family, routine, support, future, emotional_response, finance, entries, first_name, last_name'
         )
         .eq('id', id)
         .single(); // Use .single() to get a single object
