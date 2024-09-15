@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { SubmitButton } from "./submit-button";
 import { useState } from "react";
-
+import { useAuth } from "@/components/Auth";
 
 export default function Login({
   searchParams,
@@ -14,15 +14,17 @@ export default function Login({
   const [isSignUp, setIsSignUp] = useState(false);
   const [errors, setErrors] = useState("");
   const router = useRouter();
+  const { signIn } = useAuth();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-  
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
     if (isSignUp) {
       await signUp(formData);
     } else {
-      await signIn(formData);
+      signIn(email, password);
     }
   };
 
@@ -31,23 +33,22 @@ export default function Login({
     router.push("/login");
   };
 
-  const signIn = async (formData: FormData) => {
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const supabase = createClient();
+  // const signIn = async (formData: FormData) => {
+  //   const email = formData.get("email") as string;
+  //   const password = formData.get("password") as string;
+  //   const supabase = createClient();
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    console.log(error, "SIGN IN ERROR")
+  //   const { error } = await supabase.auth.signInWithPassword({
+  //     email,
+  //     password,
+  //   });
 
-    if (error) {
-      router.push(`/login?message=${error.message}`);
-    } else {
-      router.push("/");
-    }
-  };
+  //   if (error) {
+  //     router.push(`/login?message=${error.message}`);
+  //   } else {
+  //     router.push("/");
+  //   }
+  // };
 
   const signUp = async (formData: FormData) => {
     const email = formData.get("email") as string;
@@ -83,7 +84,6 @@ export default function Login({
       console.log(error);
       throw error;
     }
-
 
     try {
     } catch (error: any) {
@@ -173,9 +173,7 @@ export default function Login({
       </form>
 
       {searchParams?.message && (
-        <p className=" p-4 text-red-500 text-center">
-          {searchParams.message}
-        </p>
+        <p className=" p-4 text-red-500 text-center">{searchParams.message}</p>
       )}
     </div>
   );
