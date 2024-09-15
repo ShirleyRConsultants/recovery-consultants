@@ -40,6 +40,7 @@ export default function Login({
       email,
       password,
     });
+    console.log(error, "SIGN IN ERROR")
 
     if (error) {
       router.push(`/login?message=${error.message}`);
