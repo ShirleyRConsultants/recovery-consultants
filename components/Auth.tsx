@@ -166,7 +166,7 @@ fetchCaseManagerId()
     fetchData()
   
     setLoading(false);
-  }, [user]);
+  }, [session]);
 
   const clearSession = () => {
     setSession(null);
