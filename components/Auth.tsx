@@ -30,7 +30,7 @@ const AuthContext = createContext<{
   profile: null,
   signIn: (email: string, password: string) => {},
   clearSession: () => {},
-  caseManagerID: null,
+  caseManagerID: null
 });
 
 interface UserProfile {
@@ -51,8 +51,9 @@ export const AuthProvider = ({ children }: any) => {
   const [profile, setProfile] = useState<UserProfile | null>();
   const [caseManagerID, setCaseManagerID] = useState<any>(null);
   const supabaseClient = createClient();
-  const router = useRouter();
+  const router = useRouter()
   const signIn = async (email: string, password: string) => {
+   
     console.log("SIGNING IN");
     try {
       const { data, error } = await supabaseClient.auth.signInWithPassword({
@@ -64,9 +65,11 @@ export const AuthProvider = ({ children }: any) => {
         router.push(`/login?message=${error.message}`);
         console.error("Sign-in error:", error.message);
       } else {
-        console.log("Sign-in successful:", data.user);
+        console.log("Sign-in successful:", data.user);   setSession(data.session);
+        setUser(data.user);
         setSuccess(true);
-        router.push("/");
+        router.push('/')
+        
       }
     } catch (error) {
       console.error("Error during sign-in:", error);
@@ -106,34 +109,38 @@ export const AuthProvider = ({ children }: any) => {
     };
   }, []);
 
-  useEffect(() => {
+  useEffect(() =>{
     const fetchCaseManagerId = async () => {
-      console.log("before fetch");
+      console.log("before fetch")
       try {
         if (profile?.type_of_user === "case_manager") {
-          console.log("in fetch");
+          console.log("in fetch")
           const { data: caseManagerIDdata, error } = await supabaseClient
             .from("case_managers")
             .select("id")
             .eq("auth_id", profile.id)
             .single();
-
+    
           if (error) {
             console.log("Error in case manager ID fetch", error);
             return; // Exit the function if there's an error
           }
-
+    
           if (caseManagerIDdata) {
-            console.log("setting casemanager id");
+            console.log("setting casemanager id")
             setCaseManagerID(caseManagerIDdata.id); // Set the ID directly
           }
         }
       } catch (error) {
         console.log("Unexpected error", error);
       }
+      
     };
-    fetchCaseManagerId();
-  }, [profile?.type_of_user]);
+fetchCaseManagerId()
+
+
+  },[profile?.type_of_user])
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -152,14 +159,17 @@ export const AuthProvider = ({ children }: any) => {
             const userProfile = profileData ? profileData[0] : null;
             console.log("NEW USER TYPE", userProfile.type_of_user);
             setProfile(userProfile);
+           
           }
+        
         } catch (error) {
           console.error("Error in fetchData:", error);
         }
       }
+      
     };
-    fetchData();
-
+    fetchData()
+  
     setLoading(false);
   }, [session]);
 
