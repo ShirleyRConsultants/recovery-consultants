@@ -3,6 +3,7 @@ import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useAuth } from "@/components/Auth";
 import { useRouter } from "next/navigation";
+import Wave from "@/components/Wave";
 import NavBar from "@/components/NavBar";
 
 const ResetPassword = () => {
@@ -14,7 +15,7 @@ const ResetPassword = () => {
 
   const router = useRouter();
 
-  if (session === null ) {
+  if (session === null) {
     router.push("/");
   }
 
@@ -36,12 +37,13 @@ const ResetPassword = () => {
 
   return (
     <>
-      <div className="animate-in flex-1 lg:w-1/5 md:w-1/3 w-3/4  flex flex-col mx-auto justify-center ">
+      <div className=" text-center ">
+        <Wave/>
         {profile && (
-          <>
+          <div className="mt-24">
             <h1>Password Reset</h1>
             <input
-              className=""
+              className="border border-black  rounded-md "
               type="password"
               placeholder="new password...."
               value={password}
@@ -53,10 +55,16 @@ const ResetPassword = () => {
             {errors && message !== "" && (
               <p className="text-center  text-red-600">{errors}</p>
             )}
-            <button disabled={sent} onClick={handleResetPassword}>
-              Reset
-            </button>
-          </>
+            {!sent && (
+              <button
+                className="border border-black rounded-md"
+                disabled={sent}
+                onClick={handleResetPassword}
+              >
+                Reset
+              </button>
+            )}
+          </div>
         )}
       </div>
     </>
