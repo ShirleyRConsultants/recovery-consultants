@@ -21,12 +21,12 @@ export default async function ClientsPage() {
     {/* <NavBar/> */}
       <div className="">
     <div className=" ">
-        <div className=" py-12 bg-mint">
+        <div className=" py-12 bg-mint text-white">
           <main className="text-center">
             <h2 className="font- text-4xl mb-4 mt-">Clients</h2>
             <div className="">
               <div>
-                <Link className="m-4" href="/clients/myclients">My Clients</Link>
+                <Link className="m-4 " href="/clients/myclients">My Clients</Link>
               </div>
               <div>
                 <Link className="m-4" href="/clients/upload">Add New</Link>

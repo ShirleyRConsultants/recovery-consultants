@@ -9,12 +9,14 @@ const NavBar: React.FC<NavBarProps> = () => {
     <nav className="w-full bg-mint flex justify-center border-b border-black/10 h-16">
       <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
         <Image
-          className="flex-shrink-0"
+          className="flex-shrink-0 w-24 h-auto"
           src="https://recovery-consultants.com/wp-content/uploads/2024/04/RC-Logo-White.svg"
-          width={100}
-          height={100}
+          height={"10"} // adjust as needed
+          width={"100"} // adjust width according to your design
           alt="logo"
+          priority={true}
         />
+
         <AuthButton />
       </div>
     </nav>

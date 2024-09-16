@@ -12,7 +12,7 @@ export default function AuthButton() {
       <DisplayNameLinks />
       <button
         onClick={signOut}
-        className="py-2 px-4 rounded-md no-underline text-white hover:bg-btn-background-hover"
+        className="py-1 px-1 rounded-md no-underline text-white hover:bg-purple-400"
       >
         Logout
       </button>
@@ -20,7 +20,7 @@ export default function AuthButton() {
   ) : (
     <Link
       href="/login"
-      className="py-2 px-3 flex rounded-md no-underline text-white hover:bg-btn-background-hover"
+      className="py-1 px-1 flex rounded-md no-underline text-white hover:bg-purple-400"
     >
       Login
     </Link>

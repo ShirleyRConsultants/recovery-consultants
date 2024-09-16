@@ -6,7 +6,6 @@ import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import Wave from "@/components/Wave";
 
-
 interface ClientPageProps {}
 
 type Client = {
@@ -95,68 +94,73 @@ const ClientIDPage: React.FC<ClientPageProps> = () => {
 
   return (
     <div className="relative">
-        <div className="bg-mint py-20"></div>
-    <Wave />
-  
-    {client ? (
-      <div className="absolute top-0 left-0 w-full text-center mt-8 z-10">
-        <p className="text-4xl text-white">
-          {client.first_name} {client.last_name}
-        </p>
-        <div className="flex flex-1 justify-center">
-          <p className="font-bold mr-1">Email:</p>
-          <a className="underline" href={`mailto:${client.email}`}>
-            {client.email}
-          </a>
-        </div>
-        <div className="flex flex-1 justify-center">
-          <p className="font-bold mr-1">Phone:</p>
-          <p>{formatPhoneNumber(client.phone)}</p>
-        </div>
-        <div className="flex flex-1 justify-center">
-          <p className="font-bold mr-1">Sobriety Date:</p>
-          <p>{formatDate(client.sobriety_date.toString())}</p>
-        </div>
-        <div className="flex flex-1 justify-center">
-          <p className="font-bold mr-1">Zip Code:</p>
-          <p> {client.zip_code}</p>
-        </div>
-  
-        {client.entries && client.entries.length > 0 ? (
-          <div className="flex flex-1 justify-center">
-            <p className="font-bold mr-1">Last Assessment: </p>
-            <p>{formatDate(client.entries[client.entries.length - 1].toString())}</p>{" "}
-          </div>
-        ) : (
-          <p>No assessment recorded</p>
-        )}
-  
-  <div className="flex justify-center items-center space-x-4 mt-4">
-  <Link
-    className="border border-white border-1 underline hover:font-bold rounded text-2xl text-center"
-    href={`/clients/progress/${id}`}
-  >
-    Progress
-  </Link>
-  {isAssessmentDue ? (
-    <Link
-      className="border border-white border-1 rounded text-2xl text-red-500"
-      href={`/questions/${id}`}
-    >
-      {" "}
-      Assessment Due!{" "}
-    </Link>
-  ) : (
-    <p className="text-blue-500">No Assessment due!</p>
-  )}
-</div>
+      <div className="bg-mint py-20"></div>
+      <Wave />
 
-      </div>
-    ) : (
-      <p>Loading...</p>
-    )}
-  </div>
-  
+      {client ? (
+        <div className="absolute top-0 left-0 w-full text-center mt-8 z-10">
+          <p className="text-4xl text-white">
+            {client.first_name.charAt(0).toUpperCase() +
+              client.first_name.slice(1)}{" "}
+            {client.last_name.charAt(0).toUpperCase() +
+              client.last_name.slice(1)}
+          </p>
+          <div className="flex flex-1 justify-center">
+            <p className="font-bold mr-1">Email:</p>
+            <a className="underline" href={`mailto:${client.email}`}>
+              {client.email}
+            </a>
+          </div>
+          <div className="flex flex-1 justify-center">
+            <p className="font-bold mr-1">Phone:</p>
+            <p>{formatPhoneNumber(client.phone)}</p>
+          </div>
+          <div className="flex flex-1 justify-center">
+            <p className="font-bold mr-1">Sobriety Date:</p>
+            <p>{formatDate(client.sobriety_date.toString())}</p>
+          </div>
+          <div className="flex flex-1 justify-center">
+            <p className="font-bold mr-1">Zip Code:</p>
+            <p> {client.zip_code}</p>
+          </div>
+
+          {client.entries && client.entries.length > 0 ? (
+            <div className="flex flex-1 justify-center">
+              <p className="font-bold mr-1">Last Assessment: </p>
+              <p>
+                {formatDate(
+                  client.entries[client.entries.length - 1].toString()
+                )}
+              </p>{" "}
+            </div>
+          ) : (
+            <p>No assessment recorded</p>
+          )}
+
+          <div className="flex justify-center items-center space-x-4 mt-4">
+            <Link
+              className="border border-white border-1 underline hover:font-bold rounded text-2xl text-center"
+              href={`/clients/progress/${id}`}
+            >
+              Progress
+            </Link>
+            {isAssessmentDue ? (
+              <Link
+                className="border border-white border-1 rounded text-2xl text-red-500"
+                href={`/questions/${id}`}
+              >
+                {" "}
+                Assessment Due!{" "}
+              </Link>
+            ) : (
+              <p className="text-blue-500">No Assessment due!</p>
+            )}
+          </div>
+        </div>
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
   );
 };
 

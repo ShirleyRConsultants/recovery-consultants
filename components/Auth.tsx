@@ -1,18 +1,16 @@
 "use client";
-import { Session, User } from "@supabase/supabase-js";
-import { useContext, useState, useEffect, createContext, use } from "react";
+import { Session } from "@supabase/supabase-js";
+import { useContext, useState, useEffect, createContext } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 
 const AuthContext = createContext<{
   session: Session | null | undefined;
-  user: User | null | undefined;
   signOut: () => void;
   signIn: (email: string, password: string) => void;
   clearSession: () => void;
   loading: boolean;
   caseManagerID: any;
-
   profile: {
     email: string;
     first_name: string;
@@ -25,12 +23,11 @@ const AuthContext = createContext<{
 }>({
   loading: true,
   session: null,
-  user: null,
   signOut: () => {},
   profile: null,
   signIn: (email: string, password: string) => {},
   clearSession: () => {},
-  caseManagerID: null
+  caseManagerID: null,
 });
 
 interface UserProfile {
@@ -44,17 +41,14 @@ interface UserProfile {
 }
 
 export const AuthProvider = ({ children }: any) => {
-  const [user, setUser] = useState<User | null>();
   const [session, setSession] = useState<Session | null>();
   const [loading, setLoading] = useState(true);
-  const [success, setSuccess] = useState(false);
-  const [profile, setProfile] = useState<UserProfile | null>();
+  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [caseManagerID, setCaseManagerID] = useState<any>(null);
   const supabaseClient = createClient();
-  const router = useRouter()
+  const router = useRouter();
+
   const signIn = async (email: string, password: string) => {
-   
-    console.log("SIGNING IN");
     try {
       const { data, error } = await supabaseClient.auth.signInWithPassword({
         email,
@@ -65,11 +59,8 @@ export const AuthProvider = ({ children }: any) => {
         router.push(`/login?message=${error.message}`);
         console.error("Sign-in error:", error.message);
       } else {
-        console.log("Sign-in successful:", data.user);   setSession(data.session);
-        setUser(data.user);
-        setSuccess(true);
-        router.push('/')
-        
+        setSession(data.session);
+        router.push("/");
       }
     } catch (error) {
       console.error("Error during sign-in:", error);
@@ -84,19 +75,13 @@ export const AuthProvider = ({ children }: any) => {
       } = await supabaseClient.auth.getSession();
       if (error) throw error;
       setSession(session);
-      setUser(session?.user);
     };
 
     const { data: listener } = supabaseClient.auth.onAuthStateChange(
       async (event, session) => {
-        console.log(`Supabase auth event: ${event}`);
         if (event === "SIGNED_IN") {
-          console.log("in the sign in event if statement");
           setSession(session);
-          setUser(session?.user);
-        }
-        if (event === "SIGNED_OUT") {
-          console.log("in the signed out event if statement");
+        } else if (event === "SIGNED_OUT") {
           clearSession();
         }
       }
@@ -109,46 +94,11 @@ export const AuthProvider = ({ children }: any) => {
     };
   }, []);
 
-  useEffect(() =>{
-    const fetchCaseManagerId = async () => {
-      console.log("before fetch")
-      try {
-        if (profile?.type_of_user === "case_manager") {
-          console.log("in fetch")
-          const { data: caseManagerIDdata, error } = await supabaseClient
-            .from("case_managers")
-            .select("id")
-            .eq("auth_id", profile.id)
-            .single();
-    
-          if (error) {
-            console.log("Error in case manager ID fetch", error);
-            return; // Exit the function if there's an error
-          }
-    
-          if (caseManagerIDdata) {
-            console.log("setting casemanager id")
-            setCaseManagerID(caseManagerIDdata.id); // Set the ID directly
-          }
-        }
-      } catch (error) {
-        console.log("Unexpected error", error);
-      }
-      
-    };
-fetchCaseManagerId()
-
-
-  },[profile?.type_of_user])
-  
-
   useEffect(() => {
     const fetchData = async () => {
-      console.log("getting new user data");
-      console.log(user?.id);
-      if (user?.id) {
+      if (session?.user?.id) {
         try {
-          const userId = user.id;
+          const userId = session.user.id;
           const { data: profileData, error } = await supabaseClient
             .from("users")
             .select()
@@ -157,37 +107,49 @@ fetchCaseManagerId()
             console.error("Error fetching user profile:", error);
           } else {
             const userProfile = profileData ? profileData[0] : null;
-            console.log("NEW USER TYPE", userProfile.type_of_user);
             setProfile(userProfile);
-           
           }
-        
         } catch (error) {
           console.error("Error in fetchData:", error);
         }
       }
-      
     };
-    fetchData()
-  
+    fetchData();
     setLoading(false);
   }, [session]);
+
+  useEffect(() => {
+    const fetchCaseManagerId = async () => {
+      if (profile?.type_of_user === "case_manager") {
+        const { data: caseManagerIDdata, error } = await supabaseClient
+          .from("case_managers")
+          .select("id")
+          .eq("auth_id", profile.id)
+          .single();
+
+        if (error) {
+          console.error("Error in case manager ID fetch", error);
+        } else if (caseManagerIDdata) {
+          setCaseManagerID(caseManagerIDdata.id);
+        }
+      }
+    };
+    fetchCaseManagerId();
+  }, [profile?.type_of_user]);
 
   const clearSession = () => {
     setSession(null);
     setProfile(null);
-    setUser(null);
   };
 
   const value = {
     caseManagerID,
     session,
-    user,
     signOut: () => supabaseClient.auth.signOut(),
     signIn,
     clearSession,
     loading,
-    profile: profile || null,
+    profile,
   };
 
   return (
@@ -197,6 +159,4 @@ fetchCaseManagerId()
   );
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);
