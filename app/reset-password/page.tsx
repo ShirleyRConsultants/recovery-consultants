@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useAuth } from "@/components/Auth";
 import { useRouter } from "next/navigation";
@@ -14,11 +14,12 @@ const ResetPassword = () => {
   const { profile, session } = useAuth();
 
   const router = useRouter();
-
-  if (session === null) {
-    router.push("/");
-  }
-
+  
+  useEffect(() => {
+    if (session === null) {
+      router.push("/");
+    }
+  }, [session, router]);
   const handleResetPassword = async () => {
     setSent(true);
     try {

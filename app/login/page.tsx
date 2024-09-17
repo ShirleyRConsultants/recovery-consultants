@@ -5,22 +5,20 @@ import { useRouter } from "next/navigation";
 import { SubmitButton } from "./submit-button";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/components/Auth";
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
-export default function Login({
-
-}: {
-  searchParams: { message: string, success: string };
+export default function Login({}: {
+  searchParams: { message: string; success: string };
 }) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [errors, setErrors] = useState("");
   const router = useRouter();
   const { signIn } = useAuth();
-  const searchParams = useSearchParams()
- 
-  const message = searchParams.get('message')
-  const success = searchParams.get('success')
+  const searchParams = useSearchParams();
 
+  const message = searchParams.get("message");
+  const success = searchParams.get("success");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -39,15 +37,12 @@ export default function Login({
     router.push("/login");
   };
 
-
-
   const signUp = async (formData: FormData) => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     const firstName = formData.get("firstName") as string;
     const lastName = formData.get("lastName") as string;
     const phone = formData.get("phone") as string;
-  
 
     const supabase = createClient();
 
@@ -163,14 +158,18 @@ export default function Login({
             ? "Already have an account? Sign In"
             : "Don't have an account? Sign Up"}
         </button>
+        <Link className="text-center hover:font-bold" href="/forgot-password">
+        Forgot Password?
+      </Link>
       </form>
+ 
 
-{success && (
-  <p className="p-4 text-blue-500">{success}</p>
-)}
-      {message && (
-        <p className=" p-4 text-red-500 text-center">{message}</p>
+      {success && (
+        <p className="p-2 text-center text-purple-400  border-1 border border-black rounded-xl">
+          {success}
+        </p>
       )}
+      {message && <p className=" p-4 text-red-500 text-center">{message}</p>}
     </div>
   );
 }

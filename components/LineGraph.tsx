@@ -94,7 +94,7 @@ const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
 
   return (
     <div className="absolute top-20 left-0 right-0 text-center mx-auto">
-      <h1 className="text-white">{displayName}'s Progress</h1>
+      <h1 className="text-white">{displayName}'s </h1>
       <select
         className="rounded-xl text-center hover:text-lg bg-mint text-white"
         onChange={handleCategoryChange}

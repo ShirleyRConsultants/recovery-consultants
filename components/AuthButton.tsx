@@ -8,7 +8,7 @@ export default function AuthButton() {
   const { profile, signOut } = useAuth(); // Use profile and signOut from your AuthProvider
 
   return profile ? (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-2">
       <DisplayNameLinks />
       <button
         onClick={signOut}

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import clientQuestions from "../clientQuestions";
 import { createClient } from "@/utils/supabase/client";
 import { useAuth } from "@/components/Auth";
-import { useParams } from 'next/navigation';
+import { useParams } from "next/navigation";
 
 interface Question {
   question: string;
@@ -12,15 +12,15 @@ interface Question {
 }
 
 type QuestionsProps = {
-  id: string 
-}
+  id: string;
+};
 
 const QuestionsComponent: React.FC = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [values, setValues] = useState<number[]>([]);
   const [questionsAnswered, setQuestionsAnswered] = useState(false);
-  const [assessmentDue, setAssessmentDue] = useState(false)
-  const [lastEntryDate, setLastEntryDate] = useState<Date | null>(null)
+  const [assessmentDue, setAssessmentDue] = useState(false);
+  const [lastEntryDate, setLastEntryDate] = useState<Date | null>(null);
   const { profile, loading } = useAuth();
   const supabase = createClient();
   // Get all the keys of the clientQuestions object
@@ -33,8 +33,8 @@ const QuestionsComponent: React.FC = () => {
 
   const params = useParams();
   const { id } = params;
-  
-  console.log(id, "ID PARAMS")
+
+  console.log(id, "ID PARAMS");
 
   useEffect(() => {
     const checkLastEntry = async () => {
@@ -53,11 +53,12 @@ const QuestionsComponent: React.FC = () => {
         if (data?.entries && data.entries.length > 0) {
           // Step 2: Convert the last entry's date to a Date object
           const lastEntryDate = new Date(data.entries[data.entries.length - 1]);
-          setLastEntryDate(lastEntryDate)
+          setLastEntryDate(lastEntryDate);
           // Step 3: Get the current date
           const currentDate = new Date();
           // Step 4: Calculate the difference in milliseconds
-          const timeDifference = currentDate.getTime() - lastEntryDate.getTime();
+          const timeDifference =
+            currentDate.getTime() - lastEntryDate.getTime();
           const oneWeekInMilliseconds = 7 * 24 * 60 * 60 * 1000; // One week in milliseconds
           // Step 5: Check if the last entry is older than a week
           if (timeDifference > oneWeekInMilliseconds) {
@@ -77,8 +78,6 @@ const QuestionsComponent: React.FC = () => {
 
     checkLastEntry();
   }, [id, setAssessmentDue]);
-
-
 
   const handleOptionClick = (option: number) => {
     setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -138,26 +137,26 @@ const QuestionsComponent: React.FC = () => {
       alert("There was an error updating the client data. Please try again.");
     }
   };
-console.log(lastEntryDate, "LAST DATE")
-if (!assessmentDue && lastEntryDate) {
-  // Assuming lastEntryDate is a valid date object
-  const nextAssessment = new Date(lastEntryDate);
-  nextAssessment.setDate(nextAssessment.getDate() + 7); // Add 7 days
+  if (!profile?.type_of_user) {
+    return <>Loading.....</>;
+  }
 
-  return (
-    <div>
-      {lastEntryDate && (
-        <p>Assessment not due until {nextAssessment.toDateString()}</p>
-      )}
-    </div>
-  );
-}
+  if (!assessmentDue && lastEntryDate) {
+    // Assuming lastEntryDate is a valid date object
+    const nextAssessment = new Date(lastEntryDate);
+    nextAssessment.setDate(nextAssessment.getDate() + 7); // Add 7 days
 
+    return (
+      <div>
+        {lastEntryDate && (
+          <p>Assessment not due until {nextAssessment.toDateString()}</p>
+        )}
+      </div>
+    );
+  }
 
-  console.log(values);
-  console.log(currentQuestionIndex, "Q index");
   return !questionsAnswered && !loading ? (
-    <div className="border border-1 rounded-lg p-10 w-96 mb-24">
+    <div className="border border-1 border-black rounded-lg p-10 w-96 ">
       {currentQuestionIndex < questionKeys.length ? (
         <div className="text-center">
           <h2>{currentQuestion.Q}</h2>
@@ -166,7 +165,7 @@ if (!assessmentDue && lastEntryDate) {
               .filter(([key]) => key !== "Q") // Filter out the question text
               .map(([key, option], index) => (
                 <button
-                  className="border border-1 rounded-lg border-light"
+                  className="border border-1 rounded-lg min-w-full border-black my-1 p-2"
                   key={index}
                   onClick={() => handleOptionClick(parseInt(key))}
                 >

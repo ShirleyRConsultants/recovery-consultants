@@ -37,23 +37,23 @@ const DisplayNameLinks: React.FC = () => {
 
   return (
     <div className="flex">
-            {profile && <p className="text-white">Hi </p>}&nbsp;<p className="mr-2 text-white"> {profile.first_name}!</p>
+            {profile && <p className="text-white">Hi </p>}&nbsp;<p className="lg:mr-2 text-white"> {profile.first_name}!</p>
       {profile.type_of_user === "admin" && (
-        <Link className="mx-4 hover:underline" href="/admin">
+        <Link className="mx-1 lg:mx-4 hover:underline" href="/admin">
           Admin
         </Link>
       )}
       {profile.type_of_user !== "client" && (
-        <Link className="mx-4 hover:underline text-white" href="/clients">
+        <Link className="mx-1 lg:mx-4 hover:underline text-white" href="/clients">
           Clients
         </Link>
       )}
       {profile.type_of_user === "client" && clientId && (
-        <Link className="mx-4 hover:underline text-white" href={`/questions/${clientId}`}>
+        <Link className="mx-1 lg:mx-4 hover:underline text-white" href={`/questions/${clientId}`}>
           Assessment
         </Link>
       )}
-      <Link className="mx-4 hover:underline text-white" href="/settings">
+      <Link className="mx-1 lg:mx-4 hover:underline text-white" href="/settings">
         Settings
       </Link>
 

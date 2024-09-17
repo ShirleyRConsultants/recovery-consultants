@@ -18,11 +18,14 @@ const ClientSignUp: React.FC<ClientsProps> = () => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
-  const { profile, caseManagerID } = useAuth();
+  const { profile, caseManagerID, session } = useAuth();
   const [loadingProfile, setLoadingProfile] = useState(true);
 
   useEffect(() => {
-    if (profile) {
+    if (!session) {
+      router.push("/login");
+    }
+    else if (profile) {
       if (
         profile.type_of_user !== "admin" &&
         profile?.type_of_user !== "case_manager"

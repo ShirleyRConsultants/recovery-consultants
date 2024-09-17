@@ -17,7 +17,7 @@ const Settings: React.FC<SettingsProps> = () => {
             <NavBar/>
             <div className='bg-mint'>
            <p className='text-2xl py-10'>Hello {profile?.first_name}!</p>
-            <Link className='hover:font-bold'  href="/password-reset">Password Reset</Link>
+            <Link className='hover:font-bold'  href="/reset-password">Reset Password</Link>
             </div>
             <Wave/>
         </div>

@@ -119,7 +119,7 @@ export default function Signup() {
   
 
   return profile?.type_of_user != "admin" ? (
-    <div className="w-1/3 flex-1 flex flex-col justify-center gap-2 text-black text-center">
+    <div className="w-1/3 flex-1 flex flex-col justify-center gap-2 mt-24 text-black mx-auto text-center">
       <p>Loading...</p>
     </div>
   ) : (
@@ -199,7 +199,7 @@ export default function Signup() {
         Sign Up
       </button>
       </form>
-      {success && <p className="text-center text-blue-600">{success}</p>}
+      {success && <p className="text-center  text-purple-400">{success}</p>}
       {error && <p className="text-center text-red-600">{error}</p>}
     </div>
   );
