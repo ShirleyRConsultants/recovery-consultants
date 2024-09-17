@@ -3,11 +3,12 @@
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { SubmitButton } from "./submit-button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/components/Auth";
+import { useSearchParams } from 'next/navigation'
 
 export default function Login({
-  searchParams,
+
 }: {
   searchParams: { message: string };
 }) {
@@ -15,6 +16,17 @@ export default function Login({
   const [errors, setErrors] = useState("");
   const router = useRouter();
   const { signIn } = useAuth();
+  const searchParams = useSearchParams()
+ 
+  const message = searchParams.get('message')
+
+
+  // useEffect(() => {
+  //   if (message) {
+  //     (message as string);
+  //   }
+  //   console.log("MESSAGE", message)
+  // }, [message]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -56,6 +68,8 @@ export default function Login({
     const firstName = formData.get("firstName") as string;
     const lastName = formData.get("lastName") as string;
     const phone = formData.get("phone") as string;
+  
+
     const supabase = createClient();
 
     const { data, error } = await supabase.auth.signUp({
@@ -172,8 +186,8 @@ export default function Login({
         </button>
       </form>
 
-      {searchParams?.message && (
-        <p className=" p-4 text-red-500 text-center">{searchParams.message}</p>
+      {message && (
+        <p className=" p-4 text-red-500 text-center">{message}</p>
       )}
     </div>
   );
