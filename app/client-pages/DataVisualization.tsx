@@ -59,7 +59,7 @@ const DataVisualization: React.FC = () => {
   }, []);
 
   return (
-    <div className="text-center mx-auto ">
+    <div className="text-center mx-auto  ">
       {clientData ? (
         <LineGraph data={clientData} />
       ) : (

@@ -98,7 +98,8 @@ const ClientIDPage: React.FC<ClientPageProps> = () => {
       <Wave />
 
       {client ? (
-        <div className="absolute top-0 left-0 w-full text-center mt-8 z-10">
+        <div className="absolute top-0 left-0 w-full text-center mt-8  z-10 text-white">
+          <div className="bg-mint w-1/3 border rounded-lg border-white mx-auto p-2">
           <p className="text-4xl text-white">
             {client.first_name.charAt(0).toUpperCase() +
               client.first_name.slice(1)}{" "}
@@ -139,7 +140,7 @@ const ClientIDPage: React.FC<ClientPageProps> = () => {
 
           <div className="flex justify-center items-center space-x-4 mt-4">
             <Link
-              className="border border-white border-1 underline hover:font-bold rounded text-2xl text-center"
+              className="border border-white border-1  hover:font-bold rounded text-2xl text-center"
               href={`/clients/progress/${id}`}
             >
               Progress
@@ -156,6 +157,7 @@ const ClientIDPage: React.FC<ClientPageProps> = () => {
               <p className="text-blue-500">No Assessment due!</p>
             )}
           </div>
+        </div>
         </div>
       ) : (
         <p>Loading...</p>

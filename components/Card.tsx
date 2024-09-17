@@ -38,9 +38,9 @@ const Card: React.FC<CardProps> = ({ first_name, last_name, last_update }) => {
   }, [last_update]);
 
   return (
-    <div className="mx-auto mt-2 max-w-sm rounded-lg transition-transform duration-300 hover:scale-105 overflow-hidden shadow-lg border border-white">
+    <div className="mx-auto bg-mint mt-2 max-w-sm rounded-lg transition-transform duration-300 hover:scale-105 overflow-hidden shadow-lg border border-white">
       <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2">
+        <div className="font-bold text-xl mb-2 text-white">
           {`${capitalize(first_name)} ${capitalize(last_name)}`}
         </div>
         <div className="text-gray-700 text-base">

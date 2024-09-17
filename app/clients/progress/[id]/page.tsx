@@ -20,7 +20,7 @@ const ProgressPage: React.FC<ProgressPageProps> = () => {
       </div>
 
       {/* Line graph content with a higher z-index than Wave but lower than NavBar */}
-      <div className=" z-10">
+      <div className="z-10">
         <DataVisualization />
       </div>
     </div>
