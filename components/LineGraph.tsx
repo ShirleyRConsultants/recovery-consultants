@@ -4,8 +4,8 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 
 type Client = {
-  first_name: string,
-  last_name: string,
+  first_name: string;
+  last_name: string;
   sobriety: string[];
   nutrition: string[];
   purpose: string[];
@@ -28,7 +28,7 @@ interface LineGraphProps {
 const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
   const [selectedCategory, setSelectedCategory] =
     useState<keyof Omit<Client, "entries">>("anxiety"); // Default category
-    const [displayName, setDisplayName] = useState("")
+  const [displayName, setDisplayName] = useState("");
   const [chartOptions, setChartOptions] = useState({
     data: [] as any[],
     background: {
@@ -50,8 +50,12 @@ const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
   useEffect(() => {
     const categoryData = data[selectedCategory] || [];
     const entries = data.entries || [];
-    const name = data.first_name + " " + data.last_name
-    setDisplayName(name)
+    const capitalize = (str: string) =>
+      str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
+    const name = capitalize(data.first_name) + " " + capitalize(data.last_name);
+    setDisplayName(name);
+
     const chartData = entries.map((entry, index) => ({
       entries: new Date(entry).toLocaleDateString("en-US", {
         month: "numeric",
@@ -104,9 +108,9 @@ const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
           </option>
         ))}
       </select>
-      <div id="myGrid"
+      <div
+        id="myGrid"
         className="ag-theme-quartz" // Applying Quartz theme and adding border radius
-  
       >
         <AgCharts
           options={chartOptions as any}

@@ -38,9 +38,10 @@ const ResetPassword = () => {
   return (
     <>
       <div className=" text-center ">
+        <NavBar/>
         <Wave/>
         {profile && (
-          <div className="mt-24">
+          <div className="">
             <h1>Password Reset</h1>
             <input
               className="border border-black  rounded-md "
