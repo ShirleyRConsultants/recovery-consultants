@@ -145,7 +145,7 @@ const ClientSignUp: React.FC<ClientsProps> = () => {
   };
 
   return (
-    <div className="">
+    <div className="absolute mt-20">
       <form
         onSubmit={handleSignup}
         className="flex-1 flex flex-col w-full justify-center gap-2 "

@@ -10,7 +10,7 @@ import { useSearchParams } from 'next/navigation'
 export default function Login({
 
 }: {
-  searchParams: { message: string };
+  searchParams: { message: string, success: string };
 }) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [errors, setErrors] = useState("");
@@ -19,14 +19,8 @@ export default function Login({
   const searchParams = useSearchParams()
  
   const message = searchParams.get('message')
+  const success = searchParams.get('success')
 
-
-  // useEffect(() => {
-  //   if (message) {
-  //     (message as string);
-  //   }
-  //   console.log("MESSAGE", message)
-  // }, [message]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -45,22 +39,7 @@ export default function Login({
     router.push("/login");
   };
 
-  // const signIn = async (formData: FormData) => {
-  //   const email = formData.get("email") as string;
-  //   const password = formData.get("password") as string;
-  //   const supabase = createClient();
 
-  //   const { error } = await supabase.auth.signInWithPassword({
-  //     email,
-  //     password,
-  //   });
-
-  //   if (error) {
-  //     router.push(`/login?message=${error.message}`);
-  //   } else {
-  //     router.push("/");
-  //   }
-  // };
 
   const signUp = async (formData: FormData) => {
     const email = formData.get("email") as string;
@@ -112,8 +91,8 @@ export default function Login({
     if (error) {
       router.push("/login?message=Could not signup user");
     }
-    // setErrors("SIGN UP SUCCESS")
-    router.push("/login?message=Check email to continue sign in process");
+
+    router.push("/login?success=Check email to continue sign in process");
   };
 
   return (
@@ -186,6 +165,9 @@ export default function Login({
         </button>
       </form>
 
+{success && (
+  <p className="p-4 text-blue-500">{success}</p>
+)}
       {message && (
         <p className=" p-4 text-red-500 text-center">{message}</p>
       )}
