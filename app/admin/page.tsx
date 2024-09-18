@@ -4,6 +4,8 @@ import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import { useAuth } from "@/components/Auth";
 import { useRouter } from "next/navigation";
+import NavBar from "@/components/NavBar";
+import Wave from "@/components/Wave";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -123,84 +125,61 @@ export default function Signup() {
       <p>Loading...</p>
     </div>
   ) : (
-    <div className="w-1/3 mt-20 flex-1 flex flex-col justify-center gap-2 text-black">
-      <Link
-        href="/"
-        className="absolute left-8 top-8 py-2 px-4 rounded-md no-underline  group-hover:-translate-x-1 text-black flex items-center group text-sm"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1"
-        >
-          <polyline points="15 18 9 12 15 6" />
-        </svg>{" "}
-        Back
-      </Link>
-      <p className="text-center text-2xl mb-2">Case Manager Signup</p>
-      <form
-        onSubmit={handleSignup}
-        className="flex-1 flex flex-col w-full justify-center gap-2 text-black"
-      >
-      <label className="text-md" htmlFor="first_name">
-        First Name
-      </label>
-      <input
-        className="rounded-md px-4 py-2 bg-inherit border mb-6"
-        name="first_name"
-        placeholder="Jane"
-        onChange={(e) => setFirstName(e.target.value)}
-        required
-      />
-      <label className="text-md" htmlFor="last_name">
-        Last Name
-      </label>
-      <input
-        className="rounded-md px-4 py-2 bg-inherit border mb-6"
-        name="last_name"
-        placeholder="Smith"
-        onChange={(e) => setLastName(e.target.value)}
-        required
-      />
-
-      <label className="text-md" htmlFor="email">
-        Email
-      </label>
-      <input
-        className="rounded-md px-4 py-2 bg-inherit border mb-6"
-        name="email"
-        placeholder="you@example.com"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-
-      <label className="text-md" htmlFor="phone">
-        phone
-      </label>
-      <input
-        className="rounded-md px-4 py-2 bg-inherit border mb-6"
-        name="phone"
-        placeholder="123-456-7890"
-        onChange={(e) => setPhone(e.target.value)}
-        required
-      />
-
-      <button
-      type="submit"
-      disabled={loading}>
-        Sign Up
-      </button>
-      </form>
-      {success && <p className="text-center  text-purple-400">{success}</p>}
-      {error && <p className="text-center text-red-600">{error}</p>}
-    </div>
+    <>
+      <NavBar />
+      <div className="relative h-screen"> {/* Ensure the container is full height */}
+        <Wave /> {/* Wave background */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 bg-white p-8 shadow-lg rounded-lg z-10">
+          <p className="text-center text-2xl mb-2">Case Manager Signup</p>
+          <form
+            onSubmit={handleSignup}
+            className="flex flex-col w-full gap-4"
+          >
+            <label htmlFor="first_name">First Name</label>
+            <input
+              className="rounded-md px-4 py-2 border"
+              name="first_name"
+              placeholder="Jane"
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+            />
+            <label htmlFor="last_name">Last Name</label>
+            <input
+              className="rounded-md px-4 py-2 border"
+              name="last_name"
+              placeholder="Smith"
+              onChange={(e) => setLastName(e.target.value)}
+              required
+            />
+            <label htmlFor="email">Email</label>
+            <input
+              className="rounded-md px-4 py-2 border"
+              name="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <label htmlFor="phone">Phone</label>
+            <input
+              className="rounded-md px-4 py-2 border"
+              name="phone"
+              placeholder="123-456-7890"
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-purple-500 text-white py-2 rounded-md"
+            >
+              Sign Up
+            </button>
+          </form>
+          {success && <p className="text-center text-purple-400">{success}</p>}
+          {error && <p className="text-center text-red-600">{error}</p>}
+        </div>
+      </div>
+    </>
   );
 }

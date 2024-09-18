@@ -24,8 +24,7 @@ const ClientSignUp: React.FC<ClientsProps> = () => {
   useEffect(() => {
     if (!session) {
       router.push("/login");
-    }
-    else if (profile) {
+    } else if (profile) {
       if (
         profile.type_of_user !== "admin" &&
         profile?.type_of_user !== "case_manager"
@@ -148,104 +147,109 @@ const ClientSignUp: React.FC<ClientsProps> = () => {
   };
 
   return (
-    <div className="absolute mt-20">
-      <form
-        onSubmit={handleSignup}
-        className="flex-1 flex flex-col w-full justify-center gap-2 "
-      >
-        <label className="text-md" htmlFor="email">
-          Email
-        </label>
-        <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6"
-          name="email"
-          placeholder="you@example.com"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+    <>
+      <h2 className="bg-mint text-white lg:mt-20 mt-14 absolute top-0 left-1/2 transform -translate-x-1/2 rounded-2xl text-2xl lg:text-4xl mb-4 text-center">
+  Client Upload
+</h2>
 
-        <label className="text-md" htmlFor="firstName">
-          First Name
-        </label>
-        <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6"
-          name="firstName"
-          placeholder="bob"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
+      <div className="relative mt-48 lg:mt-28 pb-36">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lg:w-1/3 mt-36  bg-white p-8 shadow-lg rounded-lg z-10">
+          <form onSubmit={handleSignup} className="flex flex-col w-full gap-4 ">
+            <label className="text-md" htmlFor="email">
+              Email
+            </label>
+            <input
+              className="rounded-md px-4 py-2 border"
+              name="email"
+              placeholder="you@example.com"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
 
-        <label className="text-md" htmlFor="lastName">
-          Last Name
-        </label>
-        <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6"
-          name="lastName"
-          placeholder="smith"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
+            <label className="text-md" htmlFor="firstName">
+              First Name
+            </label>
+            <input
+              className="rounded-md px-4 py-2 border"
+              name="firstName"
+              placeholder="Bob"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
 
-        <label className="text-md" htmlFor="phone">
-          Phone
-        </label>
-        <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6"
-          name="phone"
-          placeholder="123-456-7890"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
+            <label className="text-md" htmlFor="lastName">
+              Last Name
+            </label>
+            <input
+              className="rounded-md px-4 py-2 border"
+              name="lastName"
+              placeholder="Smith"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
 
-        <label className="text-md" htmlFor="zip_code">
-          Zip Code
-        </label>
-        <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6"
-          name="zip_code"
-          placeholder="90210"
-          value={zipCode}
-          onChange={(e) => setZipCode(e.target.value)}
-        />
+            <label className="text-md" htmlFor="phone">
+              Phone
+            </label>
+            <input
+              className="rounded-md px-4 py-2 border"
+              name="phone"
+              placeholder="123-456-7890"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
 
-        <label className="text-md" htmlFor="sobriety_date">
-          Sobriety Date
-        </label>
-        <input
-          required
-          type="date"
-          className="rounded-md px-4 py-2 bg-inherit border mb-6"
-          name="sobriety_date"
-          placeholder="00-00-0000"
-          value={sobrietyDate}
-          onChange={(e) => setSobrietyDate(e.target.value)}
-        />
-        {!success && (
-          <button
-            disabled={submitted}
-            type="submit"
-            className="mt-2 text-sm border border-1 rounded-lg p-2"
-          >
-            Upload
-          </button>
-        )}
+            <label className="text-md" htmlFor="zip_code">
+              Zip Code
+            </label>
+            <input
+              className="rounded-md px-4 py-2 border"
+              name="zip_code"
+              placeholder="90210"
+              value={zipCode}
+              onChange={(e) => setZipCode(e.target.value)}
+            />
 
-        {success && (
-          <div className="">
-            <p className="text-blue-500 mt-4">Client added successfully!</p>
-            <button
-              onClick={resetForm}
-              className="w-[100%] border border-1 p-2 rounded-lg mt-4"
-            >
-              Reset
-            </button>
-          </div>
-        )}
+            <label className="text-md" htmlFor="sobriety_date">
+              Sobriety Date
+            </label>
+            <input
+              required
+              type="date"
+              className="rounded-md px-4 py-2 border"
+              name="sobriety_date"
+              value={sobrietyDate}
+              onChange={(e) => setSobrietyDate(e.target.value)}
+            />
 
-        {error && <p className="text-red-600">{error}</p>}
-      </form>
-    </div>
+            {!success && (
+              <button
+                disabled={submitted}
+                type="submit"
+                className="mt-2 text-sm bg-purple-500 text-white p-2 rounded-lg"
+              >
+                Upload
+              </button>
+            )}
+
+            {success && (
+              <div>
+                <p className="text-blue-500 mt-4 text-center">Client added successfully!</p>
+                <button
+                  onClick={resetForm}
+                  className="mt-2 text-sm bg-purple-500 text-white p-2 rounded-lg w-full"
+                >
+                  Reset
+                </button>
+              </div>
+            )}
+
+            {error && <p className="text-red-600 text-center">{error}</p>}
+          </form>
+        </div>
+      </div>
+    </>
   );
 };
 

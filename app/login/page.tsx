@@ -56,6 +56,7 @@ export default function Login({}: {
           last_name: lastName.toLowerCase(),
           email: email,
           phone: phone,
+          type_of_user: "client",
         },
       },
     });
@@ -148,6 +149,11 @@ export default function Login({}: {
         <SubmitButton className="rounded-md px-4 py-2 text-black mb-2">
           {isSignUp ? "Sign Up" : "Sign In"}
         </SubmitButton>
+        {success && (
+        <p className="p-2 text-center text-purple-400  border-1 border border-black rounded-xl">
+          {success}
+        </p>
+      )}
         {errors && <p className="text-red-500 text-center">{errors}</p>}
         <button
           type="button"
@@ -164,11 +170,7 @@ export default function Login({}: {
       </form>
  
 
-      {success && (
-        <p className="p-2 text-center text-purple-400  border-1 border border-black rounded-xl">
-          {success}
-        </p>
-      )}
+   
       {message && <p className=" p-4 text-red-500 text-center">{message}</p>}
     </div>
   );
