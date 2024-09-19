@@ -9,7 +9,7 @@ interface WaveProps {
       <div className={`relative w-full leading-none ${className}`}>
   
         <svg
-          className="block w-full"
+          className="blocc w-full"
           viewBox="0 0 1440 320"
           xmlns="http://www.w3.org/2000/svg"
           style={{ transform: 'rotate(180deg)', marginTop: '-2px' }} // Rotate the wave 180 degrees and adjust margin

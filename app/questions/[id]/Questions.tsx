@@ -175,7 +175,7 @@ const QuestionsComponent: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div>
+        <div className="">
           <button onClick={submitValues} className="">
             Submit
           </button>

@@ -24,12 +24,21 @@ export default function ClientsPage() {
             <main className="text-center">
               <h2 className="font- text-4xl mb-4 mt-">Clients</h2>
               <div className="flex flex-1 justify-center items-center space-x-4">
-                <Link className="no-underline" href="/clients/myclients">
-                  My Clients
+                {profile?.type_of_user === "case_manager" && (
+                  <>
+                    <Link className="no-underline" href="/clients/myclients">
+                      My Clients
+                    </Link>
+                    <Link className="no-underline" href="/clients/upload">
+                      Add New
+                    </Link>
+                  </>
+                )}
+                {profile?.type_of_user === "admin" && <>
+                <Link className="no-underline" href={"/all-clients"}>
+                  All Clients
                 </Link>
-                <Link className="no-underline" href="/clients/upload">
-                  Add New
-                </Link>
+                </>}
               </div>
             </main>
           </div>

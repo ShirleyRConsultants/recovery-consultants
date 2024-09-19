@@ -118,7 +118,7 @@ export default function Login({}: {
           autoComplete="current-password"
           required
         />
-        {isSignUp && (
+        {/* {isSignUp && (
           <>
             <label className="text-md" htmlFor="firstName">
               First Name
@@ -145,7 +145,7 @@ export default function Login({}: {
               placeholder="123-456-7890"
             />
           </>
-        )}
+        )} */}
         <SubmitButton className="rounded-md px-4 py-2 text-black mb-2">
           {isSignUp ? "Sign Up" : "Sign In"}
         </SubmitButton>
@@ -155,7 +155,7 @@ export default function Login({}: {
         </p>
       )}
         {errors && <p className="text-red-500 text-center">{errors}</p>}
-        <button
+        {/* <button
           type="button"
           onClick={() => toggleOptions()}
           className="mt-2 text-sm text-blue-600"
@@ -163,7 +163,7 @@ export default function Login({}: {
           {isSignUp
             ? "Already have an account? Sign In"
             : "Don't have an account? Sign Up"}
-        </button>
+        </button> */}
         <Link className="text-center hover:font-bold" href="/forgot-password">
         Forgot Password?
       </Link>

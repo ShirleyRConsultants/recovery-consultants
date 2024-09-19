@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
-import Link from "next/link";
 import { useAuth } from "@/components/Auth";
 import { useRouter } from "next/navigation";
 import NavBar from "@/components/NavBar";
@@ -24,6 +23,9 @@ export default function Signup() {
   useEffect(() => {
     if (!loading && profile && profile?.type_of_user !== "admin") {
       router.push("/");
+    }
+    if (!session) {
+      router.push("/")
     }
   }, [profile, loading]);
 
@@ -121,15 +123,18 @@ export default function Signup() {
   
 
   return profile?.type_of_user != "admin" ? (
-    <div className="w-1/3 flex-1 flex flex-col justify-center gap-2 mt-24 text-black mx-auto text-center">
+    <>
+    <NavBar/>
+    <div className=" flex-1 flex flex-col justify-center gap-2 mt-24 text-black mx-auto text-center">
       <p>Loading...</p>
     </div>
+    </>
   ) : (
     <>
       <NavBar />
-      <div className="relative h-screen"> {/* Ensure the container is full height */}
-        <Wave /> {/* Wave background */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 bg-white p-8 shadow-lg rounded-lg z-10">
+      <div className="relative h-screen "> 
+        <Wave /> 
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lg:w-1/3 md:w-1/2 w-5/6 bg-white p-8 shadow-lg rounded-lg z-10">
           <p className="text-center text-2xl mb-2">Case Manager Signup</p>
           <form
             onSubmit={handleSignup}

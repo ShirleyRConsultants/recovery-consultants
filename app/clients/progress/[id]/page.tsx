@@ -1,11 +1,16 @@
 import DataVisualization from '@/app/client-pages/DataVisualization';
+import { createClient } from '@/utils/supabase/server';
+import { redirect } from 'next/navigation';
 import NavBar from '@/components/NavBar';
 import Wave from '@/components/Wave';
 import React from 'react';
 
-interface ProgressPageProps {}
 
-const ProgressPage: React.FC<ProgressPageProps> = () => {
+
+export async function ProgressPage() {
+
+
+
   return (
     <div className="relative">
       {/* Ensure NavBar stays on top with a higher z-index */}

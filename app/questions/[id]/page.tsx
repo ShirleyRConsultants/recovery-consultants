@@ -13,8 +13,8 @@ export default async function QuestionsPage() {
   return (
     <>
      <NavBar/>
-     <Wave/>
-    <div className="flex-1 w-full flex flex-col gap-2 items-center mb-24 ">
+     {/* <Wave className="h-20"/> */}
+    <div className="flex-1 w-full flex flex-col gap-2 items-center mb-24 mt-2 xl:mt-16 ">
      
       <p>Weekly Assessment</p>
       <QuestionsComponent />

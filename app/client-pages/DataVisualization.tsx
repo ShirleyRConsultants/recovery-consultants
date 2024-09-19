@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import LineGraph from '@/components/LineGraph';
 import { useAuth } from '@/components/Auth';
 import { createClient } from '@/utils/supabase/client';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 type Client = {
   first_name: string,
@@ -26,10 +26,19 @@ type Client = {
 const DataVisualization: React.FC = () => {
   const [clientData, setClientData] = useState<Client | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const { profile, loading } = useAuth();
+  const { profile, loading, session } = useAuth(); // Ensure session, loading, and profile are always retrieved
   const supabase = createClient();
   const params = useParams();
   const { id } = params;
+  const router = useRouter();
+
+  useEffect(() => {
+    // Ensure useEffect logic is not conditionally rendered
+    if (!session && !loading) {
+      router.push('/'); // Redirect to "/" if no session
+      return; // Exit early if no session
+    }
+  }, [session, loading, router]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,11 +64,13 @@ const DataVisualization: React.FC = () => {
       setClientData(data as Client);
     };
 
-    fetchData();
-  }, []);
+    if (session) {
+      fetchData();
+    }
+  }, [id, session, supabase]); // Only run if there's a session
 
   return (
-    <div className="text-center mx-auto  ">
+    <div className="text-center mx-auto">
       {clientData ? (
         <LineGraph data={clientData} />
       ) : (
