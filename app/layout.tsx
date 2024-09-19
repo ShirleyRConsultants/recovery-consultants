@@ -11,7 +11,7 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Recovery Consultants Admin",
+  title: "Recovery Consultants",
   description: "Client Management System",
 };
 const montserrat = Montserrat({
