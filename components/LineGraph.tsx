@@ -93,7 +93,7 @@ const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
   ];
 
   return (
-    <div className="absolute top-20 left-0 right-0 text-center mx-auto">
+    <div className="absolute top-20 left-0 right-0 text-center mx-auto mt-10">
       <h1 className="text-white">{displayName}'s </h1>
       <select
         className="rounded-xl text-center hover:text-lg bg-mint text-white"
@@ -110,12 +110,12 @@ const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
       </select>
       <div
         id="myGrid"
-        className="ag-theme-quartz" // Applying Quartz theme and adding border radius
+        className="ag-theme-quartz " // Applying Quartz theme and adding border radius
       >
         <AgCharts
           options={chartOptions as any}
-          className="chart mx-auto"
-          style={{ width: "450px", height: "450px" }}
+          className="chart mx-auto "
+          style={{ width: "400px", height: "400px" }}
         />
         <p className="">the lower the value the worse the symptoms</p>
         <p className="">1.0 is the lowest value (worst possible)</p>

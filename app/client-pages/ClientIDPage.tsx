@@ -114,7 +114,7 @@ const ClientIDPage: React.FC<ClientPageProps> = () => {
 
       {client ? (
         <div className="absolute top-0 left-0 w-full text-center mt-8  z-10 text-white">
-          <div className="bg-mint w-1/3 border rounded-lg border-white mx-auto p-2">
+          <div className="bg-mint w-5/6 mt-4 md:w-1/2 lg:w-1/3 border rounded-lg border-white mx-auto p-2">
             <p className="text-4xl text-white">
               {client.first_name.charAt(0).toUpperCase() +
                 client.first_name.slice(1)}{" "}

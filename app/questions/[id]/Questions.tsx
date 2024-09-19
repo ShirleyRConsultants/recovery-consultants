@@ -23,56 +23,49 @@ const QuestionsComponent: React.FC = () => {
   const [lastEntryDate, setLastEntryDate] = useState<Date | null>(null);
   const { profile, loading } = useAuth();
   const supabase = createClient();
-  // Get all the keys of the clientQuestions object
+
   const questionKeys = Object.keys(clientQuestions) as Array<
     keyof typeof clientQuestions
   >;
-  // Get the current question object using the index
   const currentQuestionKey = questionKeys[currentQuestionIndex];
   const currentQuestion = clientQuestions[currentQuestionKey];
 
   const params = useParams();
   const { id } = params;
 
-  console.log(id, "ID PARAMS");
-
   useEffect(() => {
     const checkLastEntry = async () => {
       try {
-        // Step 1: Fetch the existing values from the database
         const { data, error: fetchError } = await supabase
           .from("clients")
           .select("entries")
           .eq("id", id)
-          .single(); // Assuming you're fetching a single row
+          .single();
 
         if (fetchError) {
           throw fetchError;
         }
 
         if (data?.entries && data.entries.length > 0) {
-          // Step 2: Convert the last entry's date to a Date object
           const lastEntryDate = new Date(data.entries[data.entries.length - 1]);
           setLastEntryDate(lastEntryDate);
-          // Step 3: Get the current date
+
           const currentDate = new Date();
-          // Step 4: Calculate the difference in milliseconds
           const timeDifference =
             currentDate.getTime() - lastEntryDate.getTime();
-          const oneWeekInMilliseconds = 7 * 24 * 60 * 60 * 1000; // One week in milliseconds
-          // Step 5: Check if the last entry is older than a week
+          const oneWeekInMilliseconds = 7 * 24 * 60 * 60 * 1000;
+
           if (timeDifference > oneWeekInMilliseconds) {
             setAssessmentDue(true);
           } else {
             setAssessmentDue(false);
           }
         } else {
-          // Handle case where there are no entries
-          setAssessmentDue(true); // Or whatever logic you need for no entries
+          setAssessmentDue(true);
         }
       } catch (error) {
         console.error("Error fetching or processing entries:", error);
-        setAssessmentDue(false); // Set to false if there's an error
+        setAssessmentDue(false);
       }
     };
 
@@ -80,31 +73,42 @@ const QuestionsComponent: React.FC = () => {
   }, [id, setAssessmentDue]);
 
   const handleOptionClick = (option: number) => {
-    setCurrentQuestionIndex(currentQuestionIndex + 1);
     setValues([...values, option]);
+    setCurrentQuestionIndex(currentQuestionIndex + 1);
     if (currentQuestionIndex == 12) {
       setQuestionsAnswered(true);
     }
+  };
+
+  const goBack = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1); // Move back one question
+      setValues(values.slice(0, -1)); // Remove the last selected option from values
+    }
+  };
+
+  const resetForm = () => {
+    setCurrentQuestionIndex(0);
+    setValues([]);
+    setQuestionsAnswered(false);
   };
 
   const submitValues = async () => {
     const currentDate = new Date();
 
     try {
-      // Step 1: Fetch the existing values from the database
       const { data, error: fetchError } = await supabase
         .from("clients")
         .select(
           "sobriety, nutrition, purpose, sleep, anxiety, depression, family, routine, support, future, emotional_response, finance, entries"
         )
         .eq("id", id)
-        .single(); // Assuming you're fetching a single row
+        .single();
 
       if (fetchError) {
         throw fetchError;
       }
 
-      // Step 2: Append the new values to the existing ones
       const updatedValues = {
         sobriety: [...(data.sobriety || []), values[0]],
         nutrition: [...(data.nutrition || []), values[1]],
@@ -121,7 +125,6 @@ const QuestionsComponent: React.FC = () => {
         entries: [...(data.entries || []), currentDate],
       };
 
-      // Step 3: Update the database with the combined arrays
       const { error: updateError } = await supabase
         .from("clients")
         .update(updatedValues)
@@ -137,54 +140,76 @@ const QuestionsComponent: React.FC = () => {
       alert("There was an error updating the client data. Please try again.");
     }
   };
+
   if (!profile?.type_of_user) {
     return <>Loading.....</>;
   }
 
   if (!assessmentDue && lastEntryDate) {
-    // Assuming lastEntryDate is a valid date object
     const nextAssessment = new Date(lastEntryDate);
-    nextAssessment.setDate(nextAssessment.getDate() + 7); // Add 7 days
+    nextAssessment.setDate(nextAssessment.getDate() + 7);
 
     return (
       <div>
         {lastEntryDate && (
-          <p>Assessment not due until {nextAssessment.toDateString()}</p>
+          <p className="m-4 text-white bg-mint rounded-xl p-1 text-center">
+            Assessment not due until {nextAssessment.toDateString()}
+          </p>
         )}
       </div>
     );
   }
 
+  console.log(values)
+
   return !questionsAnswered && !loading ? (
-    <div className="border border-1 border-black rounded-lg p-10 w-96 ">
+    <>
       {currentQuestionIndex < questionKeys.length ? (
-        <div className="text-center">
-          <h2>{currentQuestion.Q}</h2>
-          <div className="flex-1 w-full flex flex-col gap-2 items-center mt-4">
-            {Object.entries(currentQuestion)
-              .filter(([key]) => key !== "Q") // Filter out the question text
-              .map(([key, option], index) => (
-                <button
-                  className="border border-1 rounded-lg min-w-full border-black my-1 p-2"
-                  key={index}
-                  onClick={() => handleOptionClick(parseInt(key))}
-                >
-                  {option}
-                </button>
-              ))}
+        <div className="border border-1 text-white bg-mint rounded-lg p-8 w-96 shadow-lg">
+          <p className="text-center text-lg font-bold">Weekly Assessment</p>
+          <div className="text-center bg-mint">
+            <h2>{currentQuestion.Q}</h2>
+            <div className="flex-1 w-full flex flex-col gap-2 items-center mt-4">
+              {Object.entries(currentQuestion)
+                .filter(([key]) => key !== "Q")
+                .map(([key, option], index) => (
+                  <button
+                    className="border border-1 min-w-full border-white my-1 p-2 bg-purple-500 text-white py-2 rounded-md"
+                    key={index}
+                    onClick={() => handleOptionClick(parseInt(key))}
+                  >
+                    {option}
+                  </button>
+                ))}
+            </div>
+            <button
+              onClick={goBack}
+              className="text-sm bg-purple-500 text-white p-2 rounded-lg m-1"
+            >
+              Go Back
+            </button>
           </div>
         </div>
       ) : (
-        <div className="">
-          <button onClick={submitValues} className="">
+        <div className="mt-24">
+          <button
+            onClick={submitValues}
+            className="text-sm bg-purple-500 text-white p-2 rounded-lg m-1"
+          >
             Submit
+          </button>
+          <button
+            onClick={resetForm}
+            className="text-sm bg-purple-500 text-white p-2 rounded-lg m-1"
+          >
+            Reset
           </button>
         </div>
       )}
-    </div>
+    </>
   ) : (
     <>
-      <div>Thank you!</div>
+      <div className="bg-mint text-white rounded-xl p-4">Thank you!</div>
     </>
   );
 };

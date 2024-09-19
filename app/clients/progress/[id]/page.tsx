@@ -1,16 +1,9 @@
-import DataVisualization from '@/app/client-pages/DataVisualization';
-import { createClient } from '@/utils/supabase/server';
-import { redirect } from 'next/navigation';
-import NavBar from '@/components/NavBar';
-import Wave from '@/components/Wave';
-import React from 'react';
+import DataVisualization from "@/app/client-pages/DataVisualization";
+import NavBar from "@/components/NavBar";
+import Wave from "@/components/Wave";
+import React from "react";
 
-
-
-export async function ProgressPage() {
-
-
-
+export default async function ProgressPage() {
   return (
     <div className="relative">
       {/* Ensure NavBar stays on top with a higher z-index */}
@@ -20,7 +13,7 @@ export async function ProgressPage() {
 
       {/* Wave placed behind the graph */}
       <div className=" inset-0 z-0">
-        <div className='bg-mint p-10 '></div>
+        <div className="bg-mint p-10 "></div>
         <Wave className="absolute" />
       </div>
 
@@ -30,6 +23,4 @@ export async function ProgressPage() {
       </div>
     </div>
   );
-};
-
-export default ProgressPage;
+}
