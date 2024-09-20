@@ -13,7 +13,7 @@ export default async function QuestionsPage() {
   return (
     <>
      <NavBar/>
-     <Wave className="h-16"/>
+     {/* <Wave className="mb"/> */}
     <div className="flex-1 w-full flex flex-col gap-2 items-center mb-24 mt-2 xl:mt-16 ">
      
       <QuestionsComponent />

@@ -95,7 +95,7 @@ const QuestionsComponent: React.FC = () => {
 
   const submitValues = async () => {
     const currentDate = new Date();
-
+    console.log("submitting......")
     try {
       const { data, error: fetchError } = await supabase
         .from("clients")
@@ -152,7 +152,7 @@ const QuestionsComponent: React.FC = () => {
     return (
       <div>
         {lastEntryDate && (
-          <p className="m-4 text-white bg-mint rounded-xl p-1 text-center">
+          <p className="m-4 mt-12 text-white bg-mint rounded-xl p-1 text-center">
             Assessment not due until {nextAssessment.toDateString()}
           </p>
         )}
@@ -174,7 +174,7 @@ const QuestionsComponent: React.FC = () => {
                 .filter(([key]) => key !== "Q")
                 .map(([key, option], index) => (
                   <button
-                    className="border border-1 min-w-full border-white my-1 p-2 bg-purple-500 text-white py-2 rounded-md"
+                    className="border border-1 min-w-full border-white my-1 p-2 bg-purple-300 text-white py-2 rounded-md"
                     key={index}
                     onClick={() => handleOptionClick(parseInt(key))}
                   >
@@ -184,7 +184,7 @@ const QuestionsComponent: React.FC = () => {
             </div>
             <button
               onClick={goBack}
-              className="text-sm bg-purple-500 text-white p-2 rounded-lg m-1"
+              className="text-sm bg-purple-300 text-white p-2 rounded-lg m-1"
             >
               Go Back
             </button>
@@ -194,13 +194,13 @@ const QuestionsComponent: React.FC = () => {
         <div className="mt-24">
           <button
             onClick={submitValues}
-            className="text-sm bg-purple-500 text-white p-2 rounded-lg m-1"
+            className="text-sm bg-purple-300 text-white p-2 rounded-lg m-1"
           >
             Submit
           </button>
           <button
             onClick={resetForm}
-            className="text-sm bg-purple-500 text-white p-2 rounded-lg m-1"
+            className="text-sm bg-purple-300 text-white p-2 rounded-lg m-1"
           >
             Reset
           </button>
@@ -209,7 +209,7 @@ const QuestionsComponent: React.FC = () => {
     </>
   ) : (
     <>
-      <div className="bg-mint text-white rounded-xl p-4">Thank you!</div>
+      <div className="bg-mint text-white rounded-xl p-4 mt-20">Thank you!</div>
     </>
   );
 };
