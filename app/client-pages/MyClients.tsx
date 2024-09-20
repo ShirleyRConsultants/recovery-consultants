@@ -55,9 +55,9 @@ const MyClients: React.FC<ClientListProps> = () => {
       {profile && (
         <p className="text-3xl text-white">{profile.first_name + "'s" + " Clients"} </p>
       )}
-
+  <div className="flex justify-center flex-wrap gap-6  ">
       {clients.map((client) => (
-        <div key={client.id} className="relative z-10">
+        <div key={client.id} className="relative z-10 ">
           <Link href={`/clients/${client.id}`}>
             <Card 
               first_name={client.first_name}
@@ -67,6 +67,7 @@ const MyClients: React.FC<ClientListProps> = () => {
           </Link>
         </div>
       ))}
+      </div>
     </div>
     </div>
     </>
