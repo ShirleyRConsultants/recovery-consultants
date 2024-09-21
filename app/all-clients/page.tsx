@@ -49,7 +49,7 @@ const MyClients: React.FC<ClientListProps> = () => {
     };
 
     fetchClients();
-  }, [caseManagerID]);
+  }, []);
 
   return (
     <>

@@ -1,11 +1,19 @@
-import React from "react";
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 import ClientSignUp from "@/app/client-pages/ClientSignUp";
 import NavBar from "@/components/NavBar";
 import Wave from "@/components/Wave";
 
-interface UploadProps {}
+async function Upload() {
+  const supabase = createClient();
 
-const Upload: React.FC<UploadProps> = () => {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return redirect("/login");
+  }
   return (
     <>
       <NavBar />
@@ -17,6 +25,6 @@ const Upload: React.FC<UploadProps> = () => {
       </div>
     </>
   );
-};
+}
 
 export default Upload;
