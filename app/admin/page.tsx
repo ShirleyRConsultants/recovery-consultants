@@ -176,12 +176,12 @@ export default function Signup() {
             <button
               type="submit"
               disabled={loading}
-              className="bg-purple-500 text-white py-2 rounded-md"
+              className="bg-purp text-white py-2 rounded-md"
             >
               Sign Up
             </button>
           </form>
-          {success && <p className="text-center text-purple-400">{success}</p>}
+          {success && <p className="text-center text-purp">{success}</p>}
           {error && <p className="text-center text-red-600">{error}</p>}
         </div>
       </div>

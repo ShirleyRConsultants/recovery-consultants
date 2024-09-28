@@ -116,7 +116,7 @@ const ClientIDPage: React.FC<ClientPageProps> = () => {
         <div className="absolute top-0 left-0 w-full text-center mt-8  z-10 text-white">
           <div className="bg-mint w-5/6 mt-4 md:w-1/2 lg:w-1/3 border rounded-lg border-white mx-auto p-2">
             <p className="text-4xl text-white">
-              {client.first_name.charAt(0).toUpperCase() +
+             {client.first_name.charAt(0).toUpperCase() +
                 client.first_name.slice(1)}{" "}
               {client.last_name.charAt(0).toUpperCase() +
                 client.last_name.slice(1)}
@@ -124,7 +124,10 @@ const ClientIDPage: React.FC<ClientPageProps> = () => {
 
             {caseManager && (
               <p className="text-xl text-white font-bold mt-2">
-                Case Manager: {caseManager.first_name} {caseManager.last_name}
+           Case Manager:  {" "}
+{caseManager.first_name.charAt(0).toUpperCase() + caseManager.first_name.slice(1)} 
+{caseManager.last_name.charAt(0).toUpperCase() + caseManager.last_name.slice(1)}
+
               </p>
             )}
 

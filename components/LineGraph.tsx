@@ -25,24 +25,26 @@ interface LineGraphProps {
   data: Client; // The entire data object
 }
 
+const colors = ["#B19CD9", "#ACDCD3", "#AFD3DB", "#DACDE0", "#FFB6C1"]; // Array of colors for the bars
+
 const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
   const [selectedCategory, setSelectedCategory] =
     useState<keyof Omit<Client, "entries">>("anxiety"); // Default category
   const [displayName, setDisplayName] = useState("");
+
   const [chartOptions, setChartOptions] = useState({
     data: [] as any[],
     background: {
-      fill: "#98d7c2", // Mint background color
+      fill: "#ACDCD3", // Mint background color
     },
     series: [
       {
-        type: "bar", // You can also switch this to "line"
+        type: "bar", // Bar chart type
         xKey: "entries",
         yKey: "vals",
         fillOpacity: 0.7, // Transparency of bar fill
-        stroke: "#B19CD9", // Light purple outline of bars
         strokeWidth: 2,
-        fill: "#B19CD9", // Bar fill color (light purple)
+        fill: colors[3]
       },
     ],
   });
@@ -55,19 +57,21 @@ const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
 
     const name = capitalize(data.first_name) + " " + capitalize(data.last_name);
     setDisplayName(name);
-
+  
     const chartData = entries.map((entry, index) => ({
       entries: new Date(entry).toLocaleDateString("en-US", {
         month: "numeric",
         day: "numeric",
         year: "numeric",
       }),
+     
       vals: parseInt(categoryData[index]) || 0, // Ensure valid integer value
     }));
 
     setChartOptions((prevOptions) => ({
       ...prevOptions,
       data: chartData,
+      
     }));
   }, [selectedCategory, data]);
 
@@ -108,13 +112,10 @@ const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
           </option>
         ))}
       </select>
-      <div
-        id="myGrid"
-        className="ag-theme-quartz " // Applying Quartz theme and adding border radius
-      >
+      <div id="myGrid">
         <AgCharts
           options={chartOptions as any}
-          className="chart mx-auto "
+          className="chart mx-auto"
           style={{ width: "400px", height: "400px" }}
         />
         <p className="">the lower the value the worse the symptoms</p>

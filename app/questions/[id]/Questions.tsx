@@ -95,7 +95,7 @@ const QuestionsComponent: React.FC = () => {
 
   const submitValues = async () => {
     const currentDate = new Date();
-    console.log("submitting......")
+    console.log("submitting......");
     try {
       const { data, error: fetchError } = await supabase
         .from("clients")
@@ -160,7 +160,9 @@ const QuestionsComponent: React.FC = () => {
     );
   }
 
-  console.log(values)
+  console.log(values);
+
+  const colors = ["#99999A", "#D1D1D3", "#AFD3DB", "#ACDCD3", "#DACDE0"];
 
   return !questionsAnswered && !loading ? (
     <>
@@ -174,8 +176,9 @@ const QuestionsComponent: React.FC = () => {
                 .filter(([key]) => key !== "Q")
                 .map(([key, option], index) => (
                   <button
-                    className="border border-1 min-w-full border-white my-1 p-2 bg-purple-300 text-white py-2 rounded-md"
+                    className="border border-1 min-w-full border-white my-1 p-2 text-white py-2 rounded-md"
                     key={index}
+                    style={{ backgroundColor: colors[index % colors.length] }}
                     onClick={() => handleOptionClick(parseInt(key))}
                   >
                     {option}
@@ -184,7 +187,7 @@ const QuestionsComponent: React.FC = () => {
             </div>
             <button
               onClick={goBack}
-              className="text-sm bg-purple-300 text-white p-2 rounded-lg m-1"
+              className="text-sm bg-purp text-white p-2 rounded-lg m-1"
             >
               Go Back
             </button>

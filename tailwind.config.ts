@@ -10,8 +10,8 @@ module.exports = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
     
-          mint: '#98d7c2', // Example hex code for mint color
-     
+          mint: '#ACDCD3', // Example hex code for mint color
+          purp: '#DACDE0',
         btn: {
           background: "hsl(var(--btn-background))",
           "background-hover": "hsl(var(--btn-background-hover))",
