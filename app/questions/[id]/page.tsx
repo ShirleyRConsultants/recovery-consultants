@@ -2,12 +2,18 @@
 import { createClient } from "@/utils/supabase/server";
 import QuestionsComponent from "./Questions";
 import NavBar from "@/components/NavBar";
-import Wave from "@/components/Wave";
+import { redirect } from "next/navigation";
 
 export default async function QuestionsPage() {
   const supabase = createClient();
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
+  if (!user) {
+    return redirect("/login");
+  }
 
 
   return (
