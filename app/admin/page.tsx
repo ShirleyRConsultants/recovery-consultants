@@ -20,6 +20,7 @@ export default function Signup() {
   const { profile, session } = useAuth();
   const router = useRouter();
 
+  
   useEffect(() => {
     if (!loading && profile && profile?.type_of_user !== "admin") {
       router.push("/");
