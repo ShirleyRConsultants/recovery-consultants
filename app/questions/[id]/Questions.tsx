@@ -22,6 +22,7 @@ const QuestionsComponent: React.FC = () => {
   const [assessmentDue, setAssessmentDue] = useState(false);
   const [lastEntryDate, setLastEntryDate] = useState<Date | null>(null);
   const { profile, loading } = useAuth();
+
   const supabase = createClient();
 
   const questionKeys = Object.keys(clientQuestions) as Array<
@@ -33,13 +34,7 @@ const QuestionsComponent: React.FC = () => {
   const params = useParams();
   const { id } = params;
 
-  if (profile?.type_of_user === "admin"){
-    return (
-      <>
-      <>Admin cannot take assessment for clients. Please have the corresponding case manager facilitate.</>
-      </>
-    )
-  }
+
   
   useEffect(() => {
     const checkLastEntry = async () => {
@@ -152,7 +147,13 @@ const QuestionsComponent: React.FC = () => {
   if (!profile?.type_of_user) {
     return <>Loading.....</>;
   }
-
+  if (profile?.type_of_user === "admin"){
+    return (
+      <>
+      <>Admin cannot take assessment for clients. Please have the corresponding case manager facilitate.</>
+      </>
+    )
+  }
   if (!assessmentDue && lastEntryDate) {
     const nextAssessment = new Date(lastEntryDate);
     nextAssessment.setDate(nextAssessment.getDate() + 7);
