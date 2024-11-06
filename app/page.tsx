@@ -10,7 +10,7 @@ export default async function Index() {
      
         <Header />
     
-
+{/* 
       <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
         <p>
           Built by{" "}
@@ -23,7 +23,7 @@ export default async function Index() {
             Jordon Marchesano
           </a>
         </p>
-      </footer>
+      </footer> */}
     </div>
   );
 }

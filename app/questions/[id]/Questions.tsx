@@ -33,6 +33,14 @@ const QuestionsComponent: React.FC = () => {
   const params = useParams();
   const { id } = params;
 
+  if (profile?.type_of_user === "admin"){
+    return (
+      <>
+      <>Admin cannot take assessment for clients. Please have the corresponding case manager facilitate.</>
+      </>
+    )
+  }
+  
   useEffect(() => {
     const checkLastEntry = async () => {
       try {
