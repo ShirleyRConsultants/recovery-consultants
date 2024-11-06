@@ -147,13 +147,13 @@ const ClientSignUp: React.FC<ClientsProps> = () => {
   };
 
   return (
-    <>
-      <h2 className="bg-mint text-white lg:mt-20 mt-14 absolute top-0 left-1/2 transform -translate-x-1/2 rounded-2xl text-2xl lg:text-4xl mb-4 text-center">
-  Client Upload
-</h2>
+    <div className="">
+      <h2 className=" text-black font-thin lg:mt-20 mt-28  absolute top-0 left-1/2 transform -translate-x-1/2 text-2xl lg:text-4xl  text-center">
+        Client Upload
+      </h2>
 
-      <div className="relative mt-48 lg:mt-28 pb-36">
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lg:w-1/3 mt-36  bg-white p-8 shadow-lg rounded-lg z-10">
+      <div className="mt-48 lg:mt-28 pb-36 ">
+        <div className=" mx-auto lg:mx-auto lg:w-1/3 w-3/4 mt-36  bg-white p-8 shadow-lg rounded-lg z-10">
           <form onSubmit={handleSignup} className="flex flex-col w-full gap-4 ">
             <label className="text-md" htmlFor="email">
               Email
@@ -235,7 +235,9 @@ const ClientSignUp: React.FC<ClientsProps> = () => {
 
             {success && (
               <div>
-                <p className="text-blue-500 mt-4 text-center">Client added successfully!</p>
+                <p className="text-blue-500 mt-4 text-center">
+                  Client added successfully!
+                </p>
                 <button
                   onClick={resetForm}
                   className="mt-2 text-sm bg-purple-500 text-white p-2 rounded-lg w-full"
@@ -249,7 +251,7 @@ const ClientSignUp: React.FC<ClientsProps> = () => {
           </form>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

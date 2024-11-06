@@ -15,15 +15,11 @@ async function Upload() {
     return redirect("/login");
   }
   return (
-    <>
+    <div className="">
       <NavBar />
 
-      <div className="  items-center ">
-        <Wave />
-
-        <ClientSignUp />
-      </div>
-    </>
+      <ClientSignUp />
+    </div>
   );
 }
 

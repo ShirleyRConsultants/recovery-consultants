@@ -5,6 +5,7 @@ import clientQuestions from "../clientQuestions";
 import { createClient } from "@/utils/supabase/client";
 import { useAuth } from "@/components/Auth";
 import { useParams } from "next/navigation";
+import Wave from "@/components/Wave";
 
 interface Question {
   question: string;
@@ -34,8 +35,6 @@ const QuestionsComponent: React.FC = () => {
   const params = useParams();
   const { id } = params;
 
-
-  
   useEffect(() => {
     const checkLastEntry = async () => {
       try {
@@ -146,14 +145,15 @@ const QuestionsComponent: React.FC = () => {
 
   if (!profile?.type_of_user) {
     return <>Loading.....</>;
-  }
-  if (profile?.type_of_user === "admin"){
+  } else if (profile?.type_of_user === "admin") {
     return (
-      <>
-      <>Admin cannot take assessment for clients. Please have the corresponding case manager facilitate.</>
-      </>
-    )
+      <div className="mt-10 text-center font-thin mx-2">
+        Admin cannot take assessment for clients. Please have the corresponding
+        case manager facilitate.
+      </div>
+    );
   }
+
   if (!assessmentDue && lastEntryDate) {
     const nextAssessment = new Date(lastEntryDate);
     nextAssessment.setDate(nextAssessment.getDate() + 7);
@@ -176,9 +176,9 @@ const QuestionsComponent: React.FC = () => {
   return !questionsAnswered && !loading ? (
     <>
       {currentQuestionIndex < questionKeys.length ? (
-        <div className="border border-1 text-white bg-mint rounded-lg p-8 w-96 shadow-lg">
+        <div className="border border-1 text-white bg-gradient-to-r from-mint to-purp transition-transform duration-300 rounded-lg p-8 w-96 shadow-lg">
           <p className="text-center text-lg font-bold">Weekly Assessment</p>
-          <div className="text-center bg-mint">
+          <div className="text-center bg-gradient-to-r from-mint to-purp transition-transform duration-300">
             <h2>{currentQuestion.Q}</h2>
             <div className="flex-1 w-full flex flex-col gap-2 items-center mt-4">
               {Object.entries(currentQuestion)

@@ -53,7 +53,9 @@ const MyClients: React.FC<ClientListProps> = () => {
     
       <div className="py-10 ">
       {profile && (
-        <p className="text-3xl text-white">{profile.first_name + "'s" + " Clients"} </p>
+     <p className="text-3xl text-white">
+     {profile.first_name.charAt(0).toUpperCase() + profile.first_name.slice(1) + "'s Clients"}
+   </p>
       )}
   <div className="flex justify-center flex-wrap gap-6  ">
       {clients.map((client) => (

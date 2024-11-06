@@ -6,6 +6,7 @@ import { SubmitButton } from "./submit-button";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/components/Auth";
 import { useSearchParams } from "next/navigation";
+import NavBar from "@/components/NavBar";
 import Link from "next/link";
 
 export default function Login({}: {
@@ -92,10 +93,12 @@ export default function Login({}: {
   };
 
   return (
-    <div className="flex-1 flex-col w-full px-8 sm:max-w-md justify-center gap-2 mx-auto">
+    <>
+    <NavBar/>
+    <div className=" sm:max-w-md mx-auto mt-20 ">
       <form
         onSubmit={handleSubmit}
-        className="flex-1 flex flex-col mt-20 w-full justify-center gap-2 text-black"
+        className="flex-1 flex flex-col w-full justify-center gap-2 text-black "
       >
         <label className="text-md" htmlFor="email">
           Email
@@ -173,5 +176,6 @@ export default function Login({}: {
    
       {message && <p className=" p-4 text-red-500 text-center">{message}</p>}
     </div>
+    </>
   );
 }

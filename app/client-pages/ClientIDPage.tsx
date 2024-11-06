@@ -101,6 +101,7 @@ const ClientIDPage: React.FC<ClientPageProps> = () => {
     }
     return phoneNumber;
   };
+  const capitalize = (name : string) => name.charAt(0).toUpperCase() + name.slice(1);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -111,88 +112,79 @@ const ClientIDPage: React.FC<ClientPageProps> = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative font- ">
       <div className="bg-mint py-20"></div>
       <Wave />
 
       {client ? (
-        <div className="absolute top-0 left-0 w-full text-center mt-8  z-10 text-white">
-          <div className="bg-mint w-5/6 mt-4 md:w-1/2 lg:w-1/3 border rounded-lg border-white mx-auto p-2">
-            <p className="text-4xl text-white">
-              {client.first_name.charAt(0).toUpperCase() +
-                client.first_name.slice(1)}{" "}
-              {client.last_name.charAt(0).toUpperCase() +
-                client.last_name.slice(1)}
-            </p>
+        <div className="absolute top-0 left-0 w-full text-center z-10 mt-8 animate-fadeIn ">
+         <div className="mx-auto mt-4 py-4 max-w-sm rounded-lg bg-gradient-to-r from-mint to-purp transition-transform duration-300 hover:scale-105 shadow-lg overflow-hidden border border-white">
+            <h2 className="text-4xl text-white mb-4">
+              {capitalize(client.first_name)} {capitalize(client.last_name)}
+            </h2>
 
+         
+
+            <div className="text-white text-lg space-y-2 ml-6">
             {caseManager && (
-              <p className="text-xl text-white font-bold mt-2">
-                Case Manager:{" "}
-                {caseManager.first_name.charAt(0).toUpperCase() +
-                  caseManager.first_name.slice(1)}
-                {caseManager.last_name.charAt(0).toUpperCase() +
-                  caseManager.last_name.slice(1)}
+                   <div className="flex ">
+              <p className="text-xl text-white mb-2 ">
+                C M: {capitalize(caseManager.first_name)} {capitalize(caseManager.last_name)}
               </p>
-            )}
-
-            <div className="flex flex-1 justify-center">
-              <p className="font-bold mr-1">Email:</p>
-              <a className="underline" href={`mailto:${client.email}`}>
-                {client.email}
-              </a>
-            </div>
-            <div className="flex flex-1 justify-center">
-              <p className="font-bold mr-1">Phone:</p>
-              <p>{formatPhoneNumber(client.phone)}</p>
-            </div>
-            <div className="flex flex-1 justify-center">
-              <p className="font-bold mr-1">Sobriety Date:</p>
-              <p>{formatDate(client.sobriety_date.toString())}</p>
-            </div>
-            <div className="flex flex-1 justify-center">
-              <p className="font-bold mr-1">Zip Code:</p>
-              <p> {client.zip_code}</p>
-            </div>
-
-            {client.entries && client.entries.length > 0 ? (
-              <div className="flex flex-1 justify-center">
-                <p className="font-bold mr-1">Last Assessment: </p>
-                <p>
-                  {formatDate(
-                    client.entries[client.entries.length - 1].toString()
-                  )}
-                </p>
               </div>
-            ) : (
-              <p>No assessment recorded</p>
             )}
+              <div className="flex ">
+                <span className=" mr-2">Email:</span>
+                <a className="underline" href={`mailto:${client.email}`}>
+                  {client.email}
+                </a>
+              </div>
+              <div className="flex ">
+                <span className="mr-2">Phone:</span>
+                <span>{formatPhoneNumber(client.phone)}</span>
+              </div>
+              <div className="flex ">
+                <span className=" mr-2">Sobriety Date:</span>
+                <span>{formatDate(client.sobriety_date.toString())}</span>
+              </div>
+              <div className="flex ">
+                <span className=" mr-2">Zip Code:</span>
+                <span>{client.zip_code}</span>
+              </div>
 
-            <div className="flex justify-center items-center space-x-4 mt-4">
-              <Link
-                className="border border-white border-1  hover:font-bold rounded text-2xl text-center"
-                href={`/clients/progress/${id}`}
-              >
-                Progress
+              {client.entries && client.entries.length > 0 ? (
+                <div className="flex ">
+                  <span className="mr-2">Last Assessment:</span>
+                  <span>{formatDate(client.entries[client.entries.length - 1].toString())}</span>
+                </div>
+              ) : (
+                <p className="text-sm text-red-400">No assessment recorded</p>
+              )}
+            </div>
+
+            <div className="flex justify-center items-center space-x-4 mt-6">
+              <Link href={`/clients/progress/${id}`}>
+                <p className="border border-white px-4 py-2 rounded-lg text-xl text-white hover:bg-blue-500 transition-colors">
+                  Progress
+                </p>
               </Link>
               {isAssessmentDue ? (
-                <Link
-                  className="border border-white border-1 rounded text-2xl text-red-500"
-                  href={`/questions/${id}`}
-                >
-                  {" "}
-                  Assessment Due!{" "}
+                <Link href={`/questions/${id}`}>
+                  <p className="border border-white px-4 py-2 rounded-lg text-xl text-red-400 hover:bg-red-500 hover:text-white transition-colors">
+                    Assessment Due!
+                  </p>
                 </Link>
               ) : (
-                <p className="text-blue-500">No Assessment due!</p>
+                <p className="text-lg text-green-300 font-semibold">No Assessment due!</p>
               )}
             </div>
           </div>
         </div>
       ) : (
-        <p className="text-center">Loading...</p>
+        <p className="text-center text-white mt-8">Loading...</p>
       )}
     </div>
   );
-};
+}
 
 export default ClientIDPage;
