@@ -44,7 +44,7 @@ const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
         yKey: "vals",
         fillOpacity: 0.7, // Transparency of bar fill
         strokeWidth: 2,
-        fill: colors[3]
+        fill: colors[3],
       },
     ],
   });
@@ -57,21 +57,25 @@ const LineGraph: React.FC<LineGraphProps> = ({ data }) => {
 
     const name = capitalize(data.first_name) + " " + capitalize(data.last_name);
     setDisplayName(name);
-  
-    const chartData = entries.map((entry, index) => ({
-      entries: new Date(entry).toLocaleDateString("en-US", {
-        month: "numeric",
-        day: "numeric",
-        year: "numeric",
-      }),
-     
-      vals: parseInt(categoryData[index]) || 0, // Ensure valid integer value
-    }));
+
+    const chartData = entries.map((entry, index) => {
+      const localDate = new Date(
+        new Date(entry).getTime() + new Date(entry).getTimezoneOffset() * 60000
+      );
+
+      return {
+        entries: localDate.toLocaleDateString("en-US", {
+          month: "numeric",
+          day: "numeric",
+          year: "numeric",
+        }),
+        vals: parseInt(categoryData[index]) || 0, // Ensure valid integer value
+      };
+    });
 
     setChartOptions((prevOptions) => ({
       ...prevOptions,
       data: chartData,
-      
     }));
   }, [selectedCategory, data]);
 

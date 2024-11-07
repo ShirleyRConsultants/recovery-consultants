@@ -145,14 +145,15 @@ const QuestionsComponent: React.FC = () => {
 
   if (!profile?.type_of_user) {
     return <>Loading.....</>;
-  } else if (profile?.type_of_user === "admin") {
-    return (
-      <div className="mt-10 text-center font-thin mx-2">
-        Admin cannot take assessment for clients. Please have the corresponding
-        case manager facilitate.
-      </div>
-    );
-  }
+  } 
+  // else if (profile?.type_of_user === "admin") {
+  //   return (
+  //     <div className="mt-10 text-center font-thin mx-2">
+  //       Admin cannot take assessment for clients. Please have the corresponding
+  //       case manager facilitate.
+  //     </div>
+  //   );
+  // }
 
   if (!assessmentDue && lastEntryDate) {
     const nextAssessment = new Date(lastEntryDate);
