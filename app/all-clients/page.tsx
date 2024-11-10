@@ -16,6 +16,7 @@ type Client = {
   case_manager: number;
   entries: Date[];
   id: number;
+  active: boolean;
 };
 
 const MyClients: React.FC<ClientListProps> = () => {
@@ -36,7 +37,7 @@ const MyClients: React.FC<ClientListProps> = () => {
       try {
         const { data: clientsData, error } = await supabase
           .from("clients")
-          .select("id, first_name, last_name, case_manager, entries");
+          .select("id, first_name, last_name, case_manager, entries, active");
 
         if (error) {
           console.error("Error fetching clients:", error);

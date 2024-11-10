@@ -13,6 +13,7 @@ const AdminHome: React.FC<AdminHomeProps> = () => {
             <Wave/>
             <div className="flex justify-center items-center space-x-6 text-lg font-medium">
                 <Link className="hover:text-blue-300 transition-colors duration-200" href={"/admin/signup"}>Case Manager Sign Up</Link>
+                <Link className="hover:text-blue-300 transition-colors duration-200" href={"/admin/case-managers"}>Manage Case Managers</Link>
                 <Link className="hover:text-blue-300 transition-colors duration-200" href={"/admin/clients"}>Manage Clients</Link>
             </div>
         </div>

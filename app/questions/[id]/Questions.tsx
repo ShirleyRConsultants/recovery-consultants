@@ -22,6 +22,7 @@ const QuestionsComponent: React.FC = () => {
   const [questionsAnswered, setQuestionsAnswered] = useState(false);
   const [assessmentDue, setAssessmentDue] = useState(false);
   const [lastEntryDate, setLastEntryDate] = useState<Date | null>(null);
+  const [active, setActive] = useState(true);
   const { profile, loading } = useAuth();
 
   const supabase = createClient();
@@ -40,7 +41,7 @@ const QuestionsComponent: React.FC = () => {
       try {
         const { data, error: fetchError } = await supabase
           .from("clients")
-          .select("entries")
+          .select("entries, active")
           .eq("id", id)
           .single();
 
@@ -51,7 +52,7 @@ const QuestionsComponent: React.FC = () => {
         if (data?.entries && data.entries.length > 0) {
           const lastEntryDate = new Date(data.entries[data.entries.length - 1]);
           setLastEntryDate(lastEntryDate);
-
+          setActive(data.active);
           const currentDate = new Date();
           const timeDifference =
             currentDate.getTime() - lastEntryDate.getTime();
@@ -145,7 +146,7 @@ const QuestionsComponent: React.FC = () => {
 
   if (!profile?.type_of_user) {
     return <>Loading.....</>;
-  } 
+  }
   // else if (profile?.type_of_user === "admin") {
   //   return (
   //     <div className="mt-10 text-center font-thin mx-2">
@@ -154,7 +155,15 @@ const QuestionsComponent: React.FC = () => {
   //     </div>
   //   );
   // }
-
+  if (!active) {
+    return (
+      <div>
+        <p className="m-4 mt-12 text-white bg-mint rounded-xl p-1 text-center">
+          This account is inactive...
+        </p>
+      </div>
+    );
+  }
   if (!assessmentDue && lastEntryDate) {
     const nextAssessment = new Date(lastEntryDate);
     nextAssessment.setDate(nextAssessment.getDate() + 7);
@@ -169,6 +178,7 @@ const QuestionsComponent: React.FC = () => {
       </div>
     );
   }
+
 
   console.log(values);
 

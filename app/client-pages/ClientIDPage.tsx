@@ -19,6 +19,7 @@ type Client = {
   zip_code: string;
   entries: Date[];
   case_manager: number;
+  active: boolean;
 };
 
 type CaseManager = {
@@ -44,7 +45,7 @@ const ClientIDPage: React.FC<ClientPageProps> = () => {
         const { data: clientData, error } = await supabase
           .from("clients")
           .select(
-            "id, first_name, last_name, phone, email, sobriety_date, zip_code, entries, case_manager"
+            "id, first_name, last_name, phone, email, sobriety_date, zip_code, entries, case_manager, active"
           )
           .eq("id", id);
 
@@ -151,7 +152,16 @@ const ClientIDPage: React.FC<ClientPageProps> = () => {
                 <span className=" mr-2">Zip Code:</span>
                 <span>{client.zip_code}</span>
               </div>
-
+              <p className=" mt-1 text-left">
+                      Status:{" "}
+                      <span
+                        className={ 
+                          client.active ? "text-green-300 " : "text-red-400 "
+                        }
+                      >
+                        {client.active ? "Active" : "Inactive"}
+                      </span>
+                    </p>
               {client.entries && client.entries.length > 0 ? (
                 <div className="flex ">
                   <span className="mr-2">Last Assessment:</span>
@@ -168,7 +178,7 @@ const ClientIDPage: React.FC<ClientPageProps> = () => {
                   Progress
                 </p>
               </Link>
-              {isAssessmentDue ? (
+              {isAssessmentDue && client?.active ?(
                 <Link href={`/questions/${id}`}>
                   <p className="border border-white px-4 py-2 rounded-lg text-xl text-red-400 hover:bg-red-500 hover:text-white transition-colors">
                     Assessment Due!
