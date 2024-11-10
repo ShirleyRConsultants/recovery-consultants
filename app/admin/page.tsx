@@ -1,12 +1,31 @@
-import React from 'react';
+"use client"
+import React, { use } from 'react';
 import Link from 'next/link';
 import NavBar from '@/components/NavBar';
 import Wave from '@/components/Wave';
+import { useAuth } from '@/components/Auth';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 interface AdminHomeProps {
     
 }
 
 const AdminHome: React.FC<AdminHomeProps> = () => {
+
+    const { profile, session, loading } = useAuth();
+    const router = useRouter();
+    
+    
+    useEffect(() => {
+      if (!loading && profile && profile?.type_of_user !== "admin") {
+        router.push("/");
+      }
+      if (!session) {
+        router.push("/")
+      }
+    }, [profile, loading]);
+
+
     return (
         <div>
             <NavBar/>

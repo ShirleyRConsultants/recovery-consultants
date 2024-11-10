@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import NavBar from "@/components/NavBar";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/components/Auth";
 
 interface CaseManager {
   id: string;
@@ -14,8 +16,20 @@ interface CaseManager {
 
 const AdminCaseManagerPage: React.FC = () => {
   const [casemanagers, setCaseManagers] = useState<CaseManager[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [pageLoading, setLoading] = useState(false);
 
+  const { profile, session, loading } = useAuth();
+  const router = useRouter();
+  
+  
+  useEffect(() => {
+    if (!loading && profile && profile?.type_of_user !== "admin") {
+      router.push("/");
+    }
+    if (!session) {
+      router.push("/")
+    }
+  }, [profile, loading]);
   const supabase = createClient();
 
   useEffect(() => {
@@ -64,7 +78,7 @@ const AdminCaseManagerPage: React.FC = () => {
         <h1 className="text-3xl font-bold text-center text-white mb-6">
          Case Manager List
         </h1>
-        {loading ? (
+        {pageLoading ? (
           <p className="text-center text-white">Loading Case Managers...</p>
         ) : (
           <ul className="space-y-4">

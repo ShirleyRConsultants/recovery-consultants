@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import NavBar from "@/components/NavBar";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/components/Auth";
 
 interface Client {
   id: string;
@@ -12,8 +14,20 @@ interface Client {
 
 const AdminClientsPage: React.FC = () => {
   const [clients, setClients] = useState<Client[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [pageLoading, setLoading] = useState(false);
 
+  const { profile, session, loading } = useAuth();
+  const router = useRouter();
+  
+  
+  useEffect(() => {
+    if (!loading && profile && profile?.type_of_user !== "admin") {
+      router.push("/");
+    }
+    if (!session) {
+      router.push("/")
+    }
+  }, [profile, loading]);
   const supabase = createClient();
 
   useEffect(() => {
@@ -62,7 +76,7 @@ const AdminClientsPage: React.FC = () => {
         <h1 className="text-3xl font-bold text-center text-white mb-6">
           Client List
         </h1>
-        {loading ? (
+        {pageLoading ? (
           <p className="text-center text-white">Loading clients...</p>
         ) : (
           <ul className="space-y-4">
