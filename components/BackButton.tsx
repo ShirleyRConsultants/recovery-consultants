@@ -18,7 +18,7 @@ const BackButton: React.FC = () => {
   return (
     <button
       onClick={handleBackClick}
-      className=" text-purple-700 hover:text-purple-950 text-xl py-1 px-1 ml-4 mt-20 z-30 absolute rounded hover:bg-mint  transition-colors duration-300"
+      className=" text-purple-500 hover:text-purple-950 text-xl py-1 px-1 ml-4 mt-20 z-30 absolute rounded hover:bg-mint  transition-colors duration-300"
     >
     <IoIosArrowBack className="text-xl hover:text-2xl" /> {/* React Icon Left Arrow */}
     </button>

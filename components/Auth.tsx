@@ -75,6 +75,7 @@ export const AuthProvider = ({ children }: any) => {
       } = await supabaseClient.auth.getSession();
       if (error) throw error;
       setSession(session);
+      setLoading(false);
     };
 
     const { data: listener } = supabaseClient.auth.onAuthStateChange(
@@ -84,6 +85,7 @@ export const AuthProvider = ({ children }: any) => {
         } else if (event === "SIGNED_OUT") {
           clearSession();
         }
+        setLoading(false);
       }
     );
 

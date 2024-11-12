@@ -17,10 +17,10 @@ const AdminHome: React.FC<AdminHomeProps> = () => {
     
     
     useEffect(() => {
-      if (!loading && profile && profile?.type_of_user !== "admin") {
+      if (loading && profile?.type_of_user !== "admin") {
         router.push("/");
       }
-      if (!session) {
+      if (loading && session) {
         router.push("/")
       }
     }, [profile, loading]);

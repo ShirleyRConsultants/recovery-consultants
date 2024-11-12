@@ -11,7 +11,7 @@ interface CaseManager {
   last_name: string;
   phone: string;
   email: string;
- 
+  auth_id: string;
 }
 
 const AdminCaseManagerPage: React.FC = () => {
@@ -20,17 +20,17 @@ const AdminCaseManagerPage: React.FC = () => {
 
   const { profile, session, loading } = useAuth();
   const router = useRouter();
-  
-  
+
+  const supabase = createClient();
+
   useEffect(() => {
-    if (!loading && profile && profile?.type_of_user !== "admin") {
+    if (loading && profile?.type_of_user !== "admin") {
       router.push("/");
     }
-    if (!session) {
+    if (loading && session) {
       router.push("/")
     }
-  }, [profile, loading]);
-  const supabase = createClient();
+  }, [profile]);
 
   useEffect(() => {
     fetchCaseManagers();
@@ -40,33 +40,36 @@ const AdminCaseManagerPage: React.FC = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from("case_managers")
-      .select("*")
-      // .order("active", { ascending: false }); // Sorts by active status
+      .select("*");
 
     if (error) {
-      console.error("Error fetching clients:", error);
+      console.error("Error fetching case managers:", error);
     } else {
       setCaseManagers(data as CaseManager[]);
     }
     setLoading(false);
   };
 
-  // const toggleActiveStatus = async (id: string, currentStatus: boolean) => {
-  //   const { error } = await supabase
-  //     .from("clients")
-  //     .update({ active: !currentStatus })
-  //     .eq("id", id);
-
-  //   if (error) {
-  //     console.error("Error updating client status:", error);
-  //   } else {
-  //     setCaseManagers((preCaseManagers) =>
-  //       preCaseManagers.map((caseManager) =>
-  //         caseManager.id === id ? { ...caseManager, active: !currentStatus } : caseManager
-  //       )
-  //     );
-  //   }
-  // };
+  const deleteCaseManager = async (auth_id: string) => {
+    try {
+      const response = await fetch(`/admin/api/authDelete?id=${auth_id}`, {
+        method: 'POST',
+      });
+  
+      if (!response.ok) {
+        console.error("Error deleting case manager:", response.statusText);
+        return;
+      }
+  
+      // Filter out the deleted case manager from the local state
+      setCaseManagers((prevManagers) =>
+        prevManagers.filter((manager) => manager.auth_id !== auth_id)
+      );
+    } catch (error) {
+      console.error("Error in deleteCaseManager:", error);
+    }
+  };
+  
 
   const capitalize = (name: string) =>
     name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
@@ -76,7 +79,7 @@ const AdminCaseManagerPage: React.FC = () => {
       <NavBar />
       <div className="max-w-2xl mx-auto py-8">
         <h1 className="text-3xl font-bold text-center text-white mb-6">
-         Case Manager List
+          Case Manager List
         </h1>
         {pageLoading ? (
           <p className="text-center text-white">Loading Case Managers...</p>
@@ -85,7 +88,7 @@ const AdminCaseManagerPage: React.FC = () => {
             {casemanagers.map((caseManager) => (
               <li
                 key={caseManager.id}
-                className="rounded-lg bg-gradient-to-r from-mint to-purp shadow-lg transition-transform duration-300  p-4 border border-white text-white"
+                className="rounded-lg bg-gradient-to-r from-mint to-purp shadow-lg transition-transform duration-300 p-4 border border-white text-white"
               >
                 <div className="flex justify-between items-center">
                   <div>
@@ -94,27 +97,13 @@ const AdminCaseManagerPage: React.FC = () => {
                     </h2>
                     <p>{caseManager.email}</p>
                     <p>{caseManager.phone}</p>
-                    {/* <p className="text-sm mt-1">
-                      Status:{" "}
-                      <span
-                        className={
-                          caseManager.active ? "text-green-300" : "text-red-400"
-                        }
-                      >
-                        {caseManager.active ? "Active" : "Inactive"}
-                      </span>
-                    </p> */}
                   </div>
-                  {/* <button
-                    onClick={() => toggleActiveStatus(caseManager.id, caseManager.active)}
-                    className={`px-3 py-1 rounded ${
-                      client.active
-                        ? "bg-red-500 text-white"
-                        : "bg-green-500 text-white"
-                    }`}
+                  <button
+                    onClick={() => deleteCaseManager(caseManager.auth_id)}
+                    className="px-3 py-1 bg-red-500 text-white rounded"
                   >
-                    {client.active ? "Deactivate" : "Activate"}
-                  </button> */}
+                    Delete
+                  </button>
                 </div>
               </li>
             ))}
