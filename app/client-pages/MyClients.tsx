@@ -57,6 +57,7 @@ const MyClients: React.FC<ClientListProps> = () => {
      {profile.first_name.charAt(0).toUpperCase() + profile.first_name.slice(1) + "'s Clients"}
    </p>
       )}
+      {clients.length == 0 && <p className="text-white">You have no clients signed up! </p> }
   <div className="flex justify-center flex-wrap gap-6  ">
       {clients.map((client) => (
         <div key={client.id} className="relative z-10 ">
