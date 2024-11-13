@@ -30,11 +30,29 @@ const AdminHome: React.FC<AdminHomeProps> = () => {
         <div>
             <NavBar/>
             <Wave/>
-            <div className="flex justify-center items-center space-x-6 text-lg font-medium">
-                <Link className="hover:text-blue-300 transition-colors duration-200" href={"/admin/signup"}>Case Manager Sign Up</Link>
-                <Link className="hover:text-blue-300 transition-colors duration-200" href={"/admin/case-managers"}>Manage Case Managers</Link>
-                <Link className="hover:text-blue-300 transition-colors duration-200" href={"/admin/clients"}>Manage Clients</Link>
-            </div>
+            <div className="flex justify-center items-center space-x-4 mx-auto text-lg font-medium text-center">
+    <Link
+        className="w-48 h-16 px-4 py-2  bg-purp text-white rounded-md hover:bg-mint transition-colors duration-200 flex justify-center items-center"
+        href="/admin/signup"
+    >
+        CM Register
+    </Link>
+    <Link
+        className="w-48 h-16 px-4 py-2 bg-purp text-white rounded-md hover:bg-mint transition-colors duration-200 flex justify-center items-center"
+        href="/admin/case-managers"
+    >
+        CM Dashboard
+    </Link>
+    <Link
+        className="w-48 h-16 px-4 py-2 bg-purp text-white rounded-md hover:bg-mint transition-colors duration-200 flex justify-center items-center"
+        href="/admin/clients"
+    >
+        Client Dashboard
+    </Link>
+</div>
+
+
+
         </div>
     );
 };
