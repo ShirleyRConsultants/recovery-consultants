@@ -155,10 +155,10 @@ const QuestionsComponent: React.FC = () => {
   //     </div>
   //   );
   // }
-  if (!active) {
+  else if (!active) {
     return (
       <div>
-        <p className="m-4 mt-12 text-white bg-mint rounded-xl p-1 text-center">
+        <p className="m-4 mt-12 text-white bg-mint rounded-xl p-3 text-center shadow-lg font-semibold text-lg">
           This account is inactive...
         </p>
       </div>
@@ -171,7 +171,7 @@ const QuestionsComponent: React.FC = () => {
     return (
       <div>
         {lastEntryDate && (
-          <p className="m-4 mt-12 text-white bg-mint rounded-xl p-1 text-center">
+      <p className="m-4 mt-12 text-white bg-mint rounded-xl p-3 text-center shadow-lg font-semibold text-lg">
             Assessment not due until {nextAssessment.toDateString()}
           </p>
         )}
@@ -179,12 +179,11 @@ const QuestionsComponent: React.FC = () => {
     );
   }
 
-
   console.log(values);
 
   const colors = ["#99999A", "#D1D1D3", "#AFD3DB", "#ACDCD3", "#DACDE0"];
 
-  return !questionsAnswered && !loading ? (
+  return !questionsAnswered && !loading && active ? (
     <>
       {currentQuestionIndex < questionKeys.length ? (
         <div className="border border-1 text-white bg-gradient-to-r from-mint to-purp transition-transform duration-300 rounded-lg p-8 w-96 shadow-lg">
