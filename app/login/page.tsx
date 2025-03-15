@@ -1,5 +1,6 @@
 "use client";
 //log in page
+// new images
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { SubmitButton } from "./submit-button";
