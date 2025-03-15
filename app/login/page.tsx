@@ -1,5 +1,5 @@
 "use client";
-
+//log in page
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { SubmitButton } from "./submit-button";
