@@ -77,38 +77,40 @@ const AdminCaseManagerPage: React.FC = () => {
   return (
     <>
       <NavBar />
-      <div className="max-w-2xl mx-auto py-8">
-        <h1 className="text-3xl font-bold text-center text-white mb-6">
-          Case Manager List
-        </h1>
-        {pageLoading ? (
-          <p className="text-center text-white">Loading Case Managers...</p>
-        ) : (
-          <ul className="space-y-4">
-            {casemanagers.map((caseManager) => (
-              <li
-                key={caseManager.id}
-                className="rounded-lg bg-gradient-to-r from-mint to-purp shadow-lg transition-transform duration-300 p-4 border border-white text-white"
-              >
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h2 className="text-xl font-bold">
-                      {`${capitalize(caseManager.first_name)} ${capitalize(caseManager.last_name)}`}
-                    </h2>
-                    <p>{caseManager.email}</p>
-                    <p>{caseManager.phone}</p>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-16">
+        <div className="max-w-2xl mx-auto">
+          <h1 className="text-3xl font-bold text-center text-slate-800 mb-8">
+            Case Manager List
+          </h1>
+          {pageLoading ? (
+            <p className="text-center text-slate-500">Loading Case Managers...</p>
+          ) : (
+            <ul className="space-y-6">
+              {casemanagers.map((caseManager) => (
+                <li
+                  key={caseManager.id}
+                  className="rounded-2xl bg-white/90 shadow-xl border border-slate-200 p-6 transition-transform duration-300"
+                >
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h2 className="text-xl font-bold text-slate-800">
+                        {`${capitalize(caseManager.first_name)} ${capitalize(caseManager.last_name)}`}
+                      </h2>
+                      <p className="text-slate-500">{caseManager.email}</p>
+                      <p className="text-slate-500">{caseManager.phone}</p>
+                    </div>
+                    <button
+                      onClick={() => deleteCaseManager(caseManager.auth_id)}
+                      className="px-5 py-2 rounded-xl font-semibold shadow transition-all duration-200 text-white text-base bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-purp/30 focus:ring-offset-2"
+                    >
+                      Delete
+                    </button>
                   </div>
-                  <button
-                    onClick={() => deleteCaseManager(caseManager.auth_id)}
-                    className="px-3 py-1 bg-red-500 text-white rounded"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </>
   );

@@ -5,8 +5,7 @@ import { createClient } from "@/utils/supabase/client";
 import Card from "@/components/Card";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
-import Wave from "@/components/Wave";
-import { useRouter } from "next/navigation"; // Import useRouter
+import { useRouter } from "next/navigation";
 
 interface ClientListProps {}
 
@@ -22,12 +21,11 @@ type Client = {
 const MyClients: React.FC<ClientListProps> = () => {
   const { profile, caseManagerID } = useAuth();
   const [clients, setClients] = useState<Client[]>([]);
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter();
   const supabase = createClient();
 
   useEffect(() => {
     if (profile && profile.type_of_user !== "admin") {
-      // Redirect non-admin users
       router.push("/");
     }
   }, [profile, router]);
@@ -55,33 +53,45 @@ const MyClients: React.FC<ClientListProps> = () => {
   return (
     <>
       <NavBar />
-      {/* Container for wave and cards */}
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 pt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-3xl font-bold text-slate-900">All Clients</h1>
+            <div className="flex gap-4">
+              <button
+                onClick={() => router.push('/admin')}
+                className="px-4 py-2 bg-purp text-white rounded-lg hover:bg-purp/90 active:bg-purp/80 transition-colors"
+              >
+                Back to Admin
+              </button>
+            </div>
+          </div>
 
-        {/* Wave component */}
-        <Wave
-        className="h-20" />
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {clients.map((client) => (
+                <Link 
+                  key={client.id} 
+                  href={`/clients/${client.id}`}
+                  className="transform hover:scale-105 transition-transform duration-200"
+                >
+                  <Card
+                    first_name={client.first_name}
+                    last_name={client.last_name}
+                    last_update={client.entries?.[client.entries.length - 1] ?? null}
+                  />
+                </Link>
+              ))}
+            </div>
 
-        {/* Cards section, positioned above the wave */}
-        <div className="relative z-10 w-full text-center py-10 " >
-          {profile?.type_of_user === "case_manager" && (
-            <p className="text-3xl text-white">
-              {profile.first_name + "'s" + " Clients"}
-            </p>
-          )}
-
-          <div className="flex justify-center flex-wrap gap-6  ">
-            {clients.map((client) => (
-              <Link key={client.id} href={`/clients/${client.id}`}>
-                <Card
-                  first_name={client.first_name}
-                  last_name={client.last_name}
-                  last_update={client.entries?.[client.entries.length - 1] ?? null}
-                />
-              </Link>
-            ))}
+            {clients.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-slate-500 text-lg">No clients found</p>
+              </div>
+            )}
           </div>
         </div>
-    
+      </div>
     </>
   );
 };

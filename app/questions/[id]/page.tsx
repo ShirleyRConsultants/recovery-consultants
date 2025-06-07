@@ -1,30 +1,21 @@
+"use client";
 
-import { createClient } from "@/utils/supabase/server";
-import QuestionsComponent from "./Questions";
-import NavBar from "@/components/NavBar";
-import { redirect } from "next/navigation";
-import Wave from "@/components/Wave";
+import React from 'react';
+import NavBar from '@/components/NavBar';
+import { useAuth } from '@/components/Auth';
 
-export default async function QuestionsPage() {
-  const supabase = createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return redirect("/login");
-  }
-
+export default function QuestionsPage() {
+  const { profile } = useAuth();
 
   return (
     <>
-     <NavBar/>
-     {/* <Wave className="h-20"/> */}
-    <div className="flex-1 w-full flex flex-col gap-2 items-center mb-24 mt-2 lg:mt-20 xl:mt-24 ">
-     
-      <QuestionsComponent />
-    </div>
+      <NavBar />
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 pt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <h1 className="text-3xl font-bold text-slate-900 mb-8">Questions</h1>
+          {/* Add your questions content here */}
+        </div>
+      </div>
     </>
   );
 }

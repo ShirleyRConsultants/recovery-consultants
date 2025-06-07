@@ -147,109 +147,127 @@ const ClientSignUp: React.FC<ClientsProps> = () => {
   };
 
   return (
-    <div className="">
-      <h2 className=" text-black font-thin lg:mt-20 mt-28  absolute top-0 left-1/2 transform -translate-x-1/2 text-2xl lg:text-4xl  text-center">
+    <div className="relative min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-white/60 to-white/40 backdrop-blur-sm z-0" />
+      
+      <h2 className="relative z-10 text-center text-4xl font-extrabold text-slate-800 mt-20 mb-8 tracking-tight">
         Client Upload
       </h2>
 
-      <div className="mt-48 lg:mt-28 pb-36 ">
-        <div className=" mx-auto lg:mx-auto lg:w-1/3 w-3/4 mt-36  bg-white p-8 shadow-lg rounded-lg z-10">
-          <form onSubmit={handleSignup} className="flex flex-col w-full gap-4 ">
-            <label className="text-md" htmlFor="email">
-              Email
-            </label>
-            <input
-              className="rounded-md px-4 py-2 border"
-              name="email"
-              placeholder="you@example.com"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+      <div className="relative z-10 w-full max-w-2xl mx-auto p-10 rounded-3xl shadow-xl bg-white/90 backdrop-blur-sm border border-slate-200">
+        <form onSubmit={handleSignup} className="flex flex-col w-full gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="text-lg font-semibold text-slate-700" htmlFor="email">
+                Email
+              </label>
+              <input
+                className="w-full rounded-xl px-5 py-3 border border-slate-200 focus:border-purp focus:ring-2 focus:ring-purp/30 transition-all shadow-sm bg-white placeholder-slate-400 text-base outline-none"
+                name="email"
+                placeholder="you@example.com"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
 
-            <label className="text-md" htmlFor="firstName">
-              First Name
-            </label>
-            <input
-              className="rounded-md px-4 py-2 border"
-              name="firstName"
-              placeholder="Bob"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
+            <div>
+              <label className="text-lg font-semibold text-slate-700" htmlFor="firstName">
+                First Name
+              </label>
+              <input
+                className="w-full rounded-xl px-5 py-3 border border-slate-200 focus:border-purp focus:ring-2 focus:ring-purp/30 transition-all shadow-sm bg-white placeholder-slate-400 text-base outline-none"
+                name="firstName"
+                placeholder="Bob"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+            </div>
 
-            <label className="text-md" htmlFor="lastName">
-              Last Name
-            </label>
-            <input
-              className="rounded-md px-4 py-2 border"
-              name="lastName"
-              placeholder="Smith"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
+            <div>
+              <label className="text-lg font-semibold text-slate-700" htmlFor="lastName">
+                Last Name
+              </label>
+              <input
+                className="w-full rounded-xl px-5 py-3 border border-slate-200 focus:border-purp focus:ring-2 focus:ring-purp/30 transition-all shadow-sm bg-white placeholder-slate-400 text-base outline-none"
+                name="lastName"
+                placeholder="Smith"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </div>
 
-            <label className="text-md" htmlFor="phone">
-              Phone
-            </label>
-            <input
-              className="rounded-md px-4 py-2 border"
-              name="phone"
-              placeholder="123-456-7890"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
+            <div>
+              <label className="text-lg font-semibold text-slate-700" htmlFor="phone">
+                Phone
+              </label>
+              <input
+                className="w-full rounded-xl px-5 py-3 border border-slate-200 focus:border-purp focus:ring-2 focus:ring-purp/30 transition-all shadow-sm bg-white placeholder-slate-400 text-base outline-none"
+                name="phone"
+                placeholder="123-456-7890"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </div>
 
-            <label className="text-md" htmlFor="zip_code">
-              Zip Code
-            </label>
-            <input
-              className="rounded-md px-4 py-2 border"
-              name="zip_code"
-              placeholder="90210"
-              value={zipCode}
-              onChange={(e) => setZipCode(e.target.value)}
-            />
+            <div>
+              <label className="text-lg font-semibold text-slate-700" htmlFor="zip_code">
+                Zip Code
+              </label>
+              <input
+                className="w-full rounded-xl px-5 py-3 border border-slate-200 focus:border-purp focus:ring-2 focus:ring-purp/30 transition-all shadow-sm bg-white placeholder-slate-400 text-base outline-none"
+                name="zip_code"
+                placeholder="90210"
+                value={zipCode}
+                onChange={(e) => setZipCode(e.target.value)}
+              />
+            </div>
 
-            <label className="text-md" htmlFor="sobriety_date">
-              Sobriety Date
-            </label>
-            <input
-              required
-              type="date"
-              className="rounded-md px-4 py-2 border"
-              name="sobriety_date"
-              value={sobrietyDate}
-              onChange={(e) => setSobrietyDate(e.target.value)}
-            />
+            <div>
+              <label className="text-lg font-semibold text-slate-700" htmlFor="sobriety_date">
+                Sobriety Date
+              </label>
+              <input
+                required
+                type="date"
+                className="w-full rounded-xl px-5 py-3 border border-slate-200 focus:border-purp focus:ring-2 focus:ring-purp/30 transition-all shadow-sm bg-white placeholder-slate-400 text-base outline-none"
+                name="sobriety_date"
+                value={sobrietyDate}
+                onChange={(e) => setSobrietyDate(e.target.value)}
+              />
+            </div>
+          </div>
 
-            {!success && (
+          {!success && (
+            <button
+              disabled={submitted}
+              type="submit"
+              className="bg-purp hover:bg-purp/90 active:bg-purp/80 transition-all text-white py-3 rounded-xl font-bold text-lg shadow-lg mt-4 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {loading ? "Uploading..." : "Upload Client"}
+            </button>
+          )}
+
+          {success && (
+            <div className="space-y-4">
+              <p className="text-center text-green-600 font-semibold bg-green-50 border border-green-200 rounded-lg py-2 px-4 shadow">
+                Client added successfully!
+              </p>
               <button
-                disabled={submitted}
-                type="submit"
-                className="mt-2 text-sm bg-purple-500 text-white p-2 rounded-lg"
+                onClick={resetForm}
+                className="w-full bg-purp hover:bg-purp/90 active:bg-purp/80 transition-all text-white py-3 rounded-xl font-bold text-lg shadow-lg"
               >
-                Upload
+                Add Another Client
               </button>
-            )}
+            </div>
+          )}
 
-            {success && (
-              <div>
-                <p className="text-blue-500 mt-4 text-center">
-                  Client added successfully!
-                </p>
-                <button
-                  onClick={resetForm}
-                  className="mt-2 text-sm bg-purple-500 text-white p-2 rounded-lg w-full"
-                >
-                  Reset
-                </button>
-              </div>
-            )}
-
-            {error && <p className="text-red-600 text-center">{error}</p>}
-          </form>
-        </div>
+          {error && (
+            <p className="text-center text-red-600 font-semibold bg-red-50 border border-red-200 rounded-lg py-2 px-4 shadow">
+              {error}
+            </p>
+          )}
+        </form>
       </div>
     </div>
   );

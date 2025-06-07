@@ -1,19 +1,25 @@
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
+"use client";
+
+import { useEffect } from "react";
+import { useAuth } from "@/components/Auth";
+import { useRouter } from "next/navigation";
 import ClientIDPage from "@/app/client-pages/ClientIDPage";
 import NavBar from "@/components/NavBar";
 
+export default function ClientPage() {
+  const { profile, session } = useAuth();
+  const router = useRouter();
 
+  useEffect(() => {
+    if (!session) {
+      router.push("/login");
+    }
+  }, [session, router]);
 
-async function ClientPage() {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return redirect("/login");
+  if (!session) {
+    return null;
   }
+
   return (
     <div>
       <NavBar />
@@ -21,5 +27,3 @@ async function ClientPage() {
     </div>
   );
 }
-
-export default ClientPage;

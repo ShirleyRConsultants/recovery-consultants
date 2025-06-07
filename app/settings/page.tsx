@@ -1,9 +1,8 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import Wave from "@/components/Wave";
-import { useAuth } from "@/components/Auth";
 import NavBar from "@/components/NavBar";
+import { useAuth } from '@/components/Auth';
 
 interface SettingsProps {}
 
@@ -27,7 +26,6 @@ const Settings: React.FC<SettingsProps> = () => {
           Reset Password
         </Link>
       </div>
-      <Wave />
     </div>
   );
 };

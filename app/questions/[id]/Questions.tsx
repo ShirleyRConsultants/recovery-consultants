@@ -5,7 +5,6 @@ import clientQuestions from "../clientQuestions";
 import { createClient } from "@/utils/supabase/client";
 import { useAuth } from "@/components/Auth";
 import { useParams } from "next/navigation";
-import Wave from "@/components/Wave";
 
 interface Question {
   question: string;

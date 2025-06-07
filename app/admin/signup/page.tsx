@@ -4,7 +4,6 @@ import { createClient } from "@/utils/supabase/client";
 import { useAuth } from "@/components/Auth";
 import { useRouter } from "next/navigation";
 import NavBar from "@/components/NavBar";
-import Wave from "@/components/Wave";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -20,7 +19,6 @@ export default function Signup() {
   const { profile, session } = useAuth();
   const router = useRouter();
 
-  
   useEffect(() => {
     if (!loading && profile && profile?.type_of_user !== "admin") {
       router.push("/");
@@ -95,7 +93,6 @@ export default function Signup() {
 
     const userId = data.user?.id;
 
-
     const { error: caseManagerInsertError } = await supabase
       .from("case_managers")
       .insert({
@@ -122,68 +119,91 @@ export default function Signup() {
     setSuccess(`Case manager ${firstName} added successfully!`);
   };
   
-
   return profile?.type_of_user != "admin" ? (
     <>
-    <NavBar/>
-    <div className=" flex-1 flex flex-col justify-center gap-2 mt-24 text-black mx-auto text-center">
-      <p>Loading...</p>
-    </div>
+      <NavBar />
+      <div className="flex-1 flex flex-col justify-center gap-2 mt-24 text-black mx-auto text-center">
+        <p>Loading...</p>
+      </div>
     </>
   ) : (
     <>
       <NavBar />
-      <div className="relative h-screen "> 
-        <Wave /> 
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lg:w-1/3 md:w-1/2 w-5/6 bg-white p-8 shadow-lg rounded-lg z-10">
-          <p className="text-center text-2xl mb-2">Case Manager Signup</p>
-          <form
-            onSubmit={handleSignup}
-            className="flex flex-col w-full gap-4"
-          >
-            <label htmlFor="first_name">First Name</label>
-            <input
-              className="rounded-md px-4 py-2 border"
-              name="first_name"
-              placeholder="Jane"
-              onChange={(e) => setFirstName(e.target.value)}
-              required
-            />
-            <label htmlFor="last_name">Last Name</label>
-            <input
-              className="rounded-md px-4 py-2 border"
-              name="last_name"
-              placeholder="Smith"
-              onChange={(e) => setLastName(e.target.value)}
-              required
-            />
-            <label htmlFor="email">Email</label>
-            <input
-              className="rounded-md px-4 py-2 border"
-              name="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <label htmlFor="phone">Phone</label>
-            <input
-              className="rounded-md px-4 py-2 border"
-              name="phone"
-              placeholder="123-456-7890"
-              onChange={(e) => setPhone(e.target.value)}
-              required
-            />
-            <button
-              type="submit"
-              disabled={loading}
-              className="bg-purp text-white py-2 rounded-md"
-            >
-              Sign Up
-            </button>
-          </form>
-          {success && <p className="text-center text-purp">{success}</p>}
-          {error && <p className="text-center text-red-600">{error}</p>}
+      <div className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
+        <div className="relative z-10 w-full max-w-lg mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white/90 backdrop-blur-sm border border-slate-200 rounded-3xl shadow-xl p-8 sm:p-10">
+            <h1 className="text-3xl font-extrabold text-purp text-center mb-8 tracking-tight">
+              Case Manager Signup
+            </h1>
+            <form onSubmit={handleSignup} className="space-y-6">
+              <div>
+                <label htmlFor="first_name" className="block text-sm font-medium text-slate-700 mb-1">
+                  First Name
+                </label>
+                <input
+                  className="w-full rounded-xl px-4 py-3 border border-slate-200 focus:border-purp focus:ring-2 focus:ring-purp/30 transition-all shadow-sm bg-white/90 placeholder-slate-400 text-base outline-none"
+                  name="first_name"
+                  placeholder="Jane"
+                  onChange={(e) => setFirstName(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="last_name" className="block text-sm font-medium text-slate-700 mb-1">
+                  Last Name
+                </label>
+                <input
+                  className="w-full rounded-xl px-4 py-3 border border-slate-200 focus:border-purp focus:ring-2 focus:ring-purp/30 transition-all shadow-sm bg-white/90 placeholder-slate-400 text-base outline-none"
+                  name="last_name"
+                  placeholder="Smith"
+                  onChange={(e) => setLastName(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
+                  Email
+                </label>
+                <input
+                  className="w-full rounded-xl px-4 py-3 border border-slate-200 focus:border-purp focus:ring-2 focus:ring-purp/30 transition-all shadow-sm bg-white/90 placeholder-slate-400 text-base outline-none"
+                  name="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-slate-700 mb-1">
+                  Phone
+                </label>
+                <input
+                  className="w-full rounded-xl px-4 py-3 border border-slate-200 focus:border-purp focus:ring-2 focus:ring-purp/30 transition-all shadow-sm bg-white/90 placeholder-slate-400 text-base outline-none"
+                  name="phone"
+                  placeholder="123-456-7890"
+                  onChange={(e) => setPhone(e.target.value)}
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-purp hover:bg-purp/90 active:bg-purp/80 transition-all text-white py-3 rounded-xl font-bold text-lg shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {loading ? "Signing Up..." : "Sign Up"}
+              </button>
+            </form>
+            {success && (
+              <div className="mt-6 text-center text-green-600 font-semibold bg-green-50 border border-green-200 rounded-lg py-2 px-4 shadow">
+                {success}
+              </div>
+            )}
+            {error && (
+              <div className="mt-6 text-center text-red-600 font-semibold bg-red-50 border border-red-200 rounded-lg py-2 px-4 shadow">
+                {error}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </>

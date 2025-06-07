@@ -37,15 +37,10 @@ const DisplayNameLinks: React.FC = () => {
 
   return (
     <div className="flex">
-            {/* {profile && <p className="text-white">Hi </p>}&nbsp;<p className="lg:mr-2 text-white"> {profile.first_name}!</p> */}
+      {/* {profile && <p className="text-white">Hi </p>}&nbsp;<p className="lg:mr-2 text-white"> {profile.first_name}! </p> */}
       {profile.type_of_user === "admin" && (
         <Link className="mx-1 ml-2 lg:mx-4 hover:underline text-white" href="/admin">
           Admin
-        </Link>
-      )}
-      {profile.type_of_user !== "client" && (
-        <Link className="mx-1 lg:mx-4 hover:underline text-white" href="/clients">
-          Clients
         </Link>
       )}
       {profile.type_of_user === "client" && clientId && (
@@ -53,10 +48,6 @@ const DisplayNameLinks: React.FC = () => {
           Assessment
         </Link>
       )}
-      <Link className="mx-1 lg:mx-4 hover:underline text-white" href="/settings">
-        Settings
-      </Link>
-
     </div>
   );
 };

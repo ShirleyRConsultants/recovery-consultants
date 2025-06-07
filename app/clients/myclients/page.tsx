@@ -1,22 +1,21 @@
+"use client";
+
 import React from 'react';
-import MyClients from '@/app/client-pages/MyClients';
 import NavBar from '@/components/NavBar';
-import Wave from '@/components/Wave';
-interface myClientsPageProps {
-  
-}
+import { useAuth } from '@/components/Auth';
 
-const myClientsPage: React.FC<myClientsPageProps> = () => {
+export default function MyClientsPage() {
+  const { profile } = useAuth();
+
   return (
-    <div>
-      <NavBar/>
-      <div className='bg-mint h-48'>
-      <MyClients/>
+    <>
+      <NavBar />
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 pt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <h1 className="text-3xl font-bold text-slate-900 mb-8">My Clients</h1>
+          {/* Add your clients list content here */}
+        </div>
       </div>
-      <Wave/>
- 
-    </div>
+    </>
   );
-};
-
-export default myClientsPage;
+}

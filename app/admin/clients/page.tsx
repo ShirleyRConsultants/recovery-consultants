@@ -72,50 +72,48 @@ const AdminClientsPage: React.FC = () => {
   return (
     <>
       <NavBar />
-      <div className="max-w-2xl mx-auto py-8">
-        <h1 className="text-3xl font-bold text-center text-white mb-6">
-          Client List
-        </h1>
-        {pageLoading ? (
-          <p className="text-center text-white">Loading clients...</p>
-        ) : (
-          <ul className="space-y-4">
-            {clients.map((client) => (
-              <li
-                key={client.id}
-                className="rounded-lg bg-gradient-to-r from-mint to-purp shadow-lg transition-transform duration-300  p-4 border border-white text-white"
-              >
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h2 className="text-xl font-bold">
-                      {`${capitalize(client.first_name)} ${capitalize(client.last_name)}`}
-                    </h2>
-                    <p className="text-sm mt-1">
-                      Status:{" "}
-                      <span
-                        className={
-                          client.active ? "text-green-300" : "text-red-400"
-                        }
-                      >
-                        {client.active ? "Active" : "Inactive"}
-                      </span>
-                    </p>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-16">
+        <div className="max-w-2xl mx-auto">
+          <h1 className="text-3xl font-bold text-center text-slate-800 mb-8">
+            Client List
+          </h1>
+          {pageLoading ? (
+            <p className="text-center text-slate-500">Loading clients...</p>
+          ) : (
+            <ul className="space-y-6">
+              {clients.map((client) => (
+                <li
+                  key={client.id}
+                  className="rounded-2xl bg-white/90 shadow-xl border border-slate-200 p-6 transition-transform duration-300"
+                >
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h2 className="text-xl font-bold text-slate-800">
+                        {`${capitalize(client.first_name)} ${capitalize(client.last_name)}`}
+                      </h2>
+                      <p className="text-sm mt-1 text-slate-500">
+                        Status: {" "}
+                        <span
+                          className={
+                            client.active ? "text-green-600 font-semibold" : "text-red-500 font-semibold"
+                          }
+                        >
+                          {client.active ? "Active" : "Inactive"}
+                        </span>
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => toggleActiveStatus(client.id, client.active)}
+                      className={`px-5 py-2 rounded-xl font-semibold shadow transition-all duration-200 text-white text-base focus:outline-none focus:ring-2 focus:ring-purp/30 focus:ring-offset-2 ${client.active ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"}`}
+                    >
+                      {client.active ? "Deactivate" : "Activate"}
+                    </button>
                   </div>
-                  <button
-                    onClick={() => toggleActiveStatus(client.id, client.active)}
-                    className={`px-3 py-1 rounded ${
-                      client.active
-                        ? "bg-red-500 text-white"
-                        : "bg-green-500 text-white"
-                    }`}
-                  >
-                    {client.active ? "Deactivate" : "Activate"}
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </>
   );
